@@ -1,0 +1,58 @@
+# .editorconfig
+root = true
+
+[*.cs]
+indent_style = space
+indent_size  = 4
+tab_width    = 4
+end_of_line  = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+charset = utf-8 
+
+# Namespaces
+csharp_style_namespace_declarations = block_scoped:warning
+csharp_indent_namespace_contents = true
+
+# Using
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+csharp_using_directive_placement = outside_namespace:suggestion
+dotnet_sort_using_directives = true
+
+# Remove unused usings (IDE0005).
+dotnet_diagnostic.IDE0005.severity = warning
+
+# Braces
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+
+# Switch/case operator 
+csharp_indent_switch_labels = true
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_labels = no_change
+
+# Var usage 
+csharp_style_var_for_built_in_types = false
+csharp_style_var_when_type_is_apparent = true
+csharp_style_var_elsewhere = false
+
+# Expression bodied members
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+
+# Private fields naming (_camelCase)
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_style.underscore_camel_case.required_prefix = _
+dotnet_naming_style.underscore_camel_case.capitalization = camel_case
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.style = underscore_camel_case
+dotnet_naming_rule.private_fields_should_be_underscore_camel_case.severity = warning
+
+# Misc
+csharp_indent_block_contents = true
+dotnet_code_quality_unused_parameters = suggestion:suggestion
