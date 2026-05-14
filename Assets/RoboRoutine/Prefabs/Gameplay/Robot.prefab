@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 147064631113715842}
   - component: {fileID: 1692418612176496845}
+  - component: {fileID: 7651128115782890164}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -47,6 +48,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.GridEntityAuthoring
   _size: {x: 1, y: 1}
   _rotation: 0
+--- !u!114 &7651128115782890164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964974451163228360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3d0f34ee7e3aa4418f8ea9b052ddfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.RobotView
+  _speed: 2
 --- !u!1 &966367054372386738
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +128,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -260,7 +274,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -372,7 +386,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -832,6 +832,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1619164275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1155432566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7651128115782890164, guid: 540a6651077594f4391341ffee0be81a, type: 3}
+  m_PrefabInstance: {fileID: 8569439586967518215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3d0f34ee7e3aa4418f8ea9b052ddfa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.RobotView
 --- !u!1 &1189722270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1125,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _gridView: {fileID: 2118031080}
+  _robotView: {fileID: 1155432566}
 --- !u!1001 &1953387981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1363,22 +1375,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 231443468572068034, guid: 540a6651077594f4391341ffee0be81a, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
     - target: {fileID: 964974451163228360, guid: 540a6651077594f4391341ffee0be81a, type: 3}
       propertyPath: m_Name
       value: Robot
       objectReference: {fileID: 0}
-    - target: {fileID: 977170753494559050, guid: 540a6651077594f4391341ffee0be81a, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
-    - target: {fileID: 5881795194309341809, guid: 540a6651077594f4391341ffee0be81a, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 4e4b9a78a54b7c14299d769ff8c79702, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
