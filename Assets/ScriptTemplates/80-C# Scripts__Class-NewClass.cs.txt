@@ -1,6 +1,9 @@
 #ROOTNAMESPACEBEGIN#
     public sealed class #SCRIPTNAME#
     {
-
+        public #SCRIPTNAME#()
+        {
+            
+        }
     }
 #ROOTNAMESPACEEND#
