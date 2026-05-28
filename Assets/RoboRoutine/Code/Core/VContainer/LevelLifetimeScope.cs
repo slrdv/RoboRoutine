@@ -37,8 +37,8 @@ namespace RoboRoutine
         private void RegisterCommandPipeline(IContainerBuilder builder)
         {
             builder.Register<CommandFactory>(Lifetime.Singleton);
-
             builder.Register<MovementSystem>(Lifetime.Singleton);
+            builder.Register<CommandSequence>(Lifetime.Singleton);
         }
     }
 }

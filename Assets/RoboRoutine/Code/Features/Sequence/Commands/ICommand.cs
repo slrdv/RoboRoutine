@@ -1,14 +1,12 @@
-using System;
+using Cysharp.Threading.Tasks;
 
 namespace RoboRoutine
 {
     public interface ICommand
     {
-        event Action<CommandResult> OnComplete;
-
         CommandType CommandType { get; }
 
-        void Execute();
+        UniTask<CommandResult> ExecuteAsync();
         void Cancel();
     }
 }

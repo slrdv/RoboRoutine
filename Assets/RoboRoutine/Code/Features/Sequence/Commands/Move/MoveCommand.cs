@@ -1,14 +1,11 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace RoboRoutine
 {
     public sealed class MoveCommand : ICommand, IDisposable
     {
-        public event Action<CommandResult> OnComplete;
-
         public CommandType CommandType => CommandType.Move;
 
         private readonly MovementSystem _movementSystem;
@@ -25,41 +22,30 @@ namespace RoboRoutine
             _distance = distance;
         }
 
-        public void Execute()
+        public async UniTask<CommandResult> ExecuteAsync()
         {
-            if (_isExecuting)
-            {
-                Debug.LogWarning("MoveCommand is already executing");
-                return;
-            }
-            
+            if (_isExecuting) throw new InvalidOperationException("MoveCommand is already executing");
             _isExecuting = true;
 
             _cts = new CancellationTokenSource();
-            ExecuteAsync(_cts.Token).Forget();
+
+            CommandResult result = await _movementSystem.MoveAsync(_direction, _distance, _cts.Token);
+
+            _cts?.Dispose();
+            _cts = null;
+            _isExecuting = false;
+
+            return result;
         }
 
         public void Cancel()
         {
             _cts?.Cancel();
-            _cts?.Dispose();
-            _cts = null;
         }
 
         public void Dispose()
         {
             Cancel();
-        }
-
-        private async UniTaskVoid ExecuteAsync(CancellationToken ct)
-        {
-            CommandResult result = await _movementSystem.MoveAsync(_direction, _distance, ct);
-            
-            _cts?.Dispose();
-            _cts = null;
-            _isExecuting = false;
-
-            OnComplete?.Invoke(result);
         }
     }
 }
