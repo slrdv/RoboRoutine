@@ -15,6 +15,7 @@ namespace RoboRoutine
             RegisterRobot(builder);
 
             RegisterCommandPipeline(builder);
+            RegisterHistoryServices(builder);
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
             builder.RegisterEntryPoint<LevelScopeInitializer>();
@@ -39,6 +40,12 @@ namespace RoboRoutine
             builder.Register<CommandFactory>(Lifetime.Singleton);
             builder.Register<MovementSystem>(Lifetime.Singleton);
             builder.Register<CommandSequence>(Lifetime.Singleton);
+        }
+
+        private void RegisterHistoryServices(IContainerBuilder builder)
+        {
+            builder.Register<SnapshotService>(Lifetime.Singleton).AsSelf().As<ISnapshotableRegistry>();
+            builder.Register<HistoryService>(Lifetime.Singleton);
         }
     }
 }

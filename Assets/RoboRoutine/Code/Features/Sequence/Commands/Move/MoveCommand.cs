@@ -7,6 +7,7 @@ namespace RoboRoutine
     public sealed class MoveCommand : ICommand, IDisposable
     {
         public CommandType CommandType => CommandType.Move;
+        public SnapshotLayer SnapshotLayer => SnapshotLayer.Robot;
 
         private readonly MovementSystem _movementSystem;
         private readonly MoveDirection _direction;

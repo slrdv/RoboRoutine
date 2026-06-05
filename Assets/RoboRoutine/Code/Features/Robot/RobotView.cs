@@ -10,9 +10,20 @@ namespace RoboRoutine
         {
             return transform.position.ToXZ();
         }
+
+        public Quaternion GetRotation()
+        {
+            return transform.rotation;
+        }
+
         public void SetPositionXZ(Vector2 position)
         {
             transform.position = new Vector3(position.x, transform.position.y, position.y);
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
         }
 
         public void MoveTowardsXZ(Vector2 targetPosition, float delta)

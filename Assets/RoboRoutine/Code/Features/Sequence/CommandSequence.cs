@@ -6,6 +6,7 @@ namespace RoboRoutine
 {
     public sealed class CommandSequence : IDisposable
     {
+        public event Action<ICommand, int> BeforeCommandExecuteEvent;
         public event Action<CommandResult, int, int> CommandCompleteEvent;
 
         private readonly List<ICommand> _commands = new();
@@ -16,6 +17,7 @@ namespace RoboRoutine
 
         public void Add(ICommand command)
         {
+            CheckIsBusy();
             _commands.Add(command);
         }
 
@@ -40,7 +42,6 @@ namespace RoboRoutine
         public void SetIndex(int index)
         {
             CheckIsBusy();
-
             _commandIndex = index;
         }
 
@@ -60,6 +61,8 @@ namespace RoboRoutine
             _isExecuting = true;
 
             ICommand command = _commands[_commandIndex];
+            BeforeCommandExecuteEvent?.Invoke(command, _commandIndex);
+            
             CommandResult result = await command.ExecuteAsync();
 
             _isExecuting = false;
