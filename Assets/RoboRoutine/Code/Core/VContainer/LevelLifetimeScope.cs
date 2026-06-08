@@ -9,6 +9,10 @@ namespace RoboRoutine
         [SerializeField] private GridView _gridView;
         [SerializeField] private RobotView _robotView;
 
+        [SerializeField] private CommandListView _commandListView;
+        [SerializeField] private CommandItemView _commandItemPrefab;
+        [SerializeField] private Transform _pooledObjectsContainer;
+
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterGrid(builder);
@@ -16,6 +20,8 @@ namespace RoboRoutine
 
             RegisterCommandPipeline(builder);
             RegisterHistoryServices(builder);
+
+            RegisterUI(builder);
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
             builder.RegisterEntryPoint<LevelScopeInitializer>();
@@ -46,6 +52,17 @@ namespace RoboRoutine
         {
             builder.Register<SnapshotService>(Lifetime.Singleton).AsSelf().As<ISnapshotableRegistry>();
             builder.Register<HistoryService>(Lifetime.Singleton);
+        }
+
+        private void RegisterUI(IContainerBuilder builder)
+        {
+            builder.Register(r => new GameObjectPool<CommandItemView>(r, _commandItemPrefab, _pooledObjectsContainer), Lifetime.Singleton);
+
+            builder.Register<CommandItemFactory>(Lifetime.Singleton);
+
+            builder.Register<CommandListModel>(Lifetime.Singleton);
+            builder.RegisterInstance(_commandListView);
+            builder.RegisterEntryPoint<CommandListPresenter>();
         }
     }
 }

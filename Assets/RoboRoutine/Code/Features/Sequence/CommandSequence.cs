@@ -15,6 +15,8 @@ namespace RoboRoutine
         private bool _isExecuting;
         private bool _disposed;
 
+        public IReadOnlyList<ICommand> Commands => _commands;
+
         public void Add(ICommand command)
         {
             CheckIsBusy();
@@ -33,16 +35,32 @@ namespace RoboRoutine
             _commands.RemoveAt(index);
         }
 
-        public void ExecuteNext()
+        public void Move(int fromIndex, int toIndex)
         {
             CheckIsBusy();
-            ExecuteNextAsync().Forget();
+            ICommand command = _commands[fromIndex];
+            _commands.RemoveAt(fromIndex);
+            _commands.Insert(toIndex, command);
         }
 
         public void SetIndex(int index)
         {
             CheckIsBusy();
             _commandIndex = index;
+        }
+
+        public void Clear()
+        {
+            CheckIsBusy();
+            
+            _commands.Clear();
+            _commandIndex = 0;
+        }
+
+        public void ExecuteNext()
+        {
+            CheckIsBusy();
+            ExecuteNextAsync().Forget();
         }
 
         public void Dispose()
