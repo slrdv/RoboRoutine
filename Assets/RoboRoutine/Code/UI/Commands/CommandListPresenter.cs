@@ -11,15 +11,17 @@ namespace RoboRoutine
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
         private readonly CommandItemFactory _itemFactory;
+        private readonly SimulationService _simulationService;
 
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
         private readonly CompositeDisposable _subscriptions = new();
 
-        public CommandListPresenter(CommandListModel model, CommandListView view, CommandItemFactory itemFactory)
+        public CommandListPresenter(CommandListModel model, CommandListView view, CommandItemFactory itemFactory, SimulationService simulationService)
         {
             _model = model;
             _view = view;
             _itemFactory = itemFactory;
+            _simulationService = simulationService;
         }
 
         public void Initialize()
@@ -31,10 +33,8 @@ namespace RoboRoutine
             _model.Commands.ObserveMove().Subscribe(OnItemMoved).AddTo(_subscriptions);
             _model.Commands.ObserveClear().Subscribe(OnItemsClear).AddTo(_subscriptions);
 
-            foreach (CommandItemModel model in _model.Commands)
-            {
-                CreateItem(model);
-            }
+            _simulationService.SimulationRunEvent += UpdateUI;
+            _simulationService.SimulationStopEvent += UpdateUI;
 
             _view.ItemDraggedEvent += OnItemDragged;
         }
@@ -42,6 +42,10 @@ namespace RoboRoutine
         public void Dispose()
         {
             _view.ItemDraggedEvent -= OnItemDragged;
+
+            _simulationService.SimulationStopEvent -= UpdateUI;
+            _simulationService.SimulationRunEvent -= UpdateUI;
+
             _subscriptions.Dispose();
             ClearItems();
         }
@@ -92,5 +96,21 @@ namespace RoboRoutine
             _items.Clear();
         }
 
+        private void UpdateUI()
+        {
+            if (_simulationService.IsInitialState)
+            {
+                _view.HidePointer();
+                _view.SetInputEnabled(true);
+                return;
+            }
+
+            _view.SetInputEnabled(false);
+
+            if (_simulationService.CommandIndex < _simulationService.CommandsCount)
+            {
+                _view.ShowPointer(_simulationService.CommandIndex);
+            }
+        }
     }
 }

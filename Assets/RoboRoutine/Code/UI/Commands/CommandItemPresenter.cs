@@ -18,8 +18,6 @@ namespace RoboRoutine
             _view = view;
 
             _model.Index.Subscribe(_view.SetIndex).AddTo(_subscriptions);
-            _model.Label.Subscribe(_view.SetLabel).AddTo(_subscriptions);
-            _model.Icon.Subscribe(_view.SetIcon).AddTo(_subscriptions);
         }
 
         public void Dispose()

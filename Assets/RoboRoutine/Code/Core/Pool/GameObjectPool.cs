@@ -24,10 +24,10 @@ namespace RoboRoutine
             _pool = new Stack<T>(defaultCapacity);
         }
 
-        public T Get()
+        public T Get(bool active = true)
         {
             T obj = _pool.Count > 0 ? _pool.Pop() : Create();
-            obj.OnTakenFromPool();
+            obj.OnTakenFromPool(active);
             return obj;
         }
 
@@ -56,7 +56,7 @@ namespace RoboRoutine
             for (int i = 0; i < amount; ++i)
             {
                 T obj = Create();
-                obj.OnTakenFromPool();
+                obj.OnTakenFromPool(false);
                 Release(obj);
             }
         }

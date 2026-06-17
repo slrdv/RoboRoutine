@@ -18,7 +18,7 @@ namespace RoboRoutine
             _pool = pool;
         }
 
-        public void OnTakenFromPool()
+        public void OnTakenFromPool(bool active)
         {
             if (_isAcquired)
             {
@@ -29,7 +29,11 @@ namespace RoboRoutine
             OnTaken();
 
             _isAcquired = true;
-            SetActive(true);
+
+            if (active)
+            {
+                SetActive(true);
+            }
         }
 
         public void OnReleasedToPool()

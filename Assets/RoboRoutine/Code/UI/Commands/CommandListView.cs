@@ -20,6 +20,7 @@ namespace RoboRoutine
         private bool _isDragging;
         private int _originIndex;
         private int _dropIndex;
+        private bool _inputEnabled = true;
 
         public void Initialize()
         {
@@ -62,6 +63,8 @@ namespace RoboRoutine
 
         public void ShowPointer(int itemIndex)
         {
+            if (_items.Count == 0) return;
+            
             Vector3 position = _pointer.position;
             position.y = _items[itemIndex].RectTransform.position.y;
             _pointer.position = position;
@@ -73,6 +76,11 @@ namespace RoboRoutine
             _pointer.gameObject.SetActive(false);
         }
 
+        public void SetInputEnabled(bool enabled)
+        {
+            _inputEnabled = enabled;
+        } 
+
         public void ClearItems()
         {
             for (int i = _items.Count - 1; i >= 0; i--)
@@ -83,7 +91,7 @@ namespace RoboRoutine
 
         private void OnBeginDrag(CommandItemView item)
         {
-            if (_isDragging) return;
+            if (_isDragging || !_inputEnabled) return;
 
             _originIndex = _items.IndexOf(item);
             _dropIndex = _originIndex;
@@ -99,7 +107,7 @@ namespace RoboRoutine
 
         private void OnDrag(CommandItemView item, PointerEventData eventData)
         {
-            if (!_isDragging) return;
+            if (!_isDragging || !_inputEnabled) return;
 
             _ghostItem.RectTransform.position += new Vector3(0f, eventData.delta.y, 0f);
 
@@ -109,7 +117,7 @@ namespace RoboRoutine
 
         private void OnEndDrag(CommandItemView item)
         {
-            if (!_isDragging) return;
+            if (!_isDragging || !_inputEnabled) return;
 
             HideDropLine();
             HideGhostItem();

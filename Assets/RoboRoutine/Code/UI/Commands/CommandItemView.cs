@@ -33,16 +33,21 @@ namespace RoboRoutine
             _icon.sprite = icon;
         }
 
+        public void SetIconRotation(float rotation)
+        {
+            _icon.rectTransform.rotation = Quaternion.Euler(new Vector3(0f, 0f, rotation));
+        }
+
         public void SetIndex(int index)
         {
             _index.text = index.ToString();
         }
-
         public void CopyTo(CommandItemView other)
         {
             other._index.text = _index.text;
             other._label.text = _label.text;
             other._icon.sprite = _icon.sprite;
+            other._icon.rectTransform.rotation = _icon.rectTransform.rotation;
         }
 
         public void OnBeginDrag(PointerEventData eventData)

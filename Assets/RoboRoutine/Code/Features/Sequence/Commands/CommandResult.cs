@@ -2,8 +2,9 @@ namespace RoboRoutine
 {
     public enum CommandResult
     {
-        Success = 0,
-        Failed = 1,
-        Canceled = 2
+        None = 0,
+        Success = 1,
+        Failed = 2,
+        Canceled = 3
     }
 }

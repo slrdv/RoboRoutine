@@ -76,9 +76,15 @@ namespace RoboRoutine
 
             _currentOperation = operation;
 
-            await operation.Start(ct);
-
-            _currentOperation = null;
+            try
+            {
+                await operation.Start(ct);
+            }
+            finally
+            {
+                _currentOperation = null;
+            }
+            
         }
     }
 }

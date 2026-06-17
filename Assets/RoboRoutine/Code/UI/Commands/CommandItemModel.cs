@@ -1,26 +1,20 @@
 using R3;
-using UnityEngine;
 
 namespace RoboRoutine
 {
     public sealed class CommandItemModel
     {
         public ReadOnlyReactiveProperty<int> Index => _index;
-        public ReadOnlyReactiveProperty<string> Label => _label;
-        public ReadOnlyReactiveProperty<Sprite> Icon => _icon;
 
         private readonly ReactiveProperty<int> _index = new();
-        private readonly ReactiveProperty<string> _label = new();
-        private readonly ReactiveProperty<Sprite> _icon = new();
 
-        public void SetIcon(Sprite icon)
-        {
-            _icon.Value = icon;
-        }
+        private readonly CommandData _commandData;
 
-        public void SetLabel(string label)
+        public CommandData CommandData => _commandData;
+
+        public CommandItemModel(CommandData commandData)
         {
-            _label.Value = label;
+            _commandData = commandData;
         }
 
         public void SetIndex(int index)

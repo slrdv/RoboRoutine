@@ -9,6 +9,7 @@ namespace RoboRoutine
         [SerializeField] private GridView _gridView;
         [SerializeField] private RobotView _robotView;
 
+        [SerializeField] private SimulationPanelView _simulationPanelView;
         [SerializeField] private CommandListView _commandListView;
         [SerializeField] private CommandItemView _commandItemPrefab;
         [SerializeField] private Transform _pooledObjectsContainer;
@@ -20,10 +21,12 @@ namespace RoboRoutine
 
             RegisterCommandPipeline(builder);
             RegisterHistoryServices(builder);
-
+            RegisterGameServices(builder);
             RegisterUI(builder);
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
+            builder.Register(r => new PlayerPrefsStorage<SequenceData>("test1"), Lifetime.Singleton).As<IStorage<SequenceData>>();
+
             builder.RegisterEntryPoint<LevelScopeInitializer>();
         }
 
@@ -44,14 +47,24 @@ namespace RoboRoutine
         private void RegisterCommandPipeline(IContainerBuilder builder)
         {
             builder.Register<CommandFactory>(Lifetime.Singleton);
+            builder.Register<MoveCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
+
             builder.Register<MovementSystem>(Lifetime.Singleton);
+            
             builder.Register<CommandSequence>(Lifetime.Singleton);
         }
 
         private void RegisterHistoryServices(IContainerBuilder builder)
         {
             builder.Register<SnapshotService>(Lifetime.Singleton).AsSelf().As<ISnapshotableRegistry>();
-            builder.Register<HistoryService>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<HistoryService>(Lifetime.Singleton).AsSelf();
+        }
+
+        private void RegisterGameServices(IContainerBuilder builder)
+        {
+            builder.Register<SimulationService>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<SequenceBuilder>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<SequenceStorageService>(Lifetime.Singleton);
         }
 
         private void RegisterUI(IContainerBuilder builder)
@@ -59,10 +72,14 @@ namespace RoboRoutine
             builder.Register(r => new GameObjectPool<CommandItemView>(r, _commandItemPrefab, _pooledObjectsContainer), Lifetime.Singleton);
 
             builder.Register<CommandItemFactory>(Lifetime.Singleton);
+            builder.Register<MoveCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
 
             builder.Register<CommandListModel>(Lifetime.Singleton);
             builder.RegisterInstance(_commandListView);
             builder.RegisterEntryPoint<CommandListPresenter>();
+
+            builder.RegisterInstance(_simulationPanelView);
+            builder.RegisterEntryPoint<SimulationPanelPresenter>();
         }
     }
 }

@@ -1,17 +1,26 @@
+using System.Collections.Generic;
+
 namespace RoboRoutine
 {
     public sealed class CommandFactory
     {
-        private readonly MovementSystem _movementSystem;
+        private readonly Dictionary<CommandType, ICommandFactory> _factories = new();
 
-        public CommandFactory(MovementSystem movementSystem)
+        public CommandFactory(IEnumerable<ICommandFactory> factories)
         {
-            _movementSystem = movementSystem;
+            foreach (ICommandFactory factory in factories)
+            {
+                _factories[factory.CommandType] = factory;
+            }
         }
-
-        public MoveCommand CreateMoveCommand(MoveDirection direction, int distance)
+        public ICommand Create(CommandData commandData)
         {
-            return new MoveCommand(_movementSystem, direction, distance);
+            if (!_factories.TryGetValue(commandData.Type, out ICommandFactory factory))
+            {
+                throw new KeyNotFoundException($"{nameof(ICommandFactory)} implementation for type {commandData.Type} is not registered");
+            }
+
+            return factory.Create(commandData);
         }
     }
 }

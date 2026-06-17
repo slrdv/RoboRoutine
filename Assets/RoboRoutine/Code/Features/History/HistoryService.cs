@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using VContainer.Unity;
 
 namespace RoboRoutine
 {
-    public sealed class HistoryService : IDisposable
+    public sealed class HistoryService : IInitializable, IStartable, IDisposable
     {
         private readonly CommandSequence _sequence;
         private readonly SnapshotService _snapshotService;
 
         private readonly Stack<HistorySnapshot> _snapshots = new();
+        private HistorySnapshot _initialSnapshot;
 
         public int SnapshotCount => _snapshots.Count;
 
@@ -16,8 +18,6 @@ namespace RoboRoutine
         {
             _sequence = sequence;
             _snapshotService = snapshotService;
-
-            _sequence.BeforeCommandExecuteEvent += OnBeforeCommandExecute;
         }
 
         public void UndoLast()
@@ -31,13 +31,32 @@ namespace RoboRoutine
             }
         }
 
+        public void RollbackToInitial()
+        {
+            _snapshots.Clear();
+            _snapshotService.RestoreSnapshot(_initialSnapshot.States);
+            _sequence.SetIndex(_initialSnapshot.CommandIndex);
+        }
+
         public void Clear()
         {
             _snapshots.Clear();
         }
 
+        public void Initialize()
+        {
+            _sequence.BeforeCommandExecuteEvent += OnBeforeCommandExecute;
+            _sequence.SequenceUpdatedEvent += Clear;
+        }
+
+        public void Start()
+        {
+            _initialSnapshot = new HistorySnapshot(_snapshotService.TakeSnapshot(SnapshotLayer.All), 0);
+        }
+
         public void Dispose()
         {
+            _sequence.SequenceUpdatedEvent -= Clear;
             _sequence.BeforeCommandExecuteEvent -= OnBeforeCommandExecute;
             _snapshots.Clear();
         }
