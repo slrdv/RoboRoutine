@@ -1,11 +1,10 @@
 using System;
 using ObservableCollections;
 using R3;
-using VContainer.Unity;
 
 namespace RoboRoutine
 {
-    public sealed class SequenceStorageService : IStartable, IDisposable
+    public sealed class SequenceStorageService : IDisposable
     {
         private readonly CommandListModel _commandlistModel;
         private readonly IStorage<SequenceData> _storage;
@@ -16,12 +15,23 @@ namespace RoboRoutine
         {
             _commandlistModel = commandListModel;
             _storage = storage;
+
+            _commandlistModel.Commands.ObserveChanged().Subscribe(_ => Save()).AddTo(_subscriptions);
         }
 
-        public void Start()
+        public void Load()
         {
-            Load();
-            _commandlistModel.Commands.ObserveChanged().Subscribe(_ => Save()).AddTo(_subscriptions);
+            SequenceData sequenceData = _storage.Load();
+
+            if (sequenceData == null || sequenceData.Commands == null) return;
+
+            _commandlistModel.Clear();
+
+            for (int i = 0; i < sequenceData.Commands.Count; i++)
+            {
+                CommandData data = sequenceData.Commands[i];
+                _commandlistModel.Add(new CommandItemModel(data));
+            }
         }
 
         public void Dispose()
@@ -41,21 +51,6 @@ namespace RoboRoutine
             }
 
             _storage.Save(sequenceData);
-        }
-
-        private void Load()
-        {
-            SequenceData sequenceData = _storage.Load();
-
-            if (sequenceData == null || sequenceData.Commands == null) return;
-
-            _commandlistModel.Clear();
-
-            for (int i = 0; i < sequenceData.Commands.Count; i++)
-            {
-                CommandData data = sequenceData.Commands[i];
-                _commandlistModel.Add(new CommandItemModel(data));
-            }
         }
     }
 }

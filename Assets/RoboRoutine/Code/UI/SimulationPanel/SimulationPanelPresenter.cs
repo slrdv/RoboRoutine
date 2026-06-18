@@ -1,9 +1,8 @@
 using System;
-using VContainer.Unity;
 
 namespace RoboRoutine
 {
-    public sealed class SimulationPanelPresenter : IInitializable, IPostStartable, IDisposable
+    public sealed class SimulationPanelPresenter : IDisposable
     {
         private readonly SimulationPanelView _view;
         private readonly SimulationService _simulationService;
@@ -12,10 +11,7 @@ namespace RoboRoutine
         {
             _view = view;
             _simulationService = simulationService;
-        }
 
-        public void Initialize()
-        {
             _view.StartButton.PressedEvent += OnStartButtonPressed;
             _view.StopButton.PressedEvent += OnStopButtonPressed;
             _view.NextButton.PressedEvent += OnNextButtonPressed;
@@ -25,9 +21,12 @@ namespace RoboRoutine
             _simulationService.SimulationStopEvent += OnSimulationStop;
         }
 
-        public void PostStart()
+        public void UpdateUI()
         {
-            UpdateUI();
+            _view.StartButton.SetEnabled(_simulationService.CanRunNext());
+            _view.StopButton.SetEnabled(_simulationService.CanStop());
+            _view.NextButton.SetEnabled(_simulationService.CanRunNext());
+            _view.BackButton.SetEnabled(_simulationService.CanBack());
         }
 
         public void Dispose()
@@ -72,14 +71,6 @@ namespace RoboRoutine
         private void OnSimulationStop()
         {
             UpdateUI();
-        }
-
-        private void UpdateUI()
-        {
-            _view.StartButton.SetEnabled(_simulationService.CanRunNext());
-            _view.StopButton.SetEnabled(_simulationService.CanStop());
-            _view.NextButton.SetEnabled(_simulationService.CanRunNext());
-            _view.BackButton.SetEnabled(_simulationService.CanBack());
         }
     }
 }

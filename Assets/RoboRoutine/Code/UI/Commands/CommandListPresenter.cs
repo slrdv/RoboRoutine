@@ -1,12 +1,11 @@
 using R3;
 using ObservableCollections;
-using VContainer.Unity;
 using System;
 using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandListPresenter : IInitializable, IDisposable
+    public sealed class CommandListPresenter : IDisposable
     {
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
@@ -22,11 +21,6 @@ namespace RoboRoutine
             _view = view;
             _itemFactory = itemFactory;
             _simulationService = simulationService;
-        }
-
-        public void Initialize()
-        {
-            _view.Initialize();
 
             _model.Commands.ObserveAdd().Subscribe(OnItemAdded).AddTo(_subscriptions);
             _model.Commands.ObserveRemove().Subscribe(OnItemRemoved).AddTo(_subscriptions);

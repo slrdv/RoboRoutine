@@ -22,18 +22,6 @@ namespace RoboRoutine
         private int _dropIndex;
         private bool _inputEnabled = true;
 
-        public void Initialize()
-        {
-            HideGhostItem();
-            HideDropLine();
-            HidePointer();
-
-            foreach (Transform child in _itemRoot)
-            {
-                Destroy(child.gameObject);
-            }
-        }
-
         public void AddItem(CommandItemView item)
         {
             item.BeginDragEvent += OnBeginDrag;
@@ -86,6 +74,18 @@ namespace RoboRoutine
             for (int i = _items.Count - 1; i >= 0; i--)
             {
                 RemoveItem(_items[i]);
+            }
+        }
+
+        private void Awake()
+        {
+            HideGhostItem();
+            HideDropLine();
+            HidePointer();
+
+            foreach (Transform child in _itemRoot)
+            {
+                Destroy(child.gameObject);
             }
         }
 

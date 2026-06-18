@@ -57,14 +57,15 @@ namespace RoboRoutine
         private void RegisterHistoryServices(IContainerBuilder builder)
         {
             builder.Register<SnapshotService>(Lifetime.Singleton).AsSelf().As<ISnapshotableRegistry>();
-            builder.RegisterEntryPoint<HistoryService>(Lifetime.Singleton).AsSelf();
+            builder.Register<HistoryService>(Lifetime.Singleton);
         }
 
         private void RegisterGameServices(IContainerBuilder builder)
         {
             builder.Register<SimulationService>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<SequenceBuilder>(Lifetime.Singleton);
-            builder.RegisterEntryPoint<SequenceStorageService>(Lifetime.Singleton);
+            builder.Register<SequenceStorageService>(Lifetime.Singleton);
+            
+            builder.RegisterEager<SequenceBuilder>(Lifetime.Singleton);
         }
 
         private void RegisterUI(IContainerBuilder builder)
@@ -76,10 +77,10 @@ namespace RoboRoutine
 
             builder.Register<CommandListModel>(Lifetime.Singleton);
             builder.RegisterInstance(_commandListView);
-            builder.RegisterEntryPoint<CommandListPresenter>();
+            builder.RegisterEager<CommandListPresenter>(Lifetime.Singleton);
 
             builder.RegisterInstance(_simulationPanelView);
-            builder.RegisterEntryPoint<SimulationPanelPresenter>();
+            builder.Register<SimulationPanelPresenter>(Lifetime.Singleton);
         }
     }
 }
