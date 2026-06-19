@@ -16,5 +16,16 @@ namespace RoboRoutine
             MoveCommandData data = (MoveCommandData) commandData;
             return new MoveCommand(_movementSystem, data.MoveDirection, data.Distance);
         }
+
+        public CommandData CreateDefaultData()
+        {
+            return new MoveCommandData { Type = CommandType.Move, MoveDirection = MoveDirection.Up, Distance = 1 };
+        }
+
+        public CommandData CloneData(CommandData commandData)
+        {
+            MoveCommandData data = (MoveCommandData)commandData;
+            return new MoveCommandData { Type = data.Type, MoveDirection = data.MoveDirection, Distance = data.Distance };
+        }
     }
 }

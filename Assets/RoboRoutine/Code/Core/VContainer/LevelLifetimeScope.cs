@@ -12,6 +12,7 @@ namespace RoboRoutine
         [SerializeField] private SimulationPanelView _simulationPanelView;
         [SerializeField] private CommandListView _commandListView;
         [SerializeField] private CommandItemView _commandItemPrefab;
+        [SerializeField] private CommandPaletteView _commandPaletteView;
         [SerializeField] private Transform _pooledObjectsContainer;
 
         protected override void Configure(IContainerBuilder builder)
@@ -46,7 +47,7 @@ namespace RoboRoutine
 
         private void RegisterCommandPipeline(IContainerBuilder builder)
         {
-            builder.Register<CommandFactory>(Lifetime.Singleton);
+            builder.Register<CommandFactory>(Lifetime.Singleton).AsSelf().As<ICommandDataFactory>();
             builder.Register<MoveCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
 
             builder.Register<MovementSystem>(Lifetime.Singleton);
@@ -78,6 +79,11 @@ namespace RoboRoutine
             builder.Register<CommandListModel>(Lifetime.Singleton);
             builder.RegisterInstance(_commandListView);
             builder.RegisterEager<CommandListPresenter>(Lifetime.Singleton);
+
+            builder.Register<CommandCrossPanelDragService>(Lifetime.Singleton).As<ICommandCrossPanelDrag>().As<ICommandCrossPanelDragEventProvider>();
+            builder.RegisterInstance(_commandPaletteView);
+            builder.RegisterEager<CommandPalettePresenter>(Lifetime.Singleton);
+            builder.Register<CommandPaletteBuilder>(Lifetime.Singleton);
 
             builder.RegisterInstance(_simulationPanelView);
             builder.Register<SimulationPanelPresenter>(Lifetime.Singleton);

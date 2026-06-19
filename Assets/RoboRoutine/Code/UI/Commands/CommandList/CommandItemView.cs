@@ -42,9 +42,16 @@ namespace RoboRoutine
         {
             _index.text = index.ToString();
         }
+
+        public void SetIndexVisible(bool visible)
+        {
+            _index.gameObject.SetActive(visible);
+        }
+
         public void CopyTo(CommandItemView other)
         {
             other._index.text = _index.text;
+            other._index.gameObject.SetActive(_index.IsActive());
             other._label.text = _label.text;
             other._icon.sprite = _icon.sprite;
             other._icon.rectTransform.rotation = _icon.rectTransform.rotation;

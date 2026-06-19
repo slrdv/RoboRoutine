@@ -26,6 +26,12 @@ namespace RoboRoutine
             UpdateIndexes();
         }
 
+        public void Insert(CommandItemModel command, int index)
+        {
+            _commands.Insert(index, command);
+            UpdateIndexes();
+        }
+
         public void Clear()
         {
             _commands.Clear();

@@ -11,6 +11,7 @@ namespace RoboRoutine
         private readonly CompositeDisposable _subscriptions = new();
 
         public CommandItemView View => _view;
+        public CommandItemModel Model => _model;
 
         public CommandItemPresenter(CommandItemModel model, CommandItemView view)
         {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandFactory
+    public sealed class CommandFactory : ICommandDataFactory
     {
         private readonly Dictionary<CommandType, ICommandFactory> _factories = new();
 
@@ -15,12 +15,27 @@ namespace RoboRoutine
         }
         public ICommand Create(CommandData commandData)
         {
-            if (!_factories.TryGetValue(commandData.Type, out ICommandFactory factory))
+            return GetFactory(commandData.Type).Create(commandData);
+        }
+
+        public CommandData CreateDefaultCommandData(CommandType commandType)
+        {
+            return GetFactory(commandType).CreateDefaultData();
+        }
+
+        public CommandData CloneData(CommandData commandData)
+        {
+            return GetFactory(commandData.Type).CloneData(commandData);
+        }
+
+        private ICommandFactory GetFactory(CommandType commandType)
+        {
+            if (!_factories.TryGetValue(commandType, out ICommandFactory factory))
             {
-                throw new KeyNotFoundException($"{nameof(ICommandFactory)} implementation for type {commandData.Type} is not registered");
+                throw new KeyNotFoundException($"{nameof(ICommandFactory)} implementation for type {commandType} is not registered");
             }
 
-            return factory.Create(commandData);
+            return factory;
         }
     }
 }

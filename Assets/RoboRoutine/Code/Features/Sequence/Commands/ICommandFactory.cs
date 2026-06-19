@@ -4,5 +4,7 @@ namespace RoboRoutine
     {
         CommandType CommandType { get; }
         ICommand Create(CommandData data);
+        CommandData CreateDefaultData();
+        CommandData CloneData(CommandData commandData);
     }
 }

@@ -7,7 +7,8 @@ namespace RoboRoutine
 {
     public sealed class CommandListView : MonoBehaviour
     {
-        public event Action<int, int> ItemDraggedEvent;
+        public event Action<int, int> ItemDroppedEvent;
+        public event Action<int, CommandData> ExternalItemDroppedEvent;
 
         [SerializeField] private RectTransform _itemRoot;
         [SerializeField] private RectTransform _dragLayer;
@@ -18,18 +19,20 @@ namespace RoboRoutine
         private readonly List<CommandItemView> _items = new();
 
         private bool _isDragging;
+        private bool _isExternalDragging;
         private int _originIndex;
         private int _dropIndex;
         private bool _inputEnabled = true;
 
-        public void AddItem(CommandItemView item)
+        public void AddItem(CommandItemView item, int index)
         {
             item.BeginDragEvent += OnBeginDrag;
             item.DragEvent += OnDrag;
             item.EndDragEvent += OnEndDrag;
 
             item.transform.SetParent(_itemRoot, false);
-            _items.Add(item);
+            item.RectTransform.SetSiblingIndex(index);
+            _items.Insert(index, item);
         }
 
         public void RemoveItem(CommandItemView item)
@@ -52,7 +55,7 @@ namespace RoboRoutine
         public void ShowPointer(int itemIndex)
         {
             if (_items.Count == 0) return;
-            
+
             Vector3 position = _pointer.position;
             position.y = _items[itemIndex].RectTransform.position.y;
             _pointer.position = position;
@@ -67,7 +70,7 @@ namespace RoboRoutine
         public void SetInputEnabled(bool enabled)
         {
             _inputEnabled = enabled;
-        } 
+        }
 
         public void ClearItems()
         {
@@ -75,6 +78,36 @@ namespace RoboRoutine
             {
                 RemoveItem(_items[i]);
             }
+        }
+
+        public void OnExternalDrag(PointerEventData eventData)
+        {
+            if (!_inputEnabled) return;
+
+            if (!IsPointerOverRect(eventData.position))
+            {
+                if (_isExternalDragging)
+                {
+                    _isExternalDragging = false;
+                    HideDropLine();
+                }
+                return;
+            }
+
+            _isExternalDragging = true;
+
+            _dropIndex = GetDropIndex(eventData.position.y);
+            ShowDropLine(_dropIndex);
+        }
+
+        public void OnExternalEndDrag(CommandData commandData)
+        {
+            HideDropLine();
+
+            if (!_isExternalDragging) return;
+            _isExternalDragging = false;
+
+            ExternalItemDroppedEvent?.Invoke(_dropIndex, commandData);
         }
 
         private void Awake()
@@ -91,7 +124,7 @@ namespace RoboRoutine
 
         private void OnBeginDrag(CommandItemView item)
         {
-            if (_isDragging || !_inputEnabled) return;
+            if (!_inputEnabled || _isDragging || _isExternalDragging) return;
 
             _originIndex = _items.IndexOf(item);
             _dropIndex = _originIndex;
@@ -111,7 +144,17 @@ namespace RoboRoutine
 
             _ghostItem.RectTransform.position += new Vector3(0f, eventData.delta.y, 0f);
 
-            _dropIndex = GetDropIndex();
+            _dropIndex = GetDropIndex(_ghostItem.RectTransform.position.y);
+
+            if (_dropIndex == _originIndex || _dropIndex == _originIndex + 1)
+            {
+                _dropIndex = _originIndex;
+            }
+            else if (_dropIndex > _originIndex)
+            {
+                _dropIndex -= 1;
+            }
+
             ShowDropLine(_dropIndex > _originIndex ? _dropIndex + 1 : _dropIndex);
         }
 
@@ -129,24 +172,21 @@ namespace RoboRoutine
 
             if (_originIndex != _dropIndex)
             {
-                ItemDraggedEvent?.Invoke(_originIndex, _dropIndex);
+                ItemDroppedEvent?.Invoke(_originIndex, _dropIndex);
             }
         }
 
-        private int GetDropIndex()
+        private int GetDropIndex(float dragY)
         {
-            float dragY = _ghostItem.RectTransform.position.y;
-
             for (int i = 0; i < _items.Count; i++)
             {
                 if (dragY > _items[i].RectTransform.position.y)
                 {
-                    if (i == _originIndex || i == _originIndex + 1) return _originIndex;
-                    return i > _originIndex ? i - 1 : i;
+                    return i;
                 }
             }
 
-            return _items.Count == _originIndex + 1 ? _originIndex : _items.Count - 1;
+            return _items.Count;
         }
 
         private void ShowDropLine(int index)
@@ -172,6 +212,11 @@ namespace RoboRoutine
         private void HideGhostItem()
         {
             _ghostItem.gameObject.SetActive(false);
+        }
+
+        private bool IsPointerOverRect(Vector2 pointer)
+        {
+            return RectTransformUtility.RectangleContainsScreenPoint(_itemRoot, pointer, null);
         }
 
         private void OnDestroy()

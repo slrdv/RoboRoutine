@@ -39,5 +39,12 @@ namespace RoboRoutine
 
             return new CommandItemPresenter(model, view);
         }
+
+        public CommandItemPresenter CreatePaletteItem(CommandItemModel model)
+        {
+            CommandItemPresenter itemPresenter = Create(model);
+            itemPresenter.View.SetIndexVisible(false);
+            return itemPresenter;
+        }
     }
 }
