@@ -51,6 +51,7 @@ namespace RoboRoutine
             CommandItemPresenter presenter = _items[model];
 
             _items.Remove(model);
+            _view.RemoveItem(evt.Index);
             presenter.Dispose();
         }
 
@@ -79,6 +80,11 @@ namespace RoboRoutine
         private void OnExternalItemDropped(int index, CommandData commandData)
         {
             _model.Insert(new CommandItemModel(_dataFactory.CloneData(commandData)), index);
+        }
+
+        private void OnItemDroppedOut(int index)
+        {
+            _model.Remove(index);
         }
 
         private void ClearItems()
@@ -120,6 +126,7 @@ namespace RoboRoutine
 
             _view.ItemDroppedEvent += OnItemDropped;
             _view.ExternalItemDroppedEvent += OnExternalItemDropped;
+            _view.ItemDroppedOutEvent += OnItemDroppedOut;
 
             _externalDragEventProvider.DragEvent += _view.OnExternalDrag;
             _externalDragEventProvider.EndDragEvent += _view.OnExternalEndDrag;
@@ -132,6 +139,7 @@ namespace RoboRoutine
 
             _view.ExternalItemDroppedEvent -= OnExternalItemDropped;
             _view.ItemDroppedEvent -= OnItemDropped;
+            _view.ItemDroppedOutEvent -= OnItemDroppedOut;
 
             _simulationService.SimulationStopEvent -= UpdateUI;
             _simulationService.SimulationRunEvent -= UpdateUI;

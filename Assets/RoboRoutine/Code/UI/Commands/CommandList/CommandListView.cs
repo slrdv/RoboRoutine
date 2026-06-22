@@ -9,6 +9,7 @@ namespace RoboRoutine
     {
         public event Action<int, int> ItemDroppedEvent;
         public event Action<int, CommandData> ExternalItemDroppedEvent;
+        public event Action<int> ItemDroppedOutEvent;
 
         [SerializeField] private RectTransform _itemRoot;
         [SerializeField] private RectTransform _dragLayer;
@@ -35,9 +36,10 @@ namespace RoboRoutine
             _items.Insert(index, item);
         }
 
-        public void RemoveItem(CommandItemView item)
+        public void RemoveItem(int index)
         {
-            _items.Remove(item);
+            CommandItemView item = _items[index];
+            _items.RemoveAt(index);
 
             item.BeginDragEvent -= OnBeginDrag;
             item.DragEvent -= OnDrag;
@@ -76,7 +78,7 @@ namespace RoboRoutine
         {
             for (int i = _items.Count - 1; i >= 0; i--)
             {
-                RemoveItem(_items[i]);
+                RemoveItem(i);
             }
         }
 
@@ -142,9 +144,16 @@ namespace RoboRoutine
         {
             if (!_isDragging || !_inputEnabled) return;
 
-            _ghostItem.RectTransform.position += new Vector3(0f, eventData.delta.y, 0f);
+            _ghostItem.RectTransform.position += new Vector3(eventData.delta.x, eventData.delta.y, 0f);
+            Vector2 position = _ghostItem.RectTransform.position;
 
-            _dropIndex = GetDropIndex(_ghostItem.RectTransform.position.y);
+            if (!IsPointerOverRect(position))
+            {
+                HideDropLine();
+                return;
+            }
+
+            _dropIndex = GetDropIndex(position.y);
 
             if (_dropIndex == _originIndex || _dropIndex == _originIndex + 1)
             {
@@ -162,18 +171,22 @@ namespace RoboRoutine
         {
             if (!_isDragging || !_inputEnabled) return;
 
-            HideDropLine();
-            HideGhostItem();
-
             item.CanvasGroup.alpha = 1f;
             item.CanvasGroup.blocksRaycasts = true;
 
             _isDragging = false;
 
-            if (_originIndex != _dropIndex)
+            if (!IsPointerOverRect(_ghostItem.RectTransform.position))
+            {
+                ItemDroppedOutEvent?.Invoke(_originIndex);
+            }
+            else if (_originIndex != _dropIndex)
             {
                 ItemDroppedEvent?.Invoke(_originIndex, _dropIndex);
             }
+
+            HideDropLine();
+            HideGhostItem();
         }
 
         private int GetDropIndex(float dragY)

@@ -20,6 +20,12 @@ namespace RoboRoutine
             UpdateIndexes();
         }
 
+        public void Remove(int index)
+        {
+            _commands.RemoveAt(index);
+            UpdateIndexes();
+        }
+
         public void Move(int fromIndex, int toIndex)
         {
             _commands.Move(fromIndex, toIndex);
