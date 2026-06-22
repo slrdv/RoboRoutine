@@ -17,19 +17,25 @@ namespace RoboRoutine
 
         public void Save(T data)
         {
-            string json = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+            string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
             PlayerPrefs.SetString(_key, json);
+            PlayerPrefs.Save();
+            _data = data;
+            _loaded = true;
         }
 
         public T Load()
         {
             if (_loaded) return _data;
 
-            if (!PlayerPrefs.HasKey(_key)) return default;
+            if (!PlayerPrefs.HasKey(_key))
+            {
+                _loaded = true;
+                return default;    
+            }
 
             string json = PlayerPrefs.GetString(_key);
             _data = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
-
             _loaded = true;
 
             return _data;
@@ -38,6 +44,8 @@ namespace RoboRoutine
         public void Clear()
         {
             PlayerPrefs.DeleteKey(_key);
+            _data = default;
+            _loaded = false;
         }
     }
 }

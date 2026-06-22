@@ -10,6 +10,8 @@ namespace RoboRoutine
         private readonly IStorage<SequenceData> _storage;
 
         private readonly CompositeDisposable _subscriptions = new();
+        private bool _isLoading;
+
 
         public SequenceStorageService(CommandListModel commandListModel, IStorage<SequenceData> storage)
         {
@@ -25,6 +27,8 @@ namespace RoboRoutine
 
             if (sequenceData == null || sequenceData.Commands == null) return;
 
+            _isLoading = true;
+
             _commandlistModel.Clear();
 
             for (int i = 0; i < sequenceData.Commands.Count; i++)
@@ -32,6 +36,8 @@ namespace RoboRoutine
                 CommandData data = sequenceData.Commands[i];
                 _commandlistModel.Add(new CommandItemModel(data));
             }
+
+            _isLoading = false;
         }
 
         public void Dispose()
@@ -41,6 +47,8 @@ namespace RoboRoutine
 
         private void Save()
         {
+            if (_isLoading) return;
+            
             SequenceData sequenceData = new();
             sequenceData.Commands = new(_commandlistModel.Commands.Count);
 

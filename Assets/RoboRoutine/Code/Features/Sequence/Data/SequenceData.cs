@@ -6,6 +6,6 @@ namespace RoboRoutine
     [Serializable]
     public sealed class SequenceData
     {
-        public List<CommandData> Commands;
+        public List<CommandData> Commands = new();
     }
 }
