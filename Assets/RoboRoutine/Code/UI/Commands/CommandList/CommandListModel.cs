@@ -1,54 +1,99 @@
-using ObservableCollections;
+using System;
+using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandListModel
+    public sealed class CommandListModel : IDisposable
     {
-        private readonly ObservableList<CommandItemModel> _commands = new();
+        public event Action<int, CommandItemModel> ItemAddedEvent;
+        public event Action<int, CommandItemModel> ItemRemovedEvent;
+        public event Action<int, int> ItemMovedEvent;
+        public event Action<int, CommandData> ItemDataChangedEvent;
+        public event Action ClearedEvent;
+        public event Action ChangedEvent;
 
-        public IReadOnlyObservableList<CommandItemModel> Commands => _commands;
+        private readonly List<CommandItemModel> _items = new();
 
-        public void Add(CommandItemModel command)
+        public IReadOnlyList<CommandItemModel> Items => _items;
+
+        public void Add(CommandItemModel item)
         {
-            _commands.Add(command);
-            command.SetIndex(_commands.Count - 1);
+            Insert(item, _items.Count);
         }
 
-        public void Remove(CommandItemModel command)
+        public void Remove(CommandItemModel item)
         {
-            _commands.Remove(command);
-            UpdateIndexes();
+            Remove(_items.IndexOf(item));
         }
 
         public void Remove(int index)
         {
-            _commands.RemoveAt(index);
+            CommandItemModel item = _items[index];
+            item.DataChangedEvent -= OnItemDataChanged;
+            _items.RemoveAt(index);
             UpdateIndexes();
+
+            ItemRemovedEvent?.Invoke(index, item);
+            ChangedEvent?.Invoke();
         }
 
-        public void Move(int fromIndex, int toIndex)
+        public void Move(int from, int to)
         {
-            _commands.Move(fromIndex, toIndex);
+            if (from == to) return;
+
+            CommandItemModel item = _items[from];
+            _items.RemoveAt(from);
+            _items.Insert(to, item);
             UpdateIndexes();
+
+            ItemMovedEvent?.Invoke(from, to);
+            ChangedEvent?.Invoke();
         }
 
-        public void Insert(CommandItemModel command, int index)
+        public void Insert(CommandItemModel item, int index)
         {
-            _commands.Insert(index, command);
+            _items.Insert(index, item);
+            item.DataChangedEvent += OnItemDataChanged;
             UpdateIndexes();
+
+            ItemAddedEvent?.Invoke(index, item);
+            ChangedEvent?.Invoke();
         }
 
-        public void Clear()
+        public void RemoveAll()
         {
-            _commands.Clear();
+            Clear();
+
+            ClearedEvent?.Invoke();
+            ChangedEvent?.Invoke();
+        }
+
+        public void Dispose()
+        {
+            Clear();
+        }
+
+        private void Clear()
+        {
+            for (int i = 0; i < _items.Count; i++)
+            {
+                _items[i].DataChangedEvent -= OnItemDataChanged;
+            }
+            _items.Clear();
         }
 
         private void UpdateIndexes()
         {
-            for (int i = 0; i < _commands.Count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
-                _commands[i].SetIndex(i);
+                _items[i].SetIndex(i);
             }
+        }
+
+        private void OnItemDataChanged(CommandItemModel model)
+        {
+            ItemDataChangedEvent?.Invoke(_items.IndexOf(model), model.CommandData);
+            ChangedEvent?.Invoke();
         }
     }
 }

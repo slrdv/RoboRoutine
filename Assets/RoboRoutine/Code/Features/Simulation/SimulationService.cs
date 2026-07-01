@@ -25,6 +25,7 @@ namespace RoboRoutine
             _history = history;
 
             _sequence.CommandCompleteEvent += OnCommandComplete;
+            _sequence.SequenceUpdatedEvent += OnSequenceUpdated;
         }
 
         public void RunAll()
@@ -89,6 +90,7 @@ namespace RoboRoutine
         public void Dispose()
         {
             _sequence.CommandCompleteEvent -= OnCommandComplete;
+            _sequence.SequenceUpdatedEvent -= OnSequenceUpdated;
         }
 
         private void OnCommandComplete(CommandResult result, int index)
@@ -113,6 +115,20 @@ namespace RoboRoutine
                 {
                     _isRunning = false;
                 }
+            }
+
+            SimulationStopEvent?.Invoke();
+        }
+
+        private void OnSequenceUpdated()
+        {
+            if (!IsInitialState)
+            {
+                _isRunning = false;
+                _runAll = false;
+                _lastCommandResult = CommandResult.None;
+
+                _history.RollbackToInitial();
             }
 
             SimulationStopEvent?.Invoke();

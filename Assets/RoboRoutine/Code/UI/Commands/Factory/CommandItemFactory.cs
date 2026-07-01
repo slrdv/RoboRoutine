@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandItemFactory
+    public sealed class CommandItemFactory : ICommandItemFactory, ICommandItemViewSetupFactory
     {
         private readonly GameObjectPool<CommandItemView> _pool;
         private readonly IRepository<CommandType, CommandConfig> _configRepository;
@@ -21,6 +21,22 @@ namespace RoboRoutine
 
         public CommandItemPresenter Create(CommandItemModel model)
         {
+            CommandItemView view = _pool.Get(false);
+            Setup(view, model);
+            view.SetActive(true);
+
+            return new CommandItemPresenter(model, view, this);
+        }
+
+        public CommandItemPresenter CreatePaletteItem(CommandItemModel model)
+        {
+            CommandItemPresenter itemPresenter = Create(model);
+            itemPresenter.View.SetIndexVisible(false);
+            return itemPresenter;
+        }
+
+        public void Setup(CommandItemView view, CommandItemModel model)
+        {
             CommandType type = model.CommandData.Type;
 
             if (!_configRepository.TryGet(type, out CommandConfig config))
@@ -33,18 +49,7 @@ namespace RoboRoutine
                 throw new KeyNotFoundException($"{nameof(ICommandItemViewSetup)} implementation for type {type} is not registered");
             }
 
-            CommandItemView view = _pool.Get(false);
             viewSetup.Setup(view, config, model.CommandData);
-            view.SetActive(true);
-
-            return new CommandItemPresenter(model, view);
-        }
-
-        public CommandItemPresenter CreatePaletteItem(CommandItemModel model)
-        {
-            CommandItemPresenter itemPresenter = Create(model);
-            itemPresenter.View.SetIndexVisible(false);
-            return itemPresenter;
         }
     }
 }

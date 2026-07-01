@@ -1,5 +1,3 @@
-using R3;
-using ObservableCollections;
 using System;
 using System.Collections.Generic;
 
@@ -7,19 +5,19 @@ namespace RoboRoutine
 {
     public sealed class CommandListPresenter : IDisposable
     {
+        public event Action<CommandItemModel> ItemClickEvent;
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
-        private readonly CommandItemFactory _itemFactory;
+        private readonly ICommandItemFactory _itemFactory;
         private readonly SimulationService _simulationService;
         private readonly ICommandCrossPanelDragEventProvider _externalDragEventProvider;
         private readonly ICommandDataFactory _dataFactory;
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
-        private readonly CompositeDisposable _subscriptions = new();
 
         public CommandListPresenter(
             CommandListModel model,
             CommandListView view,
-            CommandItemFactory itemFactory,
+            ICommandItemFactory itemFactory,
             SimulationService simulationService,
             ICommandCrossPanelDragEventProvider dragEventProvider,
             ICommandDataFactory dataFactory)
@@ -37,32 +35,38 @@ namespace RoboRoutine
         public void Dispose()
         {
             Unsubscribe();
-            ClearItems();
+            OnItemsClear();
         }
 
-        private void OnItemAdded(CollectionAddEvent<CommandItemModel> evt)
+        private void OnItemAdded(int index, CommandItemModel item)
         {
-            CreateItem(evt.Value, evt.Index);
+            CreateItem(item, index);
         }
 
-        private void OnItemRemoved(CollectionRemoveEvent<CommandItemModel> evt)
+        private void OnItemRemoved(int index, CommandItemModel item)
         {
-            CommandItemModel model = evt.Value;
-            CommandItemPresenter presenter = _items[model];
+            CommandItemPresenter presenter = _items[item];
 
-            _items.Remove(model);
-            _view.RemoveItem(evt.Index);
+            presenter.ClickEvent -= OnItemClicked;
+            _items.Remove(item);
+            _view.RemoveItem(index);
             presenter.Dispose();
         }
 
-        private void OnItemMoved(CollectionMoveEvent<CommandItemModel> evt)
+        private void OnItemMoved(int from, int to)
         {
-            _view.MoveItem(evt.OldIndex, evt.NewIndex);
+            _view.MoveItem(from, to);
         }
 
-        private void OnItemsClear(Unit _)
+        private void OnItemsClear()
         {
-            ClearItems();
+            _view.ClearItems();
+            foreach (var presenter in _items.Values)
+            {
+                presenter.ClickEvent -= OnItemClicked;
+                presenter.Dispose();
+            }
+            _items.Clear();
         }
 
         private void CreateItem(CommandItemModel model, int index)
@@ -70,6 +74,7 @@ namespace RoboRoutine
             CommandItemPresenter presenter = _itemFactory.Create(model);
             _view.AddItem(presenter.View, index);
             _items.Add(model, presenter);
+            presenter.ClickEvent += OnItemClicked;
         }
 
         private void OnItemDropped(int from, int to)
@@ -87,26 +92,13 @@ namespace RoboRoutine
             _model.Remove(index);
         }
 
-        private void ClearItems()
-        {
-            _view.ClearItems();
-            foreach (var presenter in _items.Values)
-            {
-                presenter.Dispose();
-            }
-            _items.Clear();
-        }
-
         private void UpdateUI()
         {
             if (_simulationService.IsInitialState)
             {
                 _view.HidePointer();
-                _view.SetInputEnabled(true);
                 return;
             }
-
-            _view.SetInputEnabled(false);
 
             if (_simulationService.CommandIndex < _simulationService.CommandsCount)
             {
@@ -114,12 +106,30 @@ namespace RoboRoutine
             }
         }
 
+        private void OnItemClicked(CommandItemPresenter item)
+        {
+            ItemClickEvent?.Invoke(GetModel(item));
+        }
+
+        private CommandItemModel GetModel(CommandItemPresenter presenter)
+        {
+            foreach (KeyValuePair<CommandItemModel, CommandItemPresenter> kv in _items)
+            {
+                if (presenter == kv.Value)
+                {
+                    return kv.Key;
+                }
+            }
+
+            throw new KeyNotFoundException("Model not found");
+        }
+
         private void Subscribe()
         {
-            _model.Commands.ObserveAdd().Subscribe(OnItemAdded).AddTo(_subscriptions);
-            _model.Commands.ObserveRemove().Subscribe(OnItemRemoved).AddTo(_subscriptions);
-            _model.Commands.ObserveMove().Subscribe(OnItemMoved).AddTo(_subscriptions);
-            _model.Commands.ObserveClear().Subscribe(OnItemsClear).AddTo(_subscriptions);
+            _model.ItemAddedEvent += OnItemAdded;
+            _model.ItemRemovedEvent += OnItemRemoved;
+            _model.ItemMovedEvent += OnItemMoved;
+            _model.ClearedEvent += OnItemsClear;
 
             _simulationService.SimulationRunEvent += UpdateUI;
             _simulationService.SimulationStopEvent += UpdateUI;
@@ -144,7 +154,10 @@ namespace RoboRoutine
             _simulationService.SimulationStopEvent -= UpdateUI;
             _simulationService.SimulationRunEvent -= UpdateUI;
 
-            _subscriptions.Dispose();
+            _model.ItemAddedEvent -= OnItemAdded;
+            _model.ItemRemovedEvent -= OnItemRemoved;
+            _model.ItemMovedEvent -= OnItemMoved;
+            _model.ClearedEvent -= OnItemsClear;
         }
     }
 }

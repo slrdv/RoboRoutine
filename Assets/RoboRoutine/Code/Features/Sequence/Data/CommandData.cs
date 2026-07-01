@@ -3,8 +3,15 @@ using System;
 namespace RoboRoutine
 {
     [Serializable]
-    public class CommandData
+    public abstract class CommandData
     {
-        public CommandType Type;
+        public CommandType Type { get; private set; }
+
+        public CommandData(CommandType type)
+        {
+            Type = type;
+        }
+
+        public abstract CommandData Clone();
     }
 }

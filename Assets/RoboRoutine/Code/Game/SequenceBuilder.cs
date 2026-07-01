@@ -1,6 +1,4 @@
 using System;
-using ObservableCollections;
-using R3;
 
 namespace RoboRoutine
 {
@@ -10,31 +8,29 @@ namespace RoboRoutine
         private readonly CommandListModel _listModel;
         private readonly CommandFactory _commandFactory;
 
-        private readonly CompositeDisposable _subscriptions = new();
-
         public SequenceBuilder(CommandSequence sequence, CommandListModel commandListModel, CommandFactory commandFactory)
         {
             _sequence = sequence;
             _listModel = commandListModel;
             _commandFactory = commandFactory;
-
-            _listModel.Commands.ObserveChanged().Subscribe(_ => Build()).AddTo(_subscriptions);
+            _listModel.ChangedEvent += Build;
         }
 
         public void Build()
         {
+            _sequence.Cancel();
             _sequence.Clear();
 
-            for (int i = 0; i < _listModel.Commands.Count; i++)
+            for (int i = 0; i < _listModel.Items.Count; i++)
             {
-                CommandData data = _listModel.Commands[i].CommandData;
+                CommandData data = _listModel.Items[i].CommandData;
                 _sequence.Add(_commandFactory.Create(data));
             }
         }
 
         public void Dispose()
         {
-            _subscriptions.Dispose();
+            _listModel.ChangedEvent -= Build;
         }
     }
 }

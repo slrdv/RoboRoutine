@@ -12,16 +12,20 @@ namespace RoboRoutine
         public event Action<CommandItemView> BeginDragEvent;
         public event Action<CommandItemView, PointerEventData> DragEvent;
         public event Action<CommandItemView> EndDragEvent;
+        public event Action ClickEvent;
 
         [SerializeField] private TMP_Text _index;
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image _icon;
+        [SerializeField] private Button _button;
 
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private CanvasGroup _canvasGroup;
 
         public RectTransform RectTransform => _rectTransform;
         public CanvasGroup CanvasGroup => _canvasGroup;
+
+        private bool _isDragging;
 
         public void SetLabel(string label)
         {
@@ -59,6 +63,7 @@ namespace RoboRoutine
 
         public void OnBeginDrag(PointerEventData eventData)
         {
+            _isDragging = true;
             BeginDragEvent?.Invoke(this);
         }
 
@@ -69,7 +74,25 @@ namespace RoboRoutine
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            _isDragging = false;
             EndDragEvent?.Invoke(this);
+        }
+
+        protected override void OnTaken()
+        {
+            _button.onClick.AddListener(OnClick);
+        }
+
+        protected override void OnReleased()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            if (_isDragging) return;
+            
+            ClickEvent?.Invoke();
         }
     }
 }

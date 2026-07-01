@@ -1,5 +1,4 @@
 using System;
-using ObservableCollections;
 using R3;
 
 namespace RoboRoutine
@@ -18,7 +17,7 @@ namespace RoboRoutine
             _commandlistModel = commandListModel;
             _storage = storage;
 
-            _commandlistModel.Commands.ObserveChanged().Subscribe(_ => Save()).AddTo(_subscriptions);
+            _commandlistModel.ChangedEvent += Save;
         }
 
         public void Load()
@@ -29,7 +28,7 @@ namespace RoboRoutine
 
             _isLoading = true;
 
-            _commandlistModel.Clear();
+            _commandlistModel.RemoveAll();
 
             for (int i = 0; i < sequenceData.Commands.Count; i++)
             {
@@ -43,18 +42,24 @@ namespace RoboRoutine
         public void Dispose()
         {
             _subscriptions.Dispose();
+            _commandlistModel.ChangedEvent -= Save;
+        }
+
+        private void OnItemChanged(int index, CommandItemModel item)
+        {
+            Save();
         }
 
         private void Save()
         {
             if (_isLoading) return;
-            
-            SequenceData sequenceData = new();
-            sequenceData.Commands = new(_commandlistModel.Commands.Count);
 
-            for (int i = 0; i < _commandlistModel.Commands.Count; i++)
+            SequenceData sequenceData = new();
+            sequenceData.Commands = new(_commandlistModel.Items.Count);
+
+            for (int i = 0; i < _commandlistModel.Items.Count; i++)
             {
-                CommandData data = _commandlistModel.Commands[i].CommandData;
+                CommandData data = _commandlistModel.Items[i].CommandData;
                 sequenceData.Commands.Add(data);
             }
 

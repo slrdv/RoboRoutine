@@ -19,7 +19,6 @@ namespace RoboRoutine
             _snapshotService = snapshotService;
 
             _sequence.BeforeCommandExecuteEvent += OnBeforeCommandExecute;
-            _sequence.SequenceUpdatedEvent += Clear;
         }
 
         public void UndoLast()
@@ -52,7 +51,6 @@ namespace RoboRoutine
 
         public void Dispose()
         {
-            _sequence.SequenceUpdatedEvent -= Clear;
             _sequence.BeforeCommandExecuteEvent -= OnBeforeCommandExecute;
             _snapshots.Clear();
         }

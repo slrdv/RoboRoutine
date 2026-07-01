@@ -7,12 +7,12 @@ namespace RoboRoutine
     public sealed class CommandPalettePresenter : IDisposable
     {
         private readonly CommandPaletteView _commandPaletteView;
-        private readonly CommandItemFactory _itemFactory;
+        private readonly ICommandItemFactory _itemFactory;
         private readonly ICommandCrossPanelDrag _crossPanelDrag;
 
         private readonly List<CommandItemPresenter> _items = new();
 
-        public CommandPalettePresenter(CommandPaletteView commandPaletteView, CommandItemFactory itemFactory, ICommandCrossPanelDrag crossPanelDrag)
+        public CommandPalettePresenter(CommandPaletteView commandPaletteView, ICommandItemFactory itemFactory, ICommandCrossPanelDrag crossPanelDrag)
         {
             _commandPaletteView = commandPaletteView;
             _itemFactory = itemFactory;

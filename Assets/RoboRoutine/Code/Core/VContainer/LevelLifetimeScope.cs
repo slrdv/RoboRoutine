@@ -13,6 +13,7 @@ namespace RoboRoutine
         [SerializeField] private CommandListView _commandListView;
         [SerializeField] private CommandItemView _commandItemPrefab;
         [SerializeField] private CommandPaletteView _commandPaletteView;
+        [SerializeField] private CommandEditPanelView _commandEditPanelView;
         [SerializeField] private Transform _pooledObjectsContainer;
 
         protected override void Configure(IContainerBuilder builder)
@@ -24,6 +25,8 @@ namespace RoboRoutine
             RegisterHistoryServices(builder);
             RegisterGameServices(builder);
             RegisterUI(builder);
+
+            RegisterCommandSpecific(builder);
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
             builder.Register(r => new PlayerPrefsStorage<SequenceData>("test1"), Lifetime.Singleton).As<IStorage<SequenceData>>();
@@ -48,10 +51,6 @@ namespace RoboRoutine
         private void RegisterCommandPipeline(IContainerBuilder builder)
         {
             builder.Register<CommandFactory>(Lifetime.Singleton).AsSelf().As<ICommandDataFactory>();
-            builder.Register<MoveCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
-
-            builder.Register<MovementSystem>(Lifetime.Singleton);
-            
             builder.Register<CommandSequence>(Lifetime.Singleton);
         }
 
@@ -72,9 +71,7 @@ namespace RoboRoutine
         private void RegisterUI(IContainerBuilder builder)
         {
             builder.Register(r => new GameObjectPool<CommandItemView>(r, _commandItemPrefab, _pooledObjectsContainer), Lifetime.Singleton);
-
-            builder.Register<CommandItemFactory>(Lifetime.Singleton);
-            builder.Register<MoveCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
+            builder.Register<CommandItemFactory>(Lifetime.Singleton).As<ICommandItemFactory>().As<ICommandItemViewSetupFactory>();
 
             builder.Register<CommandListModel>(Lifetime.Singleton);
             builder.RegisterInstance(_commandListView);
@@ -85,8 +82,21 @@ namespace RoboRoutine
             builder.RegisterEager<CommandPalettePresenter>(Lifetime.Singleton);
             builder.Register<CommandPaletteBuilder>(Lifetime.Singleton);
 
+
+            builder.Register<CommandEditViewSetupFactory>(Lifetime.Singleton).As<ICommandEditViewSetupFactory>();
+            builder.RegisterInstance(_commandEditPanelView);
+            builder.RegisterEager<CommandEditPanelPresenter>(Lifetime.Singleton);
+
             builder.RegisterInstance(_simulationPanelView);
             builder.Register<SimulationPanelPresenter>(Lifetime.Singleton);
+        }
+
+        private void RegisterCommandSpecific(IContainerBuilder builder)
+        {
+            builder.Register<MoveCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
+            builder.Register<MovementSystem>(Lifetime.Singleton);
+            builder.Register<MoveCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
+            builder.Register<MoveCommandEditViewSetup>(Lifetime.Singleton).As<ICommandEditViewSetup>();
         }
     }
 }
