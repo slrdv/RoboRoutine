@@ -21,7 +21,7 @@ namespace RoboRoutine
             MoveCommandData moveData = (MoveCommandData) commandData;
 
             view.SetIcon(config.Icon);
-            view.SetLabel(config.DisplayName);
+            view.SetLabel($"{config.DisplayName} {moveData.Distance.ToString()}");
             view.SetIconRotation(GetRotation(moveData.MoveDirection));
         }
     }

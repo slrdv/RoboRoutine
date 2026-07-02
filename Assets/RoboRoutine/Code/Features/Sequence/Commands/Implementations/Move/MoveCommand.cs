@@ -12,8 +12,6 @@ namespace RoboRoutine
         private readonly MovementSystem _movementSystem;
         private readonly MoveDirection _direction;
         private readonly int _distance;
-
-        private CancellationTokenSource _cts;
         private bool _isExecuting;
 
         public MoveCommand(MovementSystem movementSystem, MoveDirection direction, int distance)
@@ -28,12 +26,8 @@ namespace RoboRoutine
             if (_isExecuting) throw new InvalidOperationException("MoveCommand is already executing");
             _isExecuting = true;
 
-            _cts = new CancellationTokenSource();
+            CommandResult result = await _movementSystem.MoveAsync(_direction, _distance);
 
-            CommandResult result = await _movementSystem.MoveAsync(_direction, _distance, _cts.Token);
-
-            _cts?.Dispose();
-            _cts = null;
             _isExecuting = false;
 
             return result;
@@ -41,7 +35,7 @@ namespace RoboRoutine
 
         public void Cancel()
         {
-            _cts?.Cancel();
+            _movementSystem.Stop();
         }
 
         public void Dispose()

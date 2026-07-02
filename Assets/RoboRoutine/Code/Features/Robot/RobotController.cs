@@ -39,10 +39,15 @@ namespace RoboRoutine
             _currentOperation?.Tick(dt);
         }
 
-        public UniTask MoveXZAsync(Vector2 position, CancellationToken ct)
+        public UniTask<OperationResult> MoveXZAsync(Vector2 position)
         {
             _movementOperation.Setup(position);
-            return RunOperation(_movementOperation, ct);
+            return RunOperation(_movementOperation);
+        }
+
+        public void StopCurrentOperation()
+        {
+            _currentOperation?.Stop();
         }
 
         public object CaptureState()
@@ -67,24 +72,20 @@ namespace RoboRoutine
             _tickRegistry.Remove(this);
             _snapshotableRegistry.Remove(this);
 
-            _currentOperation?.Cancel();
+            _currentOperation?.Stop();
         }
 
-        private async UniTask RunOperation(TickOperationBase operation, CancellationToken ct)
+        private async UniTask<OperationResult> RunOperation(TickOperationBase operation)
         {
             if (_currentOperation != null) throw new InvalidOperationException($"Robot is busy");
 
             _currentOperation = operation;
 
-            try
-            {
-                await operation.Start(ct);
-            }
-            finally
-            {
-                _currentOperation = null;
-            }
+            OperationResult result = await operation.Start();
             
+            _currentOperation = null;
+
+            return result;
         }
     }
 }

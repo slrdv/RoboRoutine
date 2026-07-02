@@ -1,23 +1,19 @@
 using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 
 namespace RoboRoutine
 {
     public abstract class TickOperationBase
     {
-        private UniTaskCompletionSource _tcs;
-        private CancellationTokenRegistration _ctr;
+        private UniTaskCompletionSource<OperationResult> _tcs;
 
         private bool _isRunning = false;
 
-        public UniTask Start(CancellationToken ct = default)
+        public UniTask<OperationResult> Start()
         {
             if (_isRunning) throw new InvalidOperationException($"[{GetType().Name}] Already running");
 
-            _tcs = new UniTaskCompletionSource();
-            _ctr = ct.RegisterWithoutCaptureExecutionContext(Cancel);
-
+            _tcs = new UniTaskCompletionSource<OperationResult>();
             _isRunning = true;
 
             OnStart();
@@ -32,9 +28,9 @@ namespace RoboRoutine
             OnTick(dt);
         }
 
-        public void Cancel()
+        public void Stop()
         {
-            Detach()?.TrySetCanceled();
+            Detach()?.TrySetResult(OperationResult.Cancelled);
         }
 
         protected abstract void OnStart();
@@ -42,7 +38,7 @@ namespace RoboRoutine
 
         protected void Complete()
         {
-            Detach()?.TrySetResult();
+            Detach()?.TrySetResult(OperationResult.Complete);
         }
 
         protected void Fail(Exception ex)
@@ -50,13 +46,12 @@ namespace RoboRoutine
             Detach()?.TrySetException(ex);
         }
 
-        private UniTaskCompletionSource Detach()
+        private UniTaskCompletionSource<OperationResult> Detach()
         {
             if (!_isRunning) return null;
 
-            UniTaskCompletionSource tcs = _tcs;
+            UniTaskCompletionSource<OperationResult> tcs = _tcs;
             _tcs = null;
-            _ctr.Dispose();
 
             _isRunning = false;
 

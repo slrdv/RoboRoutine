@@ -15,7 +15,7 @@ namespace RoboRoutine
             _grid = grid;
         }
 
-        public async UniTask<CommandResult> MoveAsync(MoveDirection moveDirection, int cellDistance, CancellationToken ct)
+        public async UniTask<CommandResult> MoveAsync(MoveDirection moveDirection, int cellDistance)
         {
             Vector2Int cell = _grid.WorldToCell(_robot.GetPositionXZ());
             Vector2Int direction = GetDirectionVector(moveDirection);
@@ -25,8 +25,8 @@ namespace RoboRoutine
                 cell += direction;
                 Vector2 targetPosition = _grid.GetCellCenterWorldPositionXZ(cell);
 
-                bool cancelled = await _robot.MoveXZAsync(targetPosition, ct).SuppressCancellationThrow();
-                if (cancelled)
+                OperationResult result = await _robot.MoveXZAsync(targetPosition);
+                if (result == OperationResult.Cancelled)
                 {
                     return CommandResult.Canceled;
                 }
@@ -35,22 +35,21 @@ namespace RoboRoutine
             return CommandResult.Success;
         }
 
+        public void Stop()
+        {
+            _robot.StopCurrentOperation();
+        }
+
         private Vector2Int GetDirectionVector(MoveDirection direction)
         {
-            Vector2Int vector = new Vector2Int();
-            switch (direction)
+            return direction switch
             {
-                case MoveDirection.Up:
-                    return Vector2Int.up;
-                case MoveDirection.Down:
-                    return Vector2Int.down;
-                case MoveDirection.Left:
-                    return Vector2Int.left;
-                case MoveDirection.Right:
-                    return Vector2Int.right;
-            }
-
-            return vector;
+                MoveDirection.Up => Vector2Int.up,
+                MoveDirection.Down => Vector2Int.down,
+                MoveDirection.Left => Vector2Int.left,
+                MoveDirection.Right => Vector2Int.right,
+                _ => Vector2Int.zero
+            };
         }
     }
 }
