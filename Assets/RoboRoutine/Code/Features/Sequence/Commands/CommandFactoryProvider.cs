@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandFactory : ICommandDataFactory
+    public sealed class CommandFactoryProvider : ICommandFactoryProvider, ICommandDataFactory
     {
         private readonly Dictionary<CommandType, ICommandFactory> _factories = new();
 
-        public CommandFactory(IEnumerable<ICommandFactory> factories)
+        public CommandFactoryProvider(IEnumerable<ICommandFactory> factories)
         {
             foreach (ICommandFactory factory in factories)
             {
@@ -21,11 +21,6 @@ namespace RoboRoutine
         public CommandData CreateDefaultCommandData(CommandType commandType)
         {
             return GetFactory(commandType).CreateDefaultData();
-        }
-
-        public CommandData CloneData(CommandData commandData)
-        {
-            return GetFactory(commandData.Type).CloneData(commandData);
         }
 
         private ICommandFactory GetFactory(CommandType commandType)

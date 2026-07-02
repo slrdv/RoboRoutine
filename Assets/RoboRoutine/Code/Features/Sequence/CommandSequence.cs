@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace RoboRoutine
 {
-    public sealed class CommandSequence : IDisposable
+    public sealed class CommandSequence : ICommandSequence, ICommandSequenceState, IDisposable
     {
         public event Action<ICommand, int> BeforeCommandExecuteEvent;
         public event Action<CommandResult, int> CommandCompleteEvent;

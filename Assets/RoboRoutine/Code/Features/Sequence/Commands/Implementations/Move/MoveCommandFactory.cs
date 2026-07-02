@@ -21,10 +21,5 @@ namespace RoboRoutine
         {
             return new MoveCommandData(MoveDirection.Up, 1);
         }
-
-        public CommandData CloneData(CommandData commandData)
-        {
-            return commandData.Clone();
-        }
     }
 }

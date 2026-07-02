@@ -4,14 +4,14 @@ namespace RoboRoutine
 {
     public sealed class LevelScopeInitializer : IInitializable
     {
-        private readonly HistoryService _historyService;
+        private readonly IHistoryService _historyService;
         private readonly SequenceStorageService _sequenceStorageService;
         private readonly GridBuilder _gridBuilder;
         private readonly SimulationPanelPresenter _simulationPanelPresenter;
         private readonly CommandPaletteBuilder _commandPaletteBuilder;
 
         public LevelScopeInitializer(
-            HistoryService historyService,
+            IHistoryService historyService,
             SequenceStorageService sequenceStorageService,
             GridBuilder gridBuilder,
             SimulationPanelPresenter simulationPanelPresenter,

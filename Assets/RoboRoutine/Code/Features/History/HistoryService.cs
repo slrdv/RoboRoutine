@@ -3,22 +3,24 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class HistoryService : IDisposable
+    public sealed class HistoryService : IHistoryService, IDisposable
     {
-        private readonly CommandSequence _sequence;
-        private readonly SnapshotService _snapshotService;
+        private readonly ICommandSequence _sequence;
+        private readonly ICommandSequenceState _sequenceState;
+        private readonly ISnapshotService _snapshotService;
 
         private readonly Stack<HistorySnapshot> _snapshots = new();
         private HistorySnapshot _initialSnapshot;
 
         public int SnapshotCount => _snapshots.Count;
 
-        public HistoryService(CommandSequence sequence, SnapshotService snapshotService)
+        public HistoryService(ICommandSequence sequence, ICommandSequenceState sequenceState, ISnapshotService snapshotService)
         {
             _sequence = sequence;
+            _sequenceState = sequenceState;
             _snapshotService = snapshotService;
 
-            _sequence.BeforeCommandExecuteEvent += OnBeforeCommandExecute;
+            _sequenceState.BeforeCommandExecuteEvent += OnBeforeCommandExecute;
         }
 
         public void UndoLast()
@@ -51,7 +53,7 @@ namespace RoboRoutine
 
         public void Dispose()
         {
-            _sequence.BeforeCommandExecuteEvent -= OnBeforeCommandExecute;
+            _sequenceState.BeforeCommandExecuteEvent -= OnBeforeCommandExecute;
             _snapshots.Clear();
         }
 

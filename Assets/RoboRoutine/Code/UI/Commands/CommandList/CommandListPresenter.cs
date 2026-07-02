@@ -9,25 +9,22 @@ namespace RoboRoutine
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
         private readonly ICommandItemFactory _itemFactory;
-        private readonly SimulationService _simulationService;
+        private readonly ISimulationState _simulationState;
         private readonly ICommandCrossPanelDragEventProvider _externalDragEventProvider;
-        private readonly ICommandDataFactory _dataFactory;
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
 
         public CommandListPresenter(
             CommandListModel model,
             CommandListView view,
             ICommandItemFactory itemFactory,
-            SimulationService simulationService,
-            ICommandCrossPanelDragEventProvider dragEventProvider,
-            ICommandDataFactory dataFactory)
+            ISimulationState simulationState,
+            ICommandCrossPanelDragEventProvider dragEventProvider)
         {
             _model = model;
             _view = view;
             _itemFactory = itemFactory;
-            _simulationService = simulationService;
+            _simulationState = simulationState;
             _externalDragEventProvider = dragEventProvider;
-            _dataFactory = dataFactory;
 
             Subscribe();
         }
@@ -84,7 +81,7 @@ namespace RoboRoutine
 
         private void OnExternalItemDropped(int index, CommandData commandData)
         {
-            _model.Insert(new CommandItemModel(_dataFactory.CloneData(commandData)), index);
+            _model.Insert(new CommandItemModel(commandData.Clone()), index);
         }
 
         private void OnItemDroppedOut(int index)
@@ -94,15 +91,15 @@ namespace RoboRoutine
 
         private void UpdateUI()
         {
-            if (_simulationService.IsInitialState)
+            if (_simulationState.IsInitialState)
             {
                 _view.HidePointer();
                 return;
             }
 
-            if (_simulationService.CommandIndex < _simulationService.CommandsCount)
+            if (_simulationState.CommandIndex < _simulationState.CommandsCount)
             {
-                _view.ShowPointer(_simulationService.CommandIndex);
+                _view.ShowPointer(_simulationState.CommandIndex);
             }
         }
 
@@ -131,8 +128,8 @@ namespace RoboRoutine
             _model.ItemMovedEvent += OnItemMoved;
             _model.ClearedEvent += OnItemsClear;
 
-            _simulationService.SimulationRunEvent += UpdateUI;
-            _simulationService.SimulationStopEvent += UpdateUI;
+            _simulationState.SimulationRunEvent += UpdateUI;
+            _simulationState.SimulationStopEvent += UpdateUI;
 
             _view.ItemDroppedEvent += OnItemDropped;
             _view.ExternalItemDroppedEvent += OnExternalItemDropped;
@@ -151,8 +148,8 @@ namespace RoboRoutine
             _view.ItemDroppedEvent -= OnItemDropped;
             _view.ItemDroppedOutEvent -= OnItemDroppedOut;
 
-            _simulationService.SimulationStopEvent -= UpdateUI;
-            _simulationService.SimulationRunEvent -= UpdateUI;
+            _simulationState.SimulationStopEvent -= UpdateUI;
+            _simulationState.SimulationRunEvent -= UpdateUI;
 
             _model.ItemAddedEvent -= OnItemAdded;
             _model.ItemRemovedEvent -= OnItemRemoved;

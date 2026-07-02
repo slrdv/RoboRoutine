@@ -5,20 +5,21 @@ namespace RoboRoutine
     public sealed class SimulationPanelPresenter : IDisposable
     {
         private readonly SimulationPanelView _view;
-        private readonly SimulationService _simulationService;
+        private readonly ISimulationService _simulationService;
+        private readonly ISimulationState _simulationState;
 
-        public SimulationPanelPresenter(SimulationPanelView view, SimulationService simulationService)
+        public SimulationPanelPresenter(SimulationPanelView view, ISimulationService simulationService, ISimulationState simulationState)
         {
             _view = view;
             _simulationService = simulationService;
-
+            _simulationState = simulationState;
             _view.StartButton.PressedEvent += OnStartButtonPressed;
             _view.StopButton.PressedEvent += OnStopButtonPressed;
             _view.NextButton.PressedEvent += OnNextButtonPressed;
             _view.BackButton.PressedEvent += OnBackButtonPressed;
 
-            _simulationService.SimulationRunEvent += OnSimulationStart;
-            _simulationService.SimulationStopEvent += OnSimulationStop;
+            _simulationState.SimulationRunEvent += OnSimulationStart;
+            _simulationState.SimulationStopEvent += OnSimulationStop;
         }
 
         public void UpdateUI()
@@ -31,8 +32,8 @@ namespace RoboRoutine
 
         public void Dispose()
         {
-            _simulationService.SimulationStopEvent -= OnSimulationStop;
-            _simulationService.SimulationRunEvent -= OnSimulationStart;
+            _simulationState.SimulationStopEvent -= OnSimulationStop;
+            _simulationState.SimulationRunEvent -= OnSimulationStart;
 
             _view.StartButton.PressedEvent -= OnStartButtonPressed;
             _view.StopButton.PressedEvent -= OnStopButtonPressed;

@@ -4,11 +4,11 @@ namespace RoboRoutine
 {
     public sealed class SequenceBuilder : IDisposable
     {
-        private readonly CommandSequence _sequence;
+        private readonly ICommandSequence _sequence;
         private readonly CommandListModel _listModel;
-        private readonly CommandFactory _commandFactory;
+        private readonly ICommandFactoryProvider _commandFactory;
 
-        public SequenceBuilder(CommandSequence sequence, CommandListModel commandListModel, CommandFactory commandFactory)
+        public SequenceBuilder(ICommandSequence sequence, CommandListModel commandListModel, ICommandFactoryProvider commandFactory)
         {
             _sequence = sequence;
             _listModel = commandListModel;

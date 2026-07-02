@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandEditViewSetupFactory : ICommandEditViewSetupFactory
+    public sealed class CommandEditViewSetupProvider : ICommandEditViewSetupProvider
     {
         private readonly Dictionary<CommandType, ICommandEditViewSetup> _setups = new();
 
-        public CommandEditViewSetupFactory(IEnumerable<ICommandEditViewSetup> setups)
+        public CommandEditViewSetupProvider(IEnumerable<ICommandEditViewSetup> setups)
         {
             foreach (ICommandEditViewSetup setup in setups)
             {

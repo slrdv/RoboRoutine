@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class SnapshotService : ISnapshotableRegistry, IDisposable
+    public sealed class SnapshotService : ISnapshotService, ISnapshotableRegistry, IDisposable
     {
         private readonly List<ISnapshotable> _snapshotables = new();
 

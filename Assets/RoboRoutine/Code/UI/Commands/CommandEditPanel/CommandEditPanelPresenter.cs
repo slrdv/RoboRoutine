@@ -6,11 +6,11 @@ namespace RoboRoutine
     {
         private readonly CommandEditPanelView _view;
         private readonly CommandListPresenter _commandListPresenter;
-        private readonly ICommandEditViewSetupFactory _viewSetupFactory;
+        private readonly ICommandEditViewSetupProvider _viewSetupFactory;
 
         private CommandItemModel _currentModel;
 
-        public CommandEditPanelPresenter(CommandEditPanelView view, CommandListPresenter commandListPresenter, ICommandEditViewSetupFactory viewSetupFactory)
+        public CommandEditPanelPresenter(CommandEditPanelView view, CommandListPresenter commandListPresenter, ICommandEditViewSetupProvider viewSetupFactory)
         {
             _view = view;
             _commandListPresenter = commandListPresenter;

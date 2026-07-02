@@ -9,14 +9,14 @@ namespace RoboRoutine
 
         private readonly CommandItemModel _model;
         private readonly CommandItemView _view;
-        private readonly ICommandItemViewSetupFactory _setupFactory;
+        private readonly ICommandItemViewSetupProvider _setupFactory;
 
         private readonly CompositeDisposable _subscriptions = new();
 
         public CommandItemView View => _view;
         public CommandItemModel Model => _model;
 
-        public CommandItemPresenter(CommandItemModel model, CommandItemView view, ICommandItemViewSetupFactory setupFactory)
+        public CommandItemPresenter(CommandItemModel model, CommandItemView view, ICommandItemViewSetupProvider setupFactory)
         {
             _model = model;
             _view = view;

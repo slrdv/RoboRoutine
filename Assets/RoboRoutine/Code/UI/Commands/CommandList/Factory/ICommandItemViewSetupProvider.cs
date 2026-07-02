@@ -1,6 +1,6 @@
 namespace RoboRoutine
 {
-    public interface ICommandItemViewSetupFactory
+    public interface ICommandItemViewSetupProvider
     {
         void Setup(CommandItemView view, CommandItemModel model);
     }

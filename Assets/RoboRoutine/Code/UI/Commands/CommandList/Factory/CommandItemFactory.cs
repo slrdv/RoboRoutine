@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace RoboRoutine
 {
-    public sealed class CommandItemFactory : ICommandItemFactory, ICommandItemViewSetupFactory
+    public sealed class CommandItemFactory : ICommandItemFactory, ICommandItemViewSetupProvider
     {
         private readonly GameObjectPool<CommandItemView> _pool;
         private readonly IRepository<CommandType, CommandConfig> _configRepository;
