@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -82,7 +81,7 @@ namespace RoboRoutine
             _currentOperation = operation;
 
             OperationResult result = await operation.Start();
-            
+
             _currentOperation = null;
 
             return result;
