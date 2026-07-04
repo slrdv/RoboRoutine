@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace RoboRoutine
 {
@@ -118,7 +119,8 @@ namespace RoboRoutine
                     _isRunning = false;
                 }
             }
-
+            
+            Debug.Log($"Command completed with result {result}");
             SimulationStopEvent?.Invoke();
         }
 

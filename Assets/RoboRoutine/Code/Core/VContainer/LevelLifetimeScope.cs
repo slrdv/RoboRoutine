@@ -39,13 +39,18 @@ namespace RoboRoutine
             builder.RegisterInstance(_gridView);
             builder.Register<GridModel>(Lifetime.Singleton);
             builder.Register<GridBuilder>(Lifetime.Singleton);
-            builder.Register<GridController>(Lifetime.Singleton);
+            builder.Register<GridController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
+
+            builder.Register<GridEntityFactoryProvider>(Lifetime.Singleton);
+
+            builder.Register<ObstacleEntityFactory>(Lifetime.Singleton).As<IGridEntityFactory>();
+            builder.Register<OperandEntityFactory>(Lifetime.Singleton).As<IGridEntityFactory>();
         }
 
         private void RegisterRobot(IContainerBuilder builder)
         {
             builder.RegisterInstance(_robotView);
-            builder.Register<RobotController>(Lifetime.Singleton);
+            builder.Register<RobotController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
         }
 
         private void RegisterCommandPipeline(IContainerBuilder builder)
@@ -97,6 +102,11 @@ namespace RoboRoutine
             builder.Register<MovementSystem>(Lifetime.Singleton);
             builder.Register<MoveCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
             builder.Register<MoveCommandEditViewSetup>(Lifetime.Singleton).As<ICommandEditViewSetup>();
+
+            builder.Register<PickCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
+            builder.Register<PickSystem>(Lifetime.Singleton);
+            builder.Register<PickCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
+            builder.Register<PickCommandEditViewSetup>(Lifetime.Singleton).As<ICommandEditViewSetup>();
         }
     }
 }

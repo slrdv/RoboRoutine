@@ -16,7 +16,7 @@ namespace RoboRoutine
 
         public void Setup(CommandEditPanelView view, CommandData data)
         {
-            GetSetup(data.Type).Setup(view, data);
+            GetSetup(data.CommandType).Setup(view, data);
         }
 
         public CommandData Apply(CommandType type)

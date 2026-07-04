@@ -26,6 +26,7 @@ namespace RoboRoutine
         public CanvasGroup CanvasGroup => _canvasGroup;
 
         private bool _isDragging;
+        private bool _IsClickEnable = true;
 
         public void SetLabel(string label)
         {
@@ -78,6 +79,11 @@ namespace RoboRoutine
             EndDragEvent?.Invoke(this);
         }
 
+        public void SetClickEnable(bool enabled)
+        {
+            _IsClickEnable = enabled;
+        }
+
         protected override void OnTaken()
         {
             _button.onClick.AddListener(OnClick);
@@ -90,7 +96,7 @@ namespace RoboRoutine
 
         private void OnClick()
         {
-            if (_isDragging) return;
+            if (!_IsClickEnable || _isDragging) return;
             
             ClickEvent?.Invoke();
         }

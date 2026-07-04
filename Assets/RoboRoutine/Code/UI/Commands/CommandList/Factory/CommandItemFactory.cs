@@ -37,7 +37,7 @@ namespace RoboRoutine
 
         public void Setup(CommandItemView view, CommandItemModel model)
         {
-            CommandType type = model.CommandData.Type;
+            CommandType type = model.CommandData.CommandType;
 
             if (!_configRepository.TryGet(type, out CommandConfig config))
             {

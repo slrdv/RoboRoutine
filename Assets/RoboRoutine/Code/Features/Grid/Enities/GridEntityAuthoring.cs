@@ -3,14 +3,15 @@ using UnityEngine;
 namespace RoboRoutine
 {
     [DisallowMultipleComponent]
-    public sealed class GridEntityAuthoring : MonoBehaviour
+    public class GridEntityAuthoring : MonoBehaviour
     {
         [SerializeField] private Vector2Int _size = Vector2Int.one;
-
         [SerializeField] private FootpintRotation _rotation = FootpintRotation.R0;
+        [SerializeField] private EntityType _entityType = EntityType.Obstacle;
 
         public Vector2Int Size => _size;
         public FootpintRotation Rotation => _rotation;
+        public EntityType EntityType => _entityType;
 
         public Vector2Int GetActualSize()
         {

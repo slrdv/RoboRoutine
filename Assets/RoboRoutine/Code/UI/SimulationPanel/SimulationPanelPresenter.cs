@@ -63,10 +63,7 @@ namespace RoboRoutine
 
         private void OnSimulationStart()
         {
-            _view.StartButton.SetEnabled(false);
-            _view.StopButton.SetEnabled(_simulationService.CanStop());
-            _view.NextButton.SetEnabled(false);
-            _view.BackButton.SetEnabled(false);
+            UpdateUI();
         }
 
         private void OnSimulationStop()

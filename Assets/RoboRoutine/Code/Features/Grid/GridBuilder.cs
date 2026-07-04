@@ -4,13 +4,13 @@ namespace RoboRoutine
 {
     public sealed class GridBuilder
     {
-        private readonly GridModel _gridModel;
-        private readonly GridView _gridView;
+        private readonly GridController _grid;
+        private readonly GridEntityFactoryProvider _factory;
 
-        public GridBuilder(GridModel gridModel, GridView gridView)
+        public GridBuilder(GridController grid, GridEntityFactoryProvider factory)
         {
-            _gridModel = gridModel;
-            _gridView = gridView;
+            _grid = grid;
+            _factory = factory;
         }
 
         public void Build()
@@ -19,12 +19,13 @@ namespace RoboRoutine
             for (int i = 0; i < authorings.Length; i++)
             {
                 GridEntityAuthoring authoring = authorings[i];
-                GridEntity entity = new GridEntity(authoring.GetActualSize());
-
-                _gridModel.AddEntity(entity, authoring.GetOrigin());
+                if (authoring.EntityType == EntityType.None) continue;
+             
+                IGridEntityController gridEntityController = _factory.Create(authoring);
+                _grid.AddEntity(gridEntityController, authoring.GetOrigin());
             }
 
-            _gridView.Build(_gridModel.Bounds);
+            _grid.Build();
         }
     }
 }

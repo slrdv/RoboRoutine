@@ -37,7 +37,7 @@ namespace RoboRoutine
 
         private void OnApply()
         {
-            CommandData commandData = _viewSetupFactory.Apply(_currentModel.CommandData.Type);
+            CommandData commandData = _viewSetupFactory.Apply(_currentModel.CommandData.CommandType);
             _currentModel.SetCommandData(commandData);
             _view.Close();
         }

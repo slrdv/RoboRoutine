@@ -15,6 +15,8 @@ namespace RoboRoutine
 
         private void OnSceneGUI()
         {
+            if (EditorApplication.isPlaying) return;
+
             ApplyRotation();
             Snap();
         }

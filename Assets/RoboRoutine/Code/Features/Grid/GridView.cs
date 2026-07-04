@@ -44,6 +44,18 @@ namespace RoboRoutine
             _meshFilter.mesh = mesh;
         }
 
+        public Vector3 GetPosition()
+        {
+            return gameObject.transform.position;
+        }
+
+        public void Attach(GridEntityView item, Vector3 position)
+        {
+            item.SetParent(gameObject.transform);
+            item.SetPosition(position);
+            item.SetScale(gameObject.transform.localScale);
+        }
+
         private void Awake()
         {
             _meshFilter = GetComponent<MeshFilter>();

@@ -5,6 +5,8 @@ namespace RoboRoutine
     public sealed class RobotView : MonoBehaviour
     {
         [SerializeField] private float _speed = 2f;
+        [SerializeField] private Transform _itemRoot;
+        [SerializeField] private Vector3 _itemScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         public Vector2 GetPositionXZ()
         {
@@ -35,6 +37,13 @@ namespace RoboRoutine
         public void LookAtXZ(Vector2 targetPosition)
         {
             transform.LookAt(targetPosition.WithY());
+        }
+
+        public void AttachItem(GridEntityView item)
+        {
+            item.SetParent(_itemRoot);
+            item.SetPosition(_itemRoot.transform.position);
+            item.SetScale(_itemScale);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace RoboRoutine
         private readonly ISnapshotableRegistry _snapshotableRegistry;
 
         private TickOperationBase _currentOperation;
+        private OperandEntityController _operand;
 
         private readonly RobotMovementOperation _movementOperation;
 
@@ -44,6 +45,18 @@ namespace RoboRoutine
             return RunOperation(_movementOperation);
         }
 
+        public void PickOperand(OperandEntityController operand)
+        {
+            _operand = operand;
+            _robotView.AttachItem(operand.View);
+        }
+
+        public void RemoveOperand()
+        {
+            _operand = null;
+        }
+
+
         public void StopCurrentOperation()
         {
             _currentOperation?.Stop();
@@ -54,7 +67,8 @@ namespace RoboRoutine
             return new RobotState
             {
                 Position = _robotView.GetPositionXZ(),
-                Rotation = _robotView.GetRotation()
+                Rotation = _robotView.GetRotation(),
+                Operand = _operand
             };
         }
 
@@ -64,6 +78,15 @@ namespace RoboRoutine
 
             _robotView.SetPositionXZ(robotState.Position);
             _robotView.SetRotation(robotState.Rotation);
+
+            if (robotState.Operand != null && _operand == null)
+            {
+                PickOperand(robotState.Operand);
+            }
+            else if (robotState.Operand == null && _operand != null)
+            {
+                RemoveOperand();
+            }
         }
 
         public void Dispose()

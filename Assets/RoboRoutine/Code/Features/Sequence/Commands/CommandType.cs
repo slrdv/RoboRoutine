@@ -3,6 +3,7 @@ namespace RoboRoutine
     public enum CommandType
     {
         None = 0,
-        Move = 1
+        Move = 1,
+        Pick = 2
     }
 }

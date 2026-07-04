@@ -1,17 +1,22 @@
 using System;
+using Newtonsoft.Json;
 
 namespace RoboRoutine
 {
     [Serializable]
-    public abstract class CommandData
+    public class CommandData
     {
-        public CommandType Type { get; private set; }
+        public CommandType CommandType { get; private set; }
 
-        public CommandData(CommandType type)
+        [JsonConstructor]
+        public CommandData([JsonProperty("CommandType")] CommandType type)
         {
-            Type = type;
+            CommandType = type;
         }
 
-        public abstract CommandData Clone();
+        public virtual CommandData Clone()
+        {
+            return new CommandData(CommandType);
+        }
     }
 }

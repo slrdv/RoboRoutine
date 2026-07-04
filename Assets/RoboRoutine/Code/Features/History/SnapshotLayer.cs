@@ -7,7 +7,7 @@ namespace RoboRoutine
     {
         None = 1u << 0,
         Robot = 1u << 1,
-
+        Grid = 1u << 2,
         All = ~0u
     }
 }

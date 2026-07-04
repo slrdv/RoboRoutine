@@ -15,7 +15,7 @@ namespace RoboRoutine
         }
         public ICommand Create(CommandData commandData)
         {
-            return GetFactory(commandData.Type).Create(commandData);
+            return GetFactory(commandData.CommandType).Create(commandData);
         }
 
         public CommandData CreateDefaultCommandData(CommandType commandType)
