@@ -17,6 +17,11 @@ namespace RoboRoutine
             _view = view;
         }
 
-        public void SetPosition(Vector3 position) => throw new System.NotImplementedException();
+        public void AttachToParent(Transform parent, Vector3 position, Vector3 scale)
+        {
+            _view.SetParent(parent);
+            _view.SetScale(scale);
+            _view.SetPosition(position);
+        }
     }
 }

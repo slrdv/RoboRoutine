@@ -6,7 +6,10 @@ namespace RoboRoutine
     {
         [SerializeField] private float _speed = 2f;
         [SerializeField] private Transform _itemRoot;
-        [SerializeField] private Vector3 _itemScale = new Vector3(0.5f, 0.5f, 0.5f);
+        [SerializeField] private Vector3 _itemScale = new Vector3(0.8f, 0.8f, 0.8f);
+
+        public Transform ItemRoot => _itemRoot;
+        public Vector3 ItemScale => _itemScale;
 
         public Vector2 GetPositionXZ()
         {
@@ -37,13 +40,6 @@ namespace RoboRoutine
         public void LookAtXZ(Vector2 targetPosition)
         {
             transform.LookAt(targetPosition.WithY());
-        }
-
-        public void AttachItem(GridEntityView item)
-        {
-            item.SetParent(_itemRoot);
-            item.SetPosition(_itemRoot.transform.position);
-            item.SetScale(_itemScale);
         }
     }
 }

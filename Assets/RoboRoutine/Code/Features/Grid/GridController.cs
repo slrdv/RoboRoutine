@@ -64,7 +64,7 @@ namespace RoboRoutine
         {
             _gridModel.AddEntity(entity.Model, origin);
             _entities[origin] = entity;
-            _gridView.Attach(entity.View, GetFootprintCenterWorldPosition(origin, entity.Model.Size));
+            entity.AttachToParent(_gridView.transform, GetFootprintCenterWorldPosition(origin, entity.Model.Size), Vector3.one);
         }
 
         public bool TryAddEntity(IGridEntityController entity, Vector2Int position)

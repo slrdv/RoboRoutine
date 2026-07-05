@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    [CustomEditor(typeof(GridEntityAuthoring))]
+    [CustomEditor(typeof(GridEntityAuthoring), true)]
     public class GridEntitySnapperEditor : Editor
     {
         private GridEntityAuthoring _authoring;

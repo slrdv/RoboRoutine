@@ -48,7 +48,7 @@ namespace RoboRoutine
         public void PickOperand(OperandEntityController operand)
         {
             _operand = operand;
-            _robotView.AttachItem(operand.View);
+            operand.AttachToParent(_robotView.ItemRoot, _robotView.ItemRoot.position, _robotView.ItemScale);
         }
 
         public void RemoveOperand()

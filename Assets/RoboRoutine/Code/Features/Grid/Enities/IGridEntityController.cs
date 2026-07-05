@@ -8,6 +8,6 @@ namespace RoboRoutine
         GridEntityView View { get; }
         EntityType EntityType { get; }
 
-        void SetPosition(Vector3 position);
+        void AttachToParent(Transform parent, Vector3 position, Vector3 scale);
     }
 }
