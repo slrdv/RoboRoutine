@@ -48,8 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.GridEntityAuthoring
   _size: {x: 1, y: 3}
   _rotation: 1
-  _entityType: 0
-  _value: 0
+  _entityType: 1
 --- !u!114 &3535087455850984981
 MonoBehaviour:
   m_ObjectHideFlags: 0

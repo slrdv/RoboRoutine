@@ -13,7 +13,7 @@ namespace RoboRoutine
 
         public CommandResult Pick()
         {
-            if (_grid.TryGetAtWorldPositionXZ(_robot.GetPositionXZ(), out IGridEntityController item))
+            if (_grid.TryFindAtWorldPositionXZ(_robot.GetPositionXZ(), out IGridEntityController item))
             {
                 if (item is OperandEntityController operand)
                 {

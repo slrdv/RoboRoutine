@@ -24,6 +24,11 @@ namespace RoboRoutine
                 cell += direction;
                 Vector2 targetPosition = _grid.GetCellCenterWorldPositionXZ(cell);
 
+                if (_grid.TryFindAtWorldPositionXZ(targetPosition, out IGridEntityController entity) && entity.EntityType == EntityType.Obstacle)
+                {
+                    return CommandResult.Failed;
+                }
+
                 OperationResult result = await _robot.MoveXZAsync(targetPosition);
                 if (result == OperationResult.Cancelled)
                 {

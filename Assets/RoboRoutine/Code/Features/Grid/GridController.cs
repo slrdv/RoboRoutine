@@ -32,17 +32,22 @@ namespace RoboRoutine
             return GetCellCenterWorldPositionXZ(cell).WithY(_gridView.GetPosition().y);
         }
 
-        public bool TryGetAtWorldPositionXZ(Vector2 worldPositionXZ, out IGridEntityController item)
+        public Vector3 GetFootprintCenterWorldPosition(Vector2Int origin, Vector2Int size)
+        {
+            return new Vector3(origin.x + size.x * 0.5f, _gridView.GetPosition().y, origin.y + size.y * 0.5f);
+        }
+
+        public bool TryFindAtWorldPositionXZ(Vector2 worldPositionXZ, out IGridEntityController item)
         {
             Vector2Int cell = WorldToCell(worldPositionXZ);
-            if (!_gridModel.isOccupied(cell))
+
+            if (!_gridModel.TryGetEntity(cell, out GridEntityModel model))
             {
                 item = null;
                 return false;
             }
 
-            item = _entities[cell];
-            return true;
+            return TryGetEntity(model, out item);
         }
 
         public Vector2Int WorldToCell(Vector3 worldPosition)
@@ -55,17 +60,17 @@ namespace RoboRoutine
             return new Vector2Int(Mathf.FloorToInt(worldPositionXZ.x), Mathf.FloorToInt(worldPositionXZ.y));
         }
 
-        public void AddEntity(IGridEntityController entity, Vector2Int position)
+        public void AddEntity(IGridEntityController entity, Vector2Int origin)
         {
-            _gridModel.AddEntity(entity.Model, position);
-            _entities[position] = entity;
-            _gridView.Attach(entity.View, GetCellCenterWorldPosition(position));
+            _gridModel.AddEntity(entity.Model, origin);
+            _entities[origin] = entity;
+            _gridView.Attach(entity.View, GetFootprintCenterWorldPosition(origin, entity.Model.Size));
         }
 
         public bool TryAddEntity(IGridEntityController entity, Vector2Int position)
         {
-            if (_gridModel.isOccupied(position)) return false;
-            
+            if (_gridModel.IsOccupied(position)) return false;
+
             AddEntity(entity, position);
 
             return true;
@@ -73,7 +78,8 @@ namespace RoboRoutine
 
         public void RemoveEntity(IGridEntityController entity)
         {
-            RemoveEntity(_gridModel.GetPosition(entity.Model));
+            if (!TryGetCell(entity, out Vector2Int cell)) throw new ArgumentException($"Entity not found");
+            RemoveEntity(cell);
         }
 
         public void RemoveEntity(Vector2Int position)
@@ -119,6 +125,36 @@ namespace RoboRoutine
         public void Dispose()
         {
             _snapshotableRegistry.Remove(this);
+        }
+
+        private bool TryGetCell(IGridEntityController entity, out Vector2Int origin)
+        {
+            foreach (var kv in _entities)
+            {
+                if (kv.Value == entity)
+                {
+                    origin = kv.Key;
+                    return true;
+                }
+            }
+
+            origin = default;
+            return false;
+        }
+
+        private bool TryGetEntity(GridEntityModel model, out IGridEntityController entity)
+        {
+            foreach (var kv in _entities)
+            {
+                if (kv.Value.Model == model)
+                {
+                    entity = kv.Value;
+                    return true;
+                }
+            }
+
+            entity = null;
+            return false;
         }
     }
 }
