@@ -6,39 +6,43 @@ namespace RoboRoutine
     {
         private readonly SimulationPanelView _view;
         private readonly ISimulationService _simulationService;
-        private readonly ISimulationState _simulationState;
+        private readonly ISimulationState _simulation;
 
-        public SimulationPanelPresenter(SimulationPanelView view, ISimulationService simulationService, ISimulationState simulationState)
+        public SimulationPanelPresenter(SimulationPanelView view, ISimulationService simulationService, ISimulationState simulation)
         {
             _view = view;
             _simulationService = simulationService;
-            _simulationState = simulationState;
+            _simulation = simulation;
             _view.StartButton.PressedEvent += OnStartButtonPressed;
-            _view.StopButton.PressedEvent += OnStopButtonPressed;
+            _view.ResetButton.PressedEvent += OnStopButtonPressed;
             _view.NextButton.PressedEvent += OnNextButtonPressed;
-            _view.BackButton.PressedEvent += OnBackButtonPressed;
+            _view.UndoButton.PressedEvent += OnUndoButtonPressed;
 
-            _simulationState.SimulationRunEvent += OnSimulationStart;
-            _simulationState.SimulationStopEvent += OnSimulationStop;
+            _simulation.StartEvent += OnSimulationStart;
+            _simulation.StopEvent += OnSimulationStop;
+            _simulation.ResetEvent += OnSimulationReset;
+            _simulation.FailedEvent += OnSimulationFailed;
         }
 
         public void UpdateUI()
         {
             _view.StartButton.SetEnabled(_simulationService.CanRunNext());
-            _view.StopButton.SetEnabled(_simulationService.CanStop());
+            _view.ResetButton.SetEnabled(_simulationService.CanReset());
             _view.NextButton.SetEnabled(_simulationService.CanRunNext());
-            _view.BackButton.SetEnabled(_simulationService.CanBack());
+            _view.UndoButton.SetEnabled(_simulationService.CanUndo());
         }
 
         public void Dispose()
         {
-            _simulationState.SimulationStopEvent -= OnSimulationStop;
-            _simulationState.SimulationRunEvent -= OnSimulationStart;
+            _simulation.StartEvent -= OnSimulationStart;
+            _simulation.StopEvent -= OnSimulationStop;
+            _simulation.ResetEvent -= OnSimulationReset;
+            _simulation.FailedEvent -= OnSimulationFailed;
 
             _view.StartButton.PressedEvent -= OnStartButtonPressed;
-            _view.StopButton.PressedEvent -= OnStopButtonPressed;
+            _view.ResetButton.PressedEvent -= OnStopButtonPressed;
             _view.NextButton.PressedEvent -= OnNextButtonPressed;
-            _view.BackButton.PressedEvent -= OnBackButtonPressed;
+            _view.UndoButton.PressedEvent -= OnUndoButtonPressed;
         }
 
         private void OnStartButtonPressed()
@@ -48,7 +52,7 @@ namespace RoboRoutine
 
         private void OnStopButtonPressed()
         {
-            _simulationService.Stop();
+            _simulationService.Reset();
         }
 
         private void OnNextButtonPressed()
@@ -56,19 +60,40 @@ namespace RoboRoutine
             _simulationService.RunNext();
         }
 
-        private void OnBackButtonPressed()
+        private void OnUndoButtonPressed()
         {
-            _simulationService.Back();
+            _simulationService.Undo();
         }
+
 
         private void OnSimulationStart()
         {
-            UpdateUI();
+            DisableAllButtons();
+            _view.ResetButton.SetEnabled(true);
         }
 
         private void OnSimulationStop()
         {
             UpdateUI();
+        }
+
+        private void OnSimulationReset()
+        {
+            UpdateUI();
+        }
+
+        private void OnSimulationFailed()
+        {
+            DisableAllButtons();
+            _view.ResetButton.SetEnabled(true);
+        }
+
+        private void DisableAllButtons()
+        {
+            _view.StartButton.SetEnabled(false);
+            _view.ResetButton.SetEnabled(false);
+            _view.NextButton.SetEnabled(false);
+            _view.UndoButton.SetEnabled(false);
         }
     }
 }

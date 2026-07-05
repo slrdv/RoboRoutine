@@ -89,14 +89,13 @@ namespace RoboRoutine
             _model.Remove(index);
         }
 
-        private void UpdateUI()
+        private void HidePointer()
         {
-            if (_simulationState.IsInitialState)
-            {
-                _view.HidePointer();
-                return;
-            }
+            _view.HidePointer();
+        }
 
+        private void ShowPointer()
+        {
             if (_simulationState.CommandIndex < _simulationState.CommandsCount)
             {
                 _view.ShowPointer(_simulationState.CommandIndex);
@@ -128,8 +127,8 @@ namespace RoboRoutine
             _model.ItemMovedEvent += OnItemMoved;
             _model.ClearedEvent += OnItemsClear;
 
-            _simulationState.SimulationRunEvent += UpdateUI;
-            _simulationState.SimulationStopEvent += UpdateUI;
+            _simulationState.StartEvent += ShowPointer;
+            _simulationState.ResetEvent += HidePointer;
 
             _view.ItemDroppedEvent += OnItemDropped;
             _view.ExternalItemDroppedEvent += OnExternalItemDropped;
@@ -148,8 +147,8 @@ namespace RoboRoutine
             _view.ItemDroppedEvent -= OnItemDropped;
             _view.ItemDroppedOutEvent -= OnItemDroppedOut;
 
-            _simulationState.SimulationStopEvent -= UpdateUI;
-            _simulationState.SimulationRunEvent -= UpdateUI;
+            _simulationState.StartEvent -= ShowPointer;
+            _simulationState.ResetEvent -= HidePointer;
 
             _model.ItemAddedEvent -= OnItemAdded;
             _model.ItemRemovedEvent -= OnItemRemoved;

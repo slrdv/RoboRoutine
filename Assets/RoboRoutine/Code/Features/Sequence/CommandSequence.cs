@@ -102,8 +102,9 @@ namespace RoboRoutine
 
             ICommand command = _commands[_commandIndex];
             BeforeCommandExecuteEvent?.Invoke(command, _commandIndex);
-            
+
             CommandResult result = await command.ExecuteAsync();
+            await UniTask.Yield();
 
             _isExecuting = false;
             

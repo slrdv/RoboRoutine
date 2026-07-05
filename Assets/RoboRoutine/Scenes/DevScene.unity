@@ -865,6 +865,100 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360567887}
   m_CullTransparentMesh: 1
+--- !u!1 &368453647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 368453648}
+  - component: {fileID: 368453650}
+  - component: {fileID: 368453649}
+  - component: {fileID: 368453651}
+  m_Layer: 5
+  m_Name: StatusIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &368453648
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368453647}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1469313919}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -884.89777, y: 464.8977}
+  m_SizeDelta: {x: 150.2044, y: 150.2044}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &368453649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368453647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &368453650
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368453647}
+  m_CullTransparentMesh: 1
+--- !u!114 &368453651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368453647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6fe350d6f9a7d4aaee554abc8f99b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.StatusIndicator
+  _baseColor: {r: 0.4415095, g: 0.4415095, b: 0.4415095, a: 1}
+  _runningColor: {r: 0.005754471, g: 0, b: 1, a: 1}
+  _stopColor: {r: 0, g: 0.57130384, b: 1, a: 1}
+  _failedColor: {r: 1, g: 0, b: 0, a: 1}
+  _completeColor: {r: 0, g: 1, b: 0.037400246, a: 1}
+  _image: {fileID: 368453649}
 --- !u!1 &376788304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,7 +1614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3454618855196322807, guid: a2c79d19e0fe33b4fb9da17bebc1b80d, type: 3}
       propertyPath: m_Name
-      value: StopButton
+      value: ResetButton
       objectReference: {fileID: 0}
     - target: {fileID: 3732043951062445690, guid: a2c79d19e0fe33b4fb9da17bebc1b80d, type: 3}
       propertyPath: m_Sprite
@@ -2338,7 +2432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3454618855196322807, guid: a2c79d19e0fe33b4fb9da17bebc1b80d, type: 3}
       propertyPath: m_Name
-      value: BackButton
+      value: UndoButton
       objectReference: {fileID: 0}
     - target: {fileID: 3732043951062445690, guid: a2c79d19e0fe33b4fb9da17bebc1b80d, type: 3}
       propertyPath: m_Sprite
@@ -2565,9 +2659,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.SimulationPanelView
   _startButton: {fileID: 96193468458876921}
-  _stopButton: {fileID: 516735327}
+  _resetButton: {fileID: 516735327}
   _nextButton: {fileID: 453517391}
-  _backButton: {fileID: 1154153013}
+  _undoButton: {fileID: 1154153013}
 --- !u!1 &1369387479
 GameObject:
   m_ObjectHideFlags: 0
@@ -2914,6 +3008,7 @@ RectTransform:
   - {fileID: 1631689367}
   - {fileID: 2025607868}
   - {fileID: 2025052122}
+  - {fileID: 368453648}
   m_Father: {fileID: 1369387480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3620,6 +3715,7 @@ MonoBehaviour:
   _commandItemPrefab: {fileID: 8335536056197515487, guid: ac27c3d20e592de4699c62ec4c26c672, type: 3}
   _commandPaletteView: {fileID: 2025607869}
   _commandEditPanelView: {fileID: 2025052125}
+  _statusIndicatorView: {fileID: 368453651}
   _pooledObjectsContainer: {fileID: 1885326933}
 --- !u!1 &1885326932
 GameObject:

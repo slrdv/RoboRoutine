@@ -14,6 +14,7 @@ namespace RoboRoutine
         [SerializeField] private CommandItemView _commandItemPrefab;
         [SerializeField] private CommandPaletteView _commandPaletteView;
         [SerializeField] private CommandEditPanelView _commandEditPanelView;
+        [SerializeField] private StatusIndicatorView _statusIndicatorView;
         [SerializeField] private Transform _pooledObjectsContainer;
 
         protected override void Configure(IContainerBuilder builder)
@@ -94,6 +95,9 @@ namespace RoboRoutine
 
             builder.RegisterInstance(_simulationPanelView);
             builder.Register<SimulationPanelPresenter>(Lifetime.Singleton);
+
+            builder.RegisterInstance(_statusIndicatorView);
+            builder.RegisterEager<StatusIndicatorPresenter>(Lifetime.Singleton);
         }
 
         private void RegisterCommandSpecific(IContainerBuilder builder)

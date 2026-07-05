@@ -4,10 +4,10 @@ namespace RoboRoutine
     {
         void RunAll();
         void RunNext();
-        void Back();
-        void Stop();
+        void Undo();
+        void Reset();
         bool CanRunNext();
-        bool CanBack();
-        bool CanStop();
+        bool CanUndo();
+        bool CanReset();
     }
 }

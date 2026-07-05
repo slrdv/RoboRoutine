@@ -5,8 +5,10 @@ namespace RoboRoutine
 {
     public sealed class SimulationService : ISimulationService, ISimulationState, IDisposable
     {
-        public event Action SimulationRunEvent;
-        public event Action SimulationStopEvent;
+        public event Action ResetEvent;
+        public event Action StartEvent;
+        public event Action StopEvent;
+        public event Action FailedEvent;
 
         private readonly ICommandSequence _sequence;
         private readonly ICommandSequenceState _sequenceState;
@@ -38,8 +40,8 @@ namespace RoboRoutine
             _isRunning = true;
             _runAll = true;
 
+            StartEvent?.Invoke();
             _sequence.ExecuteNext();
-            SimulationRunEvent?.Invoke();
         }
 
         public void RunNext()
@@ -49,21 +51,29 @@ namespace RoboRoutine
             _isRunning = true;
             _runAll = false;
 
+            StartEvent?.Invoke();
             _sequence.ExecuteNext();
-            SimulationRunEvent?.Invoke();
         }
 
-        public void Back()
+        public void Undo()
         {
-            if (!CanBack()) return;
+            if (!CanUndo()) return;
 
             _history.UndoLast();
-            SimulationStopEvent?.Invoke();
+
+            if (!IsInitialState)
+            {
+                StopEvent?.Invoke();
+            }
+            else
+            {
+                ResetEvent?.Invoke();
+            }
         }
 
-        public void Stop()
+        public void Reset()
         {
-            if (!CanStop()) return;
+            if (!CanReset()) return;
 
             if (_isRunning)
             {
@@ -72,7 +82,9 @@ namespace RoboRoutine
             }
 
             _history.RollbackToInitial();
-            SimulationStopEvent?.Invoke();
+            _lastCommandResult = CommandResult.None;
+
+            ResetEvent?.Invoke();
         }
 
         public bool CanRunNext()
@@ -80,12 +92,12 @@ namespace RoboRoutine
             return !IsRunning && _sequenceState.CommandIndex < _sequenceState.Count && (_lastCommandResult == CommandResult.None || _lastCommandResult == CommandResult.Success);
         }
 
-        public bool CanBack()
+        public bool CanUndo()
         {
             return !_isRunning && !IsInitialState;
         }
 
-        public bool CanStop()
+        public bool CanReset()
         {
             return !IsInitialState;
         }
@@ -106,36 +118,39 @@ namespace RoboRoutine
 
                 _history.RollbackToInitial();
                 _lastCommandResult = CommandResult.None;
+                ResetEvent?.Invoke();
             }
             else if (result == CommandResult.Success)
             {
                 if (_runAll && _sequenceState.CommandIndex < _sequenceState.Count)
                 {
+                    StartEvent?.Invoke();
                     _sequence.ExecuteNext();
-                    SimulationRunEvent?.Invoke();
                 }
                 else
                 {
                     _isRunning = false;
+                    StopEvent?.Invoke();
                 }
             }
-            
+            else if (result == CommandResult.Failed)
+            {
+                _isRunning = false;
+                FailedEvent?.Invoke();
+            }
+
             Debug.Log($"Command completed with result {result}");
-            SimulationStopEvent?.Invoke();
         }
 
         private void OnSequenceUpdated()
         {
-            if (!IsInitialState)
-            {
-                _isRunning = false;
-                _runAll = false;
-                _lastCommandResult = CommandResult.None;
+            _isRunning = false;
+            _runAll = false;
+            _lastCommandResult = CommandResult.None;
 
-                _history.RollbackToInitial();
-            }
+            _history.RollbackToInitial();
 
-            SimulationStopEvent?.Invoke();
+            ResetEvent?.Invoke();
         }
     }
 }

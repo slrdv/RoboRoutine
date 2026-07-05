@@ -4,8 +4,10 @@ namespace RoboRoutine
 {
     public interface ISimulationState
     {
-        event Action SimulationRunEvent;
-        event Action SimulationStopEvent;
+        event Action ResetEvent;
+        event Action StartEvent;
+        event Action StopEvent;
+        event Action FailedEvent;
 
         bool IsRunning { get; }
         int CommandIndex { get; }

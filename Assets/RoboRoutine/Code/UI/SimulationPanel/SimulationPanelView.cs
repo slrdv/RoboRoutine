@@ -5,13 +5,13 @@ namespace RoboRoutine
     public sealed class SimulationPanelView : MonoBehaviour
     {
         [SerializeField] private PanelButton _startButton;
-        [SerializeField] private PanelButton _stopButton;
+        [SerializeField] private PanelButton _resetButton;
         [SerializeField] private PanelButton _nextButton;
-        [SerializeField] private PanelButton _backButton;
+        [SerializeField] private PanelButton _undoButton;
 
         public PanelButton StartButton => _startButton;
-        public PanelButton StopButton => _stopButton;
+        public PanelButton ResetButton => _resetButton;
         public PanelButton NextButton => _nextButton;
-        public PanelButton BackButton => _backButton;
+        public PanelButton UndoButton => _undoButton;
     }
 }
