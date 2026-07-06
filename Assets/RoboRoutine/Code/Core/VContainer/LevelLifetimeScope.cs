@@ -116,6 +116,11 @@ namespace RoboRoutine
             builder.Register<PutSystem>(Lifetime.Singleton);
             builder.Register<PutCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
             builder.Register<PutCommandEditViewSetup>(Lifetime.Singleton).As<ICommandEditViewSetup>();
+
+            builder.Register<EvalCommandFactory>(Lifetime.Singleton).As<ICommandFactory>();
+            builder.Register<EvalSystem>(Lifetime.Singleton);
+            builder.Register<EvalCommandItemViewSetup>(Lifetime.Singleton).As<ICommandItemViewSetup>();
+            builder.Register<EvalCommandEditViewSetup>(Lifetime.Singleton).As<ICommandEditViewSetup>();
         }
     }
 }

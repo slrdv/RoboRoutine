@@ -14,9 +14,9 @@ namespace RoboRoutine
             _putSystem = putSystem;
         }
 
-        public async UniTask<CommandResult> ExecuteAsync()
+        public UniTask<CommandResult> ExecuteAsync()
         {
-            return _putSystem.Put();
+            return UniTask.FromResult(_putSystem.Put());
         }
 
         public void Cancel() { }

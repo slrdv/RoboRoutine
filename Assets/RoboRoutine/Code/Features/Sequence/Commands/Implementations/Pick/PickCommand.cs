@@ -14,9 +14,9 @@ namespace RoboRoutine
             _pickSystem = pickSystem;
         }
 
-        public async UniTask<CommandResult> ExecuteAsync()
+        public UniTask<CommandResult> ExecuteAsync()
         {
-            return _pickSystem.Pick();
+            return UniTask.FromResult(_pickSystem.Pick());
         }
 
         public void Cancel() { }
