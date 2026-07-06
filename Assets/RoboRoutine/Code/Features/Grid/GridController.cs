@@ -11,6 +11,8 @@ namespace RoboRoutine
         private readonly ISnapshotableRegistry _snapshotableRegistry;
         private readonly Dictionary<Vector2Int, IGridEntityController> _entities = new();
 
+        private readonly List<Vector2Int> _cachedKeys = new();
+
         public SnapshotLayer SnapshotLayer => SnapshotLayer.Grid;
 
         public GridController(GridModel gridModel, GridView gridView, ISnapshotableRegistry snapshotableRegistry)
@@ -102,22 +104,28 @@ namespace RoboRoutine
         {
             if (state is not GridState gridState) throw new ArgumentException($"Invalid state type: {state.GetType().Name}");
 
-            HashSet<Vector2Int> oldKeys = new(_entities.Keys);
-            HashSet<Vector2Int> newKeys = new(gridState.Entities.Keys);
-
-            foreach (Vector2Int key in newKeys)
+            _cachedKeys.Clear();
+            foreach (var kv in _entities)
             {
-                if (!oldKeys.Contains(key))
+                _cachedKeys.Add(kv.Key);
+            }
+
+            for (int i = 0; i < _cachedKeys.Count; i++)
+            {
+                Vector2Int key = _cachedKeys[i];
+                if (!gridState.Entities.TryGetValue(key, out var target) || target != _entities[key])
                 {
-                    AddEntity(gridState.Entities[key], key);
+                    Debug.Log($"[{GetType().Name}.{nameof(RestoreState)}] Remove {_entities[key].View.name} at {key}");
+                    RemoveEntity(key);
                 }
             }
 
-            foreach (Vector2Int key in oldKeys)
+            foreach (var kv in gridState.Entities)
             {
-                if (!newKeys.Contains(key))
+                if (!_entities.TryGetValue(kv.Key, out var current) || current != kv.Value)
                 {
-                    RemoveEntity(key);
+                    Debug.Log($"[{GetType().Name}.{nameof(RestoreState)}] Restore {gridState.Entities[kv.Key].View.name} at {kv.Key}");
+                    AddEntity(kv.Value, kv.Key);
                 }
             }
         }

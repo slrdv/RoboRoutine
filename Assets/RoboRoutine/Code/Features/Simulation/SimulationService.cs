@@ -139,7 +139,7 @@ namespace RoboRoutine
                 FailedEvent?.Invoke();
             }
 
-            Debug.Log($"Command completed with result {result}");
+            //Debug.Log($"Command completed with result {result}");
         }
 
         private void OnSequenceUpdated()
