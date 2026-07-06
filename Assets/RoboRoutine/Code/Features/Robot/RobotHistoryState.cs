@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public class RobotState
+    public class RobotHistoryState
     {
         public Vector2 Position;
         public Quaternion Rotation;

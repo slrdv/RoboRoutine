@@ -68,7 +68,7 @@ namespace RoboRoutine
 
         public object CaptureState()
         {
-            return new RobotState
+            return new RobotHistoryState
             {
                 Position = _robotView.GetPositionXZ(),
                 Rotation = _robotView.GetRotation(),
@@ -78,7 +78,7 @@ namespace RoboRoutine
 
         public void RestoreState(object state)
         {
-            if (state is not RobotState robotState) throw new ArgumentException($"Invalid state type: {state.GetType().Name}");
+            if (state is not RobotHistoryState robotState) throw new ArgumentException($"Invalid history state type: {state.GetType().Name}");
 
             _robotView.SetPositionXZ(robotState.Position);
             _robotView.SetRotation(robotState.Rotation);

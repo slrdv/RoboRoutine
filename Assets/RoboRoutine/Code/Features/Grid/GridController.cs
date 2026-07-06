@@ -97,12 +97,12 @@ namespace RoboRoutine
 
         public object CaptureState()
         {
-            return new GridState { Entities = new Dictionary<Vector2Int, IGridEntityController>(_entities) };
+            return new GridHistoryState { Entities = new Dictionary<Vector2Int, IGridEntityController>(_entities) };
         }
 
         public void RestoreState(object state)
         {
-            if (state is not GridState gridState) throw new ArgumentException($"Invalid state type: {state.GetType().Name}");
+            if (state is not GridHistoryState gridState) throw new ArgumentException($"Invalid history state type: {state.GetType().Name}");
 
             _cachedKeys.Clear();
             foreach (var kv in _entities)

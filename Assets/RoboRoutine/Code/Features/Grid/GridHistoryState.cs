@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public sealed class GridState
+    public sealed class GridHistoryState
     {
         public Dictionary<Vector2Int, IGridEntityController> Entities;
     }

@@ -26,13 +26,11 @@ namespace RoboRoutine
 
         public object CaptureState()
         {
-            return new OperandHistoryState { Self = this, Value = _model.Value };
+            return new OperandHistoryState { Value = _model.Value };
         }
         public void RestoreState(object state)
         {
-            if (state is not OperandHistoryState operandState) throw new ArgumentException($"Invalid state type: {state.GetType().Name}");
-            if (operandState.Self != this) return;
-
+            if (state is not OperandHistoryState operandState) throw new ArgumentException($"Invalid history state type: {state.GetType().Name}");
             SetValue(operandState.Value);
         }
 
