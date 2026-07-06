@@ -38,6 +38,7 @@ namespace RoboRoutine
         public void Tick(float dt)
         {
             _currentOperation?.Tick(dt);
+            _operand?.UpdateRotation();
         }
 
         public UniTask<OperationResult> MoveXZAsync(Vector2 position)

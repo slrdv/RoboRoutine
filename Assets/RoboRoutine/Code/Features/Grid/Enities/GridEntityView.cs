@@ -4,6 +4,8 @@ namespace RoboRoutine
 {
     public class GridEntityView : MonoBehaviour
     {
+        private Quaternion _originRotation;
+
         public Vector3 GetPosition()
         {
             return gameObject.transform.position;
@@ -22,6 +24,16 @@ namespace RoboRoutine
         public void SetParent(Transform parent)
         {
             gameObject.transform.SetParent(parent);
+        }
+
+        public void UpdateRotation()
+        {
+            gameObject.transform.rotation = _originRotation;
+        }
+
+        private void Awake()
+        {
+            _originRotation = gameObject.transform.rotation;
         }
     }
 }

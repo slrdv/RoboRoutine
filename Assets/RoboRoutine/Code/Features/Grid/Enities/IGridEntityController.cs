@@ -9,5 +9,6 @@ namespace RoboRoutine
         EntityType EntityType { get; }
 
         void AttachToParent(Transform parent, Vector3 position, Vector3 scale);
+        void UpdateRotation();
     }
 }

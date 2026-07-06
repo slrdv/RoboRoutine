@@ -4,8 +4,8 @@ namespace RoboRoutine
 {
     public class GridEntityController<TModel, TView> : IGridEntityController where TView : GridEntityView where TModel : GridEntityModel
     {
-        private readonly TModel _model;
-        private readonly TView _view;
+        protected readonly TModel _model;
+        protected readonly TView _view;
 
         public GridEntityModel Model => _model;
         public GridEntityView View => _view;
@@ -17,11 +17,17 @@ namespace RoboRoutine
             _view = view;
         }
 
+        public void UpdateRotation()
+        {
+            _view.UpdateRotation();
+        }
+
         public void AttachToParent(Transform parent, Vector3 position, Vector3 scale)
         {
             _view.SetParent(parent);
             _view.SetScale(scale);
             _view.SetPosition(position);
+            _view.UpdateRotation();
         }
     }
 }
