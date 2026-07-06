@@ -16,6 +16,7 @@ namespace RoboRoutine
         private readonly RobotMovementOperation _movementOperation;
 
         public SnapshotLayer SnapshotLayer => SnapshotLayer.Robot;
+        public OperandEntityController Operand => _operand;
 
         public Vector2 GetPositionXZ()
         {
@@ -51,9 +52,11 @@ namespace RoboRoutine
             operand.AttachToParent(_robotView.ItemRoot, _robotView.ItemRoot.position, _robotView.ItemScale);
         }
 
-        public void RemoveOperand()
+        public OperandEntityController RemoveOperand()
         {
+            OperandEntityController operand = _operand;
             _operand = null;
+            return operand;
         }
 
 
