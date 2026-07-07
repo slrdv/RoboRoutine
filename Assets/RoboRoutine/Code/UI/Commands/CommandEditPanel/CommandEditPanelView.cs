@@ -15,6 +15,7 @@ namespace RoboRoutine
         [SerializeField] private Transform _inputContainer;
         [SerializeField] private LabeledDropdown _dropdownPrefab;
         [SerializeField] private LabeledNumberSelector _numberSelectorPrefab;
+        [SerializeField] private LabeledNumberInput _numberInputPrefab;
 
         private readonly List<LabeledInput> _inputs = new();
 
@@ -43,6 +44,13 @@ namespace RoboRoutine
         {
             LabeledNumberSelector input = CreateInput(_numberSelectorPrefab, label);
             input.Input.SetMinMax(min, max);
+            return input;
+        }
+
+        public LabeledNumberInput AddNumberInput(string label, int min, int max)
+        {
+            LabeledNumberInput input = CreateInput(_numberInputPrefab, label);
+            input.SetMinMax(min, max);
             return input;
         }
 

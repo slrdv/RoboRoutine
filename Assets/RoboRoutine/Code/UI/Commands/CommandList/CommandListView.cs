@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using VContainer;
 
 namespace RoboRoutine
 {
@@ -17,6 +18,8 @@ namespace RoboRoutine
         [SerializeField] private RectTransform _dropLine;
         [SerializeField] private RectTransform _pointer;
 
+        private ICanvasService _canvasService;
+
         private readonly List<CommandItemView> _items = new();
 
         private bool _isDragging;
@@ -24,6 +27,12 @@ namespace RoboRoutine
         private int _originIndex;
         private int _dropIndex;
         private bool _inputEnabled = true;
+
+        [Inject]
+        public void Construct(ICanvasService canvasService)
+        {
+            _canvasService = canvasService;
+        }
 
         public void AddItem(CommandItemView item, int index)
         {
@@ -82,11 +91,38 @@ namespace RoboRoutine
             }
         }
 
+        public bool TryGetIndexAtPosition(Vector2 screenPosition, out int result)
+        {
+            for (int i = 0; i < _items.Count; i++)
+            {
+                if (_canvasService.IsPointOverRect(_items[i].RectTransform, screenPosition))
+                {
+                    result = i;
+                    return true;
+                }
+            }
+
+            result = -1;
+            return false;
+        }
+
+        public bool TryGetPositionAtIndex(int index, out Vector2 result)
+        {
+            if (index < 0 || index >= _items.Count)
+            {
+                result = default;
+                return false;
+            }
+
+            result = _canvasService.GetScreenPosition(_items[index].RectTransform);
+            return true;
+        }
+
         public void OnExternalDrag(PointerEventData eventData)
         {
             if (!_inputEnabled) return;
 
-            if (!IsPointerOverRect(eventData.position))
+            if (!_canvasService.IsPointOverRect(_itemRoot, eventData.position))
             {
                 if (_isExternalDragging)
                 {
@@ -147,7 +183,7 @@ namespace RoboRoutine
             _ghostItem.RectTransform.position += new Vector3(eventData.delta.x, eventData.delta.y, 0f);
             Vector2 position = _ghostItem.RectTransform.position;
 
-            if (!IsPointerOverRect(position))
+            if (!_canvasService.IsPointOverRect(_itemRoot, position))
             {
                 HideDropLine();
                 return;
@@ -176,7 +212,7 @@ namespace RoboRoutine
 
             _isDragging = false;
 
-            if (!IsPointerOverRect(_ghostItem.RectTransform.position))
+            if (!_canvasService.IsPointOverRect(_itemRoot, _ghostItem.RectTransform.position))
             {
                 ItemDroppedOutEvent?.Invoke(_originIndex);
             }
@@ -225,11 +261,6 @@ namespace RoboRoutine
         private void HideGhostItem()
         {
             _ghostItem.gameObject.SetActive(false);
-        }
-
-        private bool IsPointerOverRect(Vector2 pointer)
-        {
-            return RectTransformUtility.RectangleContainsScreenPoint(_itemRoot, pointer, null);
         }
 
         private void OnDestroy()

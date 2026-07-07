@@ -21,6 +21,8 @@ namespace RoboRoutine
         public int Count => _commands.Count;
         public bool IsExecuting => _isExecuting;
 
+        private int? _pendingIndex;
+
         public void Add(ICommand command)
         {
             CheckIsBusy();
@@ -71,6 +73,11 @@ namespace RoboRoutine
             SequenceUpdatedEvent?.Invoke();
         }
 
+        public void SetIndexAfterExecution(int index)
+        {
+            _pendingIndex = index;
+        }
+
         public void ExecuteNext()
         {
             CheckIsBusy();
@@ -110,7 +117,15 @@ namespace RoboRoutine
             
             if (_disposed) return;
 
-            ++_commandIndex;
+            if (_pendingIndex.HasValue)
+            {
+                _commandIndex = _pendingIndex.Value;
+                _pendingIndex = null;
+            }
+            else
+            {
+                ++_commandIndex;
+            }
 
             CommandCompleteEvent?.Invoke(result, _commandIndex - 1);
         }

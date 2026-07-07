@@ -15,10 +15,16 @@ namespace RoboRoutine
         private readonly List<CommandItemModel> _items = new();
 
         public IReadOnlyList<CommandItemModel> Items => _items;
-
+        public int Count => _items.Count;
+        
         public void Add(CommandItemModel item)
         {
             Insert(item, _items.Count);
+        }
+
+        public int GetIndex(CommandItemModel item)
+        {
+            return _items.IndexOf(item);
         }
 
         public void Remove(CommandItemModel item)

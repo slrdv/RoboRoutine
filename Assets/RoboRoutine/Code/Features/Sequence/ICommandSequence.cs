@@ -10,5 +10,6 @@ namespace RoboRoutine
         void Clear();
         void ExecuteNext();
         void Cancel();
+        void SetIndexAfterExecution(int index);
     }
 }

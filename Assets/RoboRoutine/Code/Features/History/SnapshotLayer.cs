@@ -9,6 +9,7 @@ namespace RoboRoutine
         Robot = 1u << 0,
         Grid = 1u << 1,
         Operand = 1u << 2,
+        Condition = 1u << 3,
         All = ~0u
     }
 }

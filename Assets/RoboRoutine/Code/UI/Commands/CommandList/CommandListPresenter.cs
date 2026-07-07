@@ -1,17 +1,23 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RoboRoutine
 {
     public sealed class CommandListPresenter : IDisposable
     {
         public event Action<CommandItemModel> ItemClickEvent;
+        public event Action<int, CommandItemModel> AfterItemCreatedEvent;
+        public event Action<int, int> AfterItemMovedEvent;
+
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
         private readonly ICommandItemFactory _itemFactory;
         private readonly ISimulationState _simulationState;
         private readonly ICommandCrossPanelDragEventProvider _externalDragEventProvider;
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
+
+        public CommandListModel Model => _model;
 
         public CommandListPresenter(
             CommandListModel model,
@@ -27,6 +33,26 @@ namespace RoboRoutine
             _externalDragEventProvider = dragEventProvider;
 
             Subscribe();
+        }
+
+        public RectTransform GetItemRect(CommandItemModel model)
+        {
+            return _items[model].View.RectTransform;
+        }
+
+        public bool TryGetIndexAtPosition(Vector2 screenPosition, out int index)
+        {
+            return _view.TryGetIndexAtPosition(screenPosition, out index);
+        }
+
+        public bool TryGetPositionAtIndex(int index, out Vector2 screenPosition)
+        {
+            return _view.TryGetPositionAtIndex(index, out screenPosition);
+        }
+
+        public int GetItemIndex(CommandItemModel model)
+        {
+            return _model.GetIndex(model);
         }
 
         public void Dispose()
@@ -53,6 +79,8 @@ namespace RoboRoutine
         private void OnItemMoved(int from, int to)
         {
             _view.MoveItem(from, to);
+
+            AfterItemMovedEvent?.Invoke(from, to);
         }
 
         private void OnItemsClear()
@@ -72,6 +100,8 @@ namespace RoboRoutine
             _view.AddItem(presenter.View, index);
             _items.Add(model, presenter);
             presenter.ClickEvent += OnItemClicked;
+
+            AfterItemCreatedEvent?.Invoke(index, model);
         }
 
         private void OnItemDropped(int from, int to)
@@ -128,6 +158,7 @@ namespace RoboRoutine
             _model.ClearedEvent += OnItemsClear;
 
             _simulationState.StartEvent += ShowPointer;
+            _simulationState.StopEvent += ShowPointer;
             _simulationState.ResetEvent += HidePointer;
 
             _view.ItemDroppedEvent += OnItemDropped;
@@ -148,6 +179,7 @@ namespace RoboRoutine
             _view.ItemDroppedOutEvent -= OnItemDroppedOut;
 
             _simulationState.StartEvent -= ShowPointer;
+            _simulationState.StopEvent -= ShowPointer;
             _simulationState.ResetEvent -= HidePointer;
 
             _model.ItemAddedEvent -= OnItemAdded;

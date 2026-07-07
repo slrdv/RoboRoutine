@@ -640,7 +640,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2580178916301779647, guid: 35fa668dc872f6d4c88223dd8c8829c0, type: 3}
       propertyPath: _value
-      value: 8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5706361301053234778, guid: 35fa668dc872f6d4c88223dd8c8829c0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3141,7 +3141,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5821397737467499076, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
   m_PrefabInstance: {fileID: 3398644084143657718}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3398644084143657720}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7f0ee4f85075ca4eb1ff8172a5e4f56, type: 3}
@@ -3823,10 +3823,13 @@ MonoBehaviour:
     TypeName: RoboRoutine.RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
+  _canvas: {fileID: 1469313918}
+  _camera: {fileID: 330585545}
   _gridView: {fileID: 2118031080}
   _robotView: {fileID: 1155432566}
   _simulationPanelView: {fileID: 1339857689}
   _commandListView: {fileID: 1559768099}
+  _arrowPanelView: {fileID: 3398644084143657721}
   _commandItemPrefab: {fileID: 8335536056197515487, guid: ac27c3d20e592de4699c62ec4c26c672, type: 3}
   _commandPaletteView: {fileID: 2025607869}
   _commandEditPanelView: {fileID: 2025052125}
@@ -4091,6 +4094,7 @@ MonoBehaviour:
   _inputContainer: {fileID: 750284292}
   _dropdownPrefab: {fileID: 5540076077696862155, guid: b7424ecc2b2abad49967a0477de362e2, type: 3}
   _numberSelectorPrefab: {fileID: 4342926970067851229, guid: 361aa5d00f33d5946a820dc511ed1d98, type: 3}
+  _numberInputPrefab: {fileID: 52238876138924899, guid: bfc079b7751968c498607d2f60fff835, type: 3}
 --- !u!1 &2025607867
 GameObject:
   m_ObjectHideFlags: 0
@@ -4403,6 +4407,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.0009765625
       objectReference: {fileID: 0}
+    - target: {fileID: 2709749130419583386, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2809265549855101779, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4618,8 +4626,35 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2902501323833994576, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2090391484}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6849614229389868964, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 3398644084143657721}
   m_SourcePrefab: {fileID: 100100000, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
+--- !u!224 &3398644084143657719 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2809265549855101779, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
+  m_PrefabInstance: {fileID: 3398644084143657718}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3398644084143657720 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6849614229389868964, guid: 78e7bcc8587a6c24bac257b33fd6041b, type: 3}
+  m_PrefabInstance: {fileID: 3398644084143657718}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3398644084143657721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3398644084143657720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264e6d2a2d295846933d91bb5f647cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.LinkedCommandsView
+  _arrowsRoot: {fileID: 3398644084143657719}
+  _arrowPrefab: {fileID: 7718557128899459215, guid: 36ad71d894564e948a5e8d3447343847, type: 3}
 --- !u!1001 &8569439586967518215
 PrefabInstance:
   m_ObjectHideFlags: 0
