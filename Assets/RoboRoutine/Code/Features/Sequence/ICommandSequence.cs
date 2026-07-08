@@ -9,7 +9,7 @@ namespace RoboRoutine
         void SetIndex(int index);
         void Clear();
         void ExecuteNext();
-        void Cancel();
+        void RequestCancel();
         void SetIndexAfterExecution(int index);
     }
 }

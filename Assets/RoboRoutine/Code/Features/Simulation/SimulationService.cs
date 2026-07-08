@@ -76,7 +76,7 @@ namespace RoboRoutine
 
             if (_isRunning)
             {
-                _sequence.Cancel();
+                _sequence.RequestCancel();
                 return;
             }
 

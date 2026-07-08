@@ -18,7 +18,7 @@ namespace RoboRoutine
 
         public void Build()
         {
-            _sequence.Cancel();
+            _sequence.RequestCancel();
             _sequence.Clear();
 
             for (int i = 0; i < _listModel.Items.Count; i++)

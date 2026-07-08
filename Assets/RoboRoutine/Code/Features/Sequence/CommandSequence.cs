@@ -15,13 +15,14 @@ namespace RoboRoutine
         private int _commandIndex = 0;
         private bool _isExecuting;
         private bool _disposed;
+        private bool _requestCancel;
+        private int? _requestIndex;
 
         public IReadOnlyList<ICommand> Commands => _commands;
         public int CommandIndex => _commandIndex;
         public int Count => _commands.Count;
         public bool IsExecuting => _isExecuting;
 
-        private int? _pendingIndex;
 
         public void Add(ICommand command)
         {
@@ -75,7 +76,7 @@ namespace RoboRoutine
 
         public void SetIndexAfterExecution(int index)
         {
-            _pendingIndex = index;
+            _requestIndex = index;
         }
 
         public void ExecuteNext()
@@ -84,10 +85,12 @@ namespace RoboRoutine
             ExecuteNextAsync().Forget();
         }
 
-        public void Cancel()
+        public void RequestCancel()
         {
             if (_isExecuting)
             {
+                _requestCancel = true;
+                _isExecuting = false;
                 _commands[_commandIndex].Cancel();
             }
         }
@@ -113,20 +116,26 @@ namespace RoboRoutine
             CommandResult result = await command.ExecuteAsync();
             await UniTask.Yield();
 
-            _isExecuting = false;
-            
             if (_disposed) return;
 
-            if (_pendingIndex.HasValue)
+            if (_requestCancel)
             {
-                _commandIndex = _pendingIndex.Value;
-                _pendingIndex = null;
+                _requestCancel = false;
+                CommandCompleteEvent?.Invoke(result, _commandIndex);
+                return;
+            }
+
+            if (_requestIndex.HasValue)
+            {
+                _commandIndex = _requestIndex.Value;
+                _requestIndex = null;
             }
             else
             {
                 ++_commandIndex;
             }
 
+            _isExecuting = false;
             CommandCompleteEvent?.Invoke(result, _commandIndex - 1);
         }
 
