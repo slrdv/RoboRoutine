@@ -13,7 +13,7 @@ namespace RoboRoutine
 
         public ICommand Create(CommandData commandData)
         {
-            MoveCommandData data = (MoveCommandData) commandData;
+            MoveCommandData data = (MoveCommandData)commandData;
             return new MoveCommand(_movementSystem, data.MoveDirection, data.Distance);
         }
 

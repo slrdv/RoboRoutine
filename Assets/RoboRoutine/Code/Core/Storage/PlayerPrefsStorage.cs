@@ -31,7 +31,7 @@ namespace RoboRoutine
             if (!PlayerPrefs.HasKey(_key))
             {
                 _loaded = true;
-                return default;    
+                return default;
             }
 
             string json = PlayerPrefs.GetString(_key);

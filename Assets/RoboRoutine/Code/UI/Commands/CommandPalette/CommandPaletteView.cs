@@ -35,7 +35,7 @@ namespace RoboRoutine
             _isDragging = true;
 
             _ghostItem.RectTransform.position = item.RectTransform.position;
-            item.CopyTo(_ghostItem); 
+            item.CopyTo(_ghostItem);
             _ghostItem.gameObject.SetActive(true);
 
             BeginDragEvent?.Invoke();

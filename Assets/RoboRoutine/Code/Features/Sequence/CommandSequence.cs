@@ -67,7 +67,7 @@ namespace RoboRoutine
         public void Clear()
         {
             CheckIsBusy();
-            
+
             _commands.Clear();
             _commandIndex = 0;
 

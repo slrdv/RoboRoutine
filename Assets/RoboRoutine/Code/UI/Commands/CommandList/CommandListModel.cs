@@ -16,7 +16,7 @@ namespace RoboRoutine
 
         public IReadOnlyList<CommandItemModel> Items => _items;
         public int Count => _items.Count;
-        
+
         public void Add(CommandItemModel item)
         {
             Insert(item, _items.Count);

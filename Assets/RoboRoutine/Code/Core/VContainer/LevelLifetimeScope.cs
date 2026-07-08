@@ -8,7 +8,7 @@ namespace RoboRoutine
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Camera _camera;
-        
+
         [SerializeField] private GridView _gridView;
         [SerializeField] private RobotView _robotView;
 
@@ -75,7 +75,7 @@ namespace RoboRoutine
         {
             builder.Register<SimulationService>(Lifetime.Singleton).As<ISimulationService>().As<ISimulationState>();
             builder.Register<SequenceStorageService>(Lifetime.Singleton);
-            
+
             builder.RegisterEager<SequenceBuilder>(Lifetime.Singleton);
         }
 

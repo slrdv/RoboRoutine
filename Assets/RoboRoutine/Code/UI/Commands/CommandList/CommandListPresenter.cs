@@ -17,7 +17,7 @@ namespace RoboRoutine
         private readonly ICommandItemFactory _itemFactory;
         private readonly ISimulationState _simulationState;
         private readonly ICommandCrossPanelDragEventProvider _externalDragEventProvider;
-        
+
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
 
         public CommandListModel Model => _model;

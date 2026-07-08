@@ -97,7 +97,7 @@ namespace RoboRoutine
         private void OnClick()
         {
             if (!_isClickEnable || _isDragging) return;
-            
+
             ClickEvent?.Invoke();
         }
     }

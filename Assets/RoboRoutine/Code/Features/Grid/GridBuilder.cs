@@ -20,7 +20,7 @@ namespace RoboRoutine
             {
                 GridEntityAuthoring authoring = authorings[i];
                 if (authoring.EntityType == EntityType.None) continue;
-             
+
                 IGridEntityController gridEntityController = _factory.Create(authoring);
                 _grid.AddEntity(gridEntityController, authoring.GetOrigin());
             }

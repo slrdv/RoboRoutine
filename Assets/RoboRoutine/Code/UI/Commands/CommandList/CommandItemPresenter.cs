@@ -3,7 +3,7 @@ using R3;
 
 namespace RoboRoutine
 {
-    public sealed class CommandItemPresenter: IDisposable
+    public sealed class CommandItemPresenter : IDisposable
     {
         public event Action<CommandItemPresenter> ClickEvent;
 

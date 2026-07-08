@@ -58,7 +58,7 @@ namespace RoboRoutine
         }
 
         private void OnBeforeCommandExecute(ICommand command, int commandIndex)
-        {   
+        {
             Dictionary<ISnapshotable, object> states = _snapshotService.TakeSnapshot(command.SnapshotLayer);
             _snapshots.Push(new HistorySnapshot(states, commandIndex));
         }

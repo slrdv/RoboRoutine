@@ -18,7 +18,7 @@ namespace RoboRoutine
 
         public void Setup(CommandItemView view, CommandConfig config, CommandData commandData)
         {
-            MoveCommandData moveData = (MoveCommandData) commandData;
+            MoveCommandData moveData = (MoveCommandData)commandData;
 
             view.SetIcon(config.Icon);
             view.SetLabel($"{config.DisplayName} {moveData.Distance.ToString()}");
