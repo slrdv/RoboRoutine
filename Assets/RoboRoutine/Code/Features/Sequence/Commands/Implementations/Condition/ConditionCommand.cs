@@ -5,7 +5,7 @@ namespace RoboRoutine
     public sealed class ConditionCommand : ICommand
     {
         public CommandType CommandType => CommandType.Condition;
-        public SnapshotLayer SnapshotLayer => SnapshotLayer.Condition;
+        public SnapshotLayer SnapshotLayer => SnapshotLayer.None;
 
         private readonly ConditionCommandSystem _conditionSystem;
         private readonly ConditionType _conditionType;

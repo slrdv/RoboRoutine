@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public sealed class NumericEntityAuthoring : GridEntityAuthoring
+    public class NumericEntityAuthoring : GridEntityAuthoring
     {
         [SerializeField] private int _value;
 

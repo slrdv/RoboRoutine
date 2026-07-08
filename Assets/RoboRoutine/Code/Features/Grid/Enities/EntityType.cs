@@ -4,6 +4,7 @@ namespace RoboRoutine
     {
         None = 0,
         Obstacle = 1,
-        Operand = 2
+        Operand = 2,
+        Slot = 3
     }
 }

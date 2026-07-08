@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public sealed class NumericEntityModel : GridEntityModel
+    public class NumericEntityModel : GridEntityModel
     {
         private int _value;
 

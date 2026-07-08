@@ -50,6 +50,7 @@ namespace RoboRoutine
 
             builder.Register<ObstacleEntityFactory>(Lifetime.Singleton).As<IGridEntityFactory>();
             builder.Register<OperandEntityFactory>(Lifetime.Singleton).As<IGridEntityFactory>();
+            builder.Register<SlotEntityFactory>(Lifetime.Singleton).As<IGridEntityFactory>();
         }
 
         private void RegisterRobot(IContainerBuilder builder)

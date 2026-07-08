@@ -52,6 +52,18 @@ namespace RoboRoutine
             return TryGetEntity(model, out item);
         }
 
+        public bool TryFindAtWorldPositionXZ<TController>(Vector2 worldPositionXZ, out TController item) where TController : class, IGridEntityController
+        {
+            if (TryFindAtWorldPositionXZ(worldPositionXZ, out IGridEntityController controller) && controller is TController typed)
+            {
+                item = typed;
+                return true;
+            }
+
+            item = null;
+            return false;
+        }
+
         public Vector2Int WorldToCell(Vector3 worldPosition)
         {
             return WorldToCell(worldPosition.ToXZ());

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public sealed class NumericEntityView : GridEntityView
+    public class NumericEntityView : GridEntityView
     {
         [SerializeField] TMP_Text _label;
 
