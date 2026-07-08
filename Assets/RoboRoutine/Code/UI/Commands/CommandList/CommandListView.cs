@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using VContainer;
 
 namespace RoboRoutine
@@ -17,7 +18,7 @@ namespace RoboRoutine
         [SerializeField] private CommandItemView _ghostItem;
         [SerializeField] private RectTransform _dropLine;
         [SerializeField] private RectTransform _pointer;
-
+        [SerializeField] private RectTransform _layoutRect;
         private ICanvasService _canvasService;
 
         private readonly List<CommandItemView> _items = new();
@@ -146,6 +147,12 @@ namespace RoboRoutine
             _isExternalDragging = false;
 
             ExternalItemDroppedEvent?.Invoke(_dropIndex, commandData);
+        }
+
+        public void UpdateLayout()
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_layoutRect);
+            _canvasService.ForceUpdate();
         }
 
         private void Awake()

@@ -8,13 +8,16 @@ namespace RoboRoutine
     {
         public event Action<CommandItemModel> ItemClickEvent;
         public event Action<int, CommandItemModel> AfterItemCreatedEvent;
+        public event Action<int, CommandItemModel> AfterItemRemovedEvent;
         public event Action<int, int> AfterItemMovedEvent;
+        public event Action AfterItemsClearedEvent;
 
         private readonly CommandListModel _model;
         private readonly CommandListView _view;
         private readonly ICommandItemFactory _itemFactory;
         private readonly ISimulationState _simulationState;
         private readonly ICommandCrossPanelDragEventProvider _externalDragEventProvider;
+        
         private readonly Dictionary<CommandItemModel, CommandItemPresenter> _items = new();
 
         public CommandListModel Model => _model;
@@ -74,12 +77,16 @@ namespace RoboRoutine
             _items.Remove(item);
             _view.RemoveItem(index);
             presenter.Dispose();
+
+            _view.UpdateLayout();
+            AfterItemRemovedEvent?.Invoke(index, item);
         }
 
         private void OnItemMoved(int from, int to)
         {
             _view.MoveItem(from, to);
 
+            _view.UpdateLayout();
             AfterItemMovedEvent?.Invoke(from, to);
         }
 
@@ -92,6 +99,8 @@ namespace RoboRoutine
                 presenter.Dispose();
             }
             _items.Clear();
+
+            AfterItemsClearedEvent?.Invoke();
         }
 
         private void CreateItem(CommandItemModel model, int index)
@@ -101,6 +110,7 @@ namespace RoboRoutine
             _items.Add(model, presenter);
             presenter.ClickEvent += OnItemClicked;
 
+            _view.UpdateLayout();
             AfterItemCreatedEvent?.Invoke(index, model);
         }
 

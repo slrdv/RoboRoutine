@@ -19,13 +19,10 @@ namespace RoboRoutine
 
             _view.ArrowDropEvent += OnArrowDropped;
 
-
             _commandList.AfterItemCreatedEvent += OnItemAdded;
+            _commandList.AfterItemRemovedEvent += OnItemRemoved;
             _commandList.AfterItemMovedEvent += OnItemMoved;
-
-            CommandListModel listModel = _commandList.Model;
-            listModel.ItemRemovedEvent += OnItemRemoved;
-            listModel.ClearedEvent += OnItemsClear;
+            _commandList.AfterItemsClearedEvent += OnItemsClear;
         }
 
         public void Dispose()
@@ -33,19 +30,15 @@ namespace RoboRoutine
             _view.ArrowDropEvent -= OnArrowDropped;
 
             _commandList.AfterItemCreatedEvent -= OnItemAdded;
+            _commandList.AfterItemRemovedEvent -= OnItemRemoved;
             _commandList.AfterItemMovedEvent -= OnItemMoved;
-
-            CommandListModel listModel = _commandList.Model;
-            listModel.ItemRemovedEvent -= OnItemRemoved;
-            listModel.ClearedEvent -= OnItemsClear;
+            _commandList.AfterItemsClearedEvent -= OnItemsClear;
 
             Clear();
         }
 
         private void OnItemAdded(int index, CommandItemModel item)
         {
-            _canvasService.ForceUpdate();
-
             if (item.CommandData is ITargetIndexCommandData data)
             {
                 Arrow arrow = _view.CreateArrow();
@@ -99,6 +92,10 @@ namespace RoboRoutine
                 {
                     item.SetCommandData(indexCommandData.WithTargetIndex(-1));
                 }
+                else if (GetItemIndex(item) >= index)
+                {
+                    DrawArrow(arrow, item, indexCommandData.TargetIndex);
+                }
             }
         }
 
@@ -106,7 +103,7 @@ namespace RoboRoutine
         {
             CommandItemModel item = _commandList.Model.Items[to];
             if (item.CommandData is not ITargetIndexCommandData data) return;
-            DrawArrow(GetArrow(item), item, data.TargetIndex, true);
+            DrawArrow(GetArrow(item), item, data.TargetIndex);
         }
 
         private void OnItemsClear()
@@ -163,9 +160,9 @@ namespace RoboRoutine
             return _commandList.GetItemIndex(item);
         }
 
-        private void DrawArrow(Arrow arrow, CommandItemModel item, int targetIndex, bool forceUpdate = false)
+        private void DrawArrow(Arrow arrow, CommandItemModel item, int targetIndex)
         {
-            Vector2 itemPosition = GetItemPosition(item, forceUpdate);
+            Vector2 itemPosition = GetItemPosition(item);
 
             if (IsTargetIndexValid(item, targetIndex) && _commandList.TryGetPositionAtIndex(targetIndex, out Vector2 targetPosition))
             {
