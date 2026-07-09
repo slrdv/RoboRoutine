@@ -6,11 +6,13 @@ namespace RoboRoutine
     {
         private readonly MenuView _view;
         private readonly ILevelManager _levelManager;
+        private readonly IGameManager _gameManager;
 
-        public MenuPresenter(MenuView view, ILevelManager levelManager)
+        public MenuPresenter(MenuView view, ILevelManager levelManager, IGameManager gameManager)
         {
             _view = view;
             _levelManager = levelManager;
+            _gameManager = gameManager;
             _view.StartButtonPressedEvent += OnStartButtonPressed;
             _view.ExitButtonPressedEvent += OnExitButtonPressed;
         }
@@ -22,11 +24,7 @@ namespace RoboRoutine
 
         private void OnExitButtonPressed()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            _gameManager.Exit();
         }
 
         public void Dispose()

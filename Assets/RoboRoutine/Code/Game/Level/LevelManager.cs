@@ -25,25 +25,26 @@ namespace RoboRoutine
             Debug.Log($"Loading level {level}");
 
             LevelConfig config = _levelRegistry.Get(level);
+            _currentLevel = level;
+
             _stateMachine.ChangeState<LoadLevelState, LevelConfig>(config);
         }
 
         public void LoadNext()
         {
-            if (_levelRegistry.HasNextLevel(_currentLevel))
-            {
-                LevelConfig config = _levelRegistry.GetNext(_currentLevel);
-                _stateMachine.ChangeState<LoadLevelState, LevelConfig>(config);
-            }
-            else
+            if (!_levelRegistry.HasNextLevel(_currentLevel))
             {
                 LoadMenu();
+                return;
             }
+
+            LevelConfig config = _levelRegistry.GetNext(_currentLevel);
+            LoadLevel(config.LevelNum);
         }
 
         public void OnLoadLevelComplete()
         {
-            RunLevel(_currentLevel);
+            RunLevel();
         }
 
         public void OnLevelComplete(LevelResult result)
@@ -51,9 +52,8 @@ namespace RoboRoutine
             LoadNext();
         }
 
-        private void RunLevel(int level)
+        private void RunLevel()
         {
-            _currentLevel = level;
             _stateMachine.ChangeState<RunLevelState>();
         }
     }

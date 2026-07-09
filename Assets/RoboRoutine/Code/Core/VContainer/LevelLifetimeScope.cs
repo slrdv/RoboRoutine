@@ -8,6 +8,7 @@ namespace RoboRoutine
     {
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Camera _camera;
+        [SerializeField] private InputHandler _inputHandler;
 
         [SerializeField] private GridView _gridView;
         [SerializeField] private RobotView _robotView;
@@ -20,6 +21,8 @@ namespace RoboRoutine
         [SerializeField] private CommandEditPanelView _commandEditPanelView;
         [SerializeField] private StatusIndicatorView _statusIndicatorView;
         [SerializeField] private LevelCompletePanelView _levelCompletePanelView;
+        [SerializeField] private LevelMenuView _levelMenuView;
+
         [SerializeField] private Transform _pooledObjectsContainer;
 
         protected override void Configure(IContainerBuilder builder)
@@ -33,6 +36,8 @@ namespace RoboRoutine
             RegisterUI(builder);
 
             RegisterCommandSpecific(builder);
+
+            builder.RegisterComponent(_inputHandler).As<IInputHandler>();
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
             builder.RegisterEntryPoint<LevelBuilder>();
@@ -111,6 +116,9 @@ namespace RoboRoutine
 
             builder.RegisterInstance(_levelCompletePanelView);
             builder.Register<LevelCompletePresenter>(Lifetime.Singleton).As<ILevelCompleteListener>();
+
+            builder.RegisterComponent(_levelMenuView);
+            builder.RegisterEntryPoint<LevelMenuPresenter>(Lifetime.Singleton);
         }
 
         private void RegisterCommandSpecific(IContainerBuilder builder)

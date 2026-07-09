@@ -23,6 +23,8 @@ namespace RoboRoutine
             builder.Register<LevelRegistry>(Lifetime.Singleton);
             builder.RegisterEager<LevelManager>(Lifetime.Singleton).AsSelf().As<ILevelManager>();
 
+            builder.Register<GameManager>(Lifetime.Singleton).As<IGameManager>();
+
             RegisterStates(builder);
         }
 
