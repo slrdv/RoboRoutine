@@ -6,13 +6,12 @@ namespace RoboRoutine
     public sealed class SequenceStorageService : IDisposable
     {
         private readonly CommandListModel _commandlistModel;
-        private readonly IStorage<SequenceData> _storage;
+        private readonly IStorage<string, SequenceData> _storage;
 
         private readonly CompositeDisposable _subscriptions = new();
         private bool _isLoading;
 
-
-        public SequenceStorageService(CommandListModel commandListModel, IStorage<SequenceData> storage)
+        public SequenceStorageService(CommandListModel commandListModel, IStorage<string, SequenceData> storage)
         {
             _commandlistModel = commandListModel;
             _storage = storage;
@@ -43,11 +42,6 @@ namespace RoboRoutine
         {
             _subscriptions.Dispose();
             _commandlistModel.ChangedEvent -= Save;
-        }
-
-        private void OnItemChanged(int index, CommandItemModel item)
-        {
-            Save();
         }
 
         private void Save()

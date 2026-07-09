@@ -1,0 +1,25 @@
+using Cysharp.Threading.Tasks;
+
+namespace RoboRoutine
+{
+    public sealed class RunLevelState : StateEntryBase
+    {
+        private readonly ILoadingScreen _loadingScreen;
+
+        public RunLevelState(ILoadingScreen loadingScreen)
+        {
+            _loadingScreen = loadingScreen;
+        }
+
+        public override async UniTask Enter()
+        {
+            await _loadingScreen.Hide(1f);
+            Complete();
+        }
+
+        public override UniTask Exit()
+        {
+            return UniTask.CompletedTask;
+        }
+    }
+}

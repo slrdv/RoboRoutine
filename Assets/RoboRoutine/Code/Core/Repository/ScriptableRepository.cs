@@ -47,5 +47,11 @@ namespace RoboRoutine
                 _items[configs[i].Key] = configs[i];
             }
         }
+
+        public bool Contains(TKey key)
+        {
+            Load();
+            return _items.ContainsKey(key);
+        }
     }
 }

@@ -3,16 +3,18 @@ using UnityEngine;
 
 namespace RoboRoutine
 {
-    public sealed class PlayerPrefsStorage<T> : IStorage<T>
+    public sealed class PlayerPrefsStorage<T> : IStorage<string, T>
     {
-        private readonly string _key;
+        private string _key;
 
         private T _data;
         private bool _loaded;
 
-        public PlayerPrefsStorage(string key)
+        public void Initialize(string key)
         {
             _key = key;
+            _data = default;
+            _loaded = false;
         }
 
         public void Save(T data)

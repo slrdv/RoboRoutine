@@ -48,3 +48,4 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _loadingScreenPrefab: {fileID: 95161627038133072, guid: f618f445bb2ad66429cea827589e6261, type: 3}

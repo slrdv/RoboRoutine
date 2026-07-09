@@ -9,6 +9,7 @@ namespace RoboRoutine
         TItem Get(TKey key);
         bool TryGet(TKey key, out TItem item);
         IReadOnlyCollection<TItem> GetAll();
+        bool Contains(TKey key);
         void Load();
     }
 }

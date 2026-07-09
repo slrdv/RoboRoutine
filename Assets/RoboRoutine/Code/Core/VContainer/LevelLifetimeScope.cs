@@ -19,6 +19,7 @@ namespace RoboRoutine
         [SerializeField] private CommandPaletteView _commandPaletteView;
         [SerializeField] private CommandEditPanelView _commandEditPanelView;
         [SerializeField] private StatusIndicatorView _statusIndicatorView;
+        [SerializeField] private LevelCompletePanelView _levelCompletePanelView;
         [SerializeField] private Transform _pooledObjectsContainer;
 
         protected override void Configure(IContainerBuilder builder)
@@ -34,9 +35,7 @@ namespace RoboRoutine
             RegisterCommandSpecific(builder);
 
             builder.RegisterEntryPoint<TickService>(Lifetime.Singleton).As<ITickService>().As<ITickRegistry>();
-            builder.Register(r => new PlayerPrefsStorage<SequenceData>("test1"), Lifetime.Singleton).As<IStorage<SequenceData>>();
-
-            builder.RegisterEntryPoint<LevelScopeInitializer>();
+            builder.RegisterEntryPoint<LevelBuilder>();
         }
 
         private void RegisterGrid(IContainerBuilder builder)
@@ -109,6 +108,9 @@ namespace RoboRoutine
 
             builder.RegisterInstance(_statusIndicatorView);
             builder.RegisterEager<StatusIndicatorPresenter>(Lifetime.Singleton);
+
+            builder.RegisterInstance(_levelCompletePanelView);
+            builder.Register<LevelCompletePresenter>(Lifetime.Singleton).As<ILevelCompleteListener>();
         }
 
         private void RegisterCommandSpecific(IContainerBuilder builder)

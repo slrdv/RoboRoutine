@@ -6,11 +6,13 @@ namespace RoboRoutine
     {
         private readonly RobotController _robot;
         private readonly GridController _grid;
+        private readonly ILevelCompleteListener _levelCompleteListener;
 
-        public PutSystem(RobotController robot, GridController grid)
+        public PutSystem(RobotController robot, GridController grid, ILevelCompleteListener levelCompleteListener)
         {
             _robot = robot;
             _grid = grid;
+            _levelCompleteListener = levelCompleteListener;
         }
 
         public CommandResult Put()
@@ -26,7 +28,9 @@ namespace RoboRoutine
             if (_robot.Operand.Value == slot.Value)
             {
                 slot.SetActivated(true);
-                Debug.Log("Win!");
+
+                _levelCompleteListener.OnLevelComplete(LevelResult.Success);
+
                 return CommandResult.Success;
             }
 
