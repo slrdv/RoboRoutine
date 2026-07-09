@@ -4,7 +4,8 @@ namespace RoboRoutine
     {
         void OnLoadLevelComplete();
         void OnLevelComplete(LevelResult result);
-        void RunLevel(int level);
+        void LoadLevel(int level);
+        void LoadNext();
         void LoadMenu();
     }
 }

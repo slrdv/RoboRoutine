@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc758e443362314daacbbd2dd73d3ec, type: 3}
   m_Name: Level1Config
   m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.LevelConfig
-  LevelNum: 0
+  LevelNum: 1
   SceneName: Level_1

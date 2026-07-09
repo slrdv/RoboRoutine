@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace RoboRoutine
 {
     public sealed class LevelManager : ILevelManager
@@ -13,16 +15,30 @@ namespace RoboRoutine
             _levelRegistry = levelRegistry;
         }
 
-        public void RunLevel(int level)
-        {
-            _currentLevel = level;
-            _stateMachine.ChangeState<RunLevelState>();
-        }
-
         public void LoadMenu()
         {
-            LevelConfig config = _levelRegistry.Get(0);
+            LoadLevel(0);
+        }
+
+        public void LoadLevel(int level)
+        {
+            Debug.Log($"Loading level {level}");
+
+            LevelConfig config = _levelRegistry.Get(level);
             _stateMachine.ChangeState<LoadLevelState, LevelConfig>(config);
+        }
+
+        public void LoadNext()
+        {
+            if (_levelRegistry.HasNextLevel(_currentLevel))
+            {
+                LevelConfig config = _levelRegistry.GetNext(_currentLevel);
+                _stateMachine.ChangeState<LoadLevelState, LevelConfig>(config);
+            }
+            else
+            {
+                LoadMenu();
+            }
         }
 
         public void OnLoadLevelComplete()
@@ -35,17 +51,10 @@ namespace RoboRoutine
             LoadNext();
         }
 
-        private void LoadNext()
+        private void RunLevel(int level)
         {
-            if (_levelRegistry.HasNextLevel(_currentLevel))
-            {
-                LevelConfig config = _levelRegistry.GetNext(_currentLevel);
-                _stateMachine.ChangeState<LoadLevelState, LevelConfig>(config);
-            }
-            else
-            {
-                LoadMenu();
-            }
+            _currentLevel = level;
+            _stateMachine.ChangeState<RunLevelState>();
         }
     }
 }
