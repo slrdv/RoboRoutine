@@ -13,7 +13,7 @@ namespace RoboRoutine
 
         public override async UniTask Enter()
         {
-            await _loadingScreen.Hide(1f);
+            await _loadingScreen.Hide(0.5f);
             Complete();
         }
 
