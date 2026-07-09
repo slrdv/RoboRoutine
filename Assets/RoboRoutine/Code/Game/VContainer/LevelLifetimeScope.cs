@@ -45,7 +45,7 @@ namespace RoboRoutine
 
         private void RegisterGrid(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_gridView);
+            builder.RegisterComponent(_gridView);
             builder.Register<GridModel>(Lifetime.Singleton);
             builder.Register<GridBuilder>(Lifetime.Singleton);
             builder.Register<GridController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
@@ -59,7 +59,7 @@ namespace RoboRoutine
 
         private void RegisterRobot(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_robotView);
+            builder.RegisterComponent(_robotView);
             builder.Register<RobotController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
         }
 
@@ -85,8 +85,8 @@ namespace RoboRoutine
 
         private void RegisterUI(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_canvas);
-            builder.RegisterInstance(_camera);
+            builder.RegisterComponent(_canvas);
+            builder.RegisterComponent(_camera);
             builder.Register<CanvasService>(Lifetime.Singleton).As<ICanvasService>();
 
             builder.Register(r => new GameObjectPool<CommandItemView>(r, _commandItemPrefab, _pooledObjectsContainer), Lifetime.Singleton);
@@ -96,7 +96,7 @@ namespace RoboRoutine
             builder.RegisterComponent(_commandListView);
             builder.RegisterEager<CommandListPresenter>(Lifetime.Singleton);
 
-            builder.RegisterInstance(_arrowPanelView);
+            builder.RegisterComponent(_arrowPanelView);
             builder.RegisterEager<ArrowPanelPresenter>(Lifetime.Singleton);
 
             builder.Register<CommandCrossPanelDragService>(Lifetime.Singleton).As<ICommandCrossPanelDrag>().As<ICommandCrossPanelDragEventProvider>();
@@ -105,16 +105,16 @@ namespace RoboRoutine
             builder.Register<CommandPaletteBuilder>(Lifetime.Singleton);
 
             builder.Register<CommandEditViewSetupProvider>(Lifetime.Singleton).As<ICommandEditViewSetupProvider>();
-            builder.RegisterInstance(_commandEditPanelView);
+            builder.RegisterComponent(_commandEditPanelView);
             builder.RegisterEager<CommandEditPanelPresenter>(Lifetime.Singleton);
 
-            builder.RegisterInstance(_simulationPanelView);
+            builder.RegisterComponent(_simulationPanelView);
             builder.Register<SimulationPanelPresenter>(Lifetime.Singleton);
 
-            builder.RegisterInstance(_statusIndicatorView);
+            builder.RegisterComponent(_statusIndicatorView);
             builder.RegisterEager<StatusIndicatorPresenter>(Lifetime.Singleton);
 
-            builder.RegisterInstance(_levelCompletePanelView);
+            builder.RegisterComponent(_levelCompletePanelView);
             builder.Register<LevelCompletePresenter>(Lifetime.Singleton).As<ILevelCompleteListener>();
 
             builder.RegisterComponent(_levelMenuView);
