@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace RoboRoutine
 {
     public sealed class GameManager : IGameManager
