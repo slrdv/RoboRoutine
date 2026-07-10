@@ -23,8 +23,13 @@ namespace RoboRoutine
             IReadOnlyList<CommandItemModel> items = _commandList.Model.Items;
             for (int i = 0; i < items.Count; i++)
             {
-                OnItemAdded(i, items[i]);
+                if (HasTargetIndex(items[i]))
+                {
+                    AddItem(items[i]);
+                }
             }
+
+            UpdateArrows();
 
             _view.ArrowDropEvent += OnArrowDropped;
 
@@ -48,39 +53,25 @@ namespace RoboRoutine
 
         private void OnItemAdded(int index, CommandItemModel item)
         {
-            if (item.CommandData is ITargetIndexCommandData data)
+            if (HasTargetIndex(item))
             {
-                Arrow arrow = _view.CreateArrow();
-                _arrows[arrow] = item;
-                item.DataChangedEvent += OnCommandDataChanged;
-
-                DrawArrow(arrow, item, data.TargetIndex);
+                AddItem(item);
             }
 
-            foreach (var kv in _arrows)
-            {
-                Arrow affectedArrow = kv.Key;
-                CommandItemModel affectedItem = kv.Value;
-                ITargetIndexCommandData indexCommandData = (ITargetIndexCommandData)affectedItem.CommandData;
-
-                if (GetItemIndex(affectedItem) > index)
-                {
-                    DrawArrow(affectedArrow, affectedItem, indexCommandData.TargetIndex);
-                }
-            }
-
+            UpdateArrows();
         }
 
         private void OnCommandDataChanged(CommandItemModel item)
         {
-            if (item.CommandData is not ITargetIndexCommandData data) return;
-
-            DrawArrow(GetArrow(item), item, data.TargetIndex);
+            if (TryGetTargetIndexData(item, out ITargetIndexCommandData data))
+            {
+                DrawArrow(GetArrow(item), item, data.TargetIndex);
+            }
         }
 
         private void OnItemRemoved(int index, CommandItemModel removedItem)
         {
-            if (removedItem.CommandData is ITargetIndexCommandData data)
+            if (HasTargetIndex(removedItem))
             {
                 removedItem.DataChangedEvent -= OnCommandDataChanged;
 
@@ -95,24 +86,24 @@ namespace RoboRoutine
             {
                 Arrow arrow = kv.Key;
                 CommandItemModel item = kv.Value;
-                ITargetIndexCommandData indexCommandData = (ITargetIndexCommandData)item.CommandData;
+                ITargetIndexCommandData indexCommandData = GetTargetIndexData(item);
 
                 if (indexCommandData.TargetIndex >= allItemsCount)
                 {
                     item.SetCommandData(indexCommandData.WithTargetIndex(-1));
                 }
-                else if (GetItemIndex(item) >= index)
-                {
-                    DrawArrow(arrow, item, indexCommandData.TargetIndex);
-                }
             }
+
+            UpdateArrows();
         }
 
         private void OnItemMoved(int from, int to)
         {
             CommandItemModel item = _commandList.Model.Items[to];
-            if (item.CommandData is not ITargetIndexCommandData data) return;
-            DrawArrow(GetArrow(item), item, data.TargetIndex);
+            if (TryGetTargetIndexData(item, out ITargetIndexCommandData data))
+            {
+                DrawArrow(GetArrow(item), item, data.TargetIndex);
+            }
         }
 
         private void OnItemsClear()
@@ -133,6 +124,13 @@ namespace RoboRoutine
             {
                 _view.DrawDragPoint(arrow, GetItemPosition(item));
             }
+        }
+
+        private void AddItem(CommandItemModel item)
+        {
+            Arrow arrow = _view.CreateArrow();
+            _arrows[arrow] = item;
+            item.DataChangedEvent += OnCommandDataChanged;
         }
 
         private void Clear()
@@ -169,6 +167,33 @@ namespace RoboRoutine
             return _commandList.GetItemIndex(item);
         }
 
+        private bool TryGetTargetIndexData(CommandItemModel item, out ITargetIndexCommandData data)
+        {
+            if (item.CommandData is ITargetIndexCommandData targetIndexData)
+            {
+                data = targetIndexData;
+                return true;
+            }
+
+            data = null;
+            return false;
+        }
+
+        private int GetTargetIndex(CommandItemModel item)
+        {
+            return GetTargetIndexData(item).TargetIndex;
+        }
+
+        private bool HasTargetIndex(CommandItemModel item)
+        {
+            return item.CommandData is ITargetIndexCommandData;
+        }
+
+        private ITargetIndexCommandData GetTargetIndexData(CommandItemModel item)
+        {
+            return (ITargetIndexCommandData)item.CommandData;
+        }
+
         private void DrawArrow(Arrow arrow, CommandItemModel item, int targetIndex)
         {
             Vector2 itemPosition = GetItemPosition(item);
@@ -185,6 +210,16 @@ namespace RoboRoutine
         private bool IsTargetIndexValid(CommandItemModel item, int targetIndex)
         {
             return targetIndex >= 0 && targetIndex < _commandList.Model.Count && GetItemIndex(item) != targetIndex;
+        }
+
+        private void UpdateArrows()
+        {
+            foreach (var kv in _arrows)
+            {
+                Arrow arrow = kv.Key;
+                CommandItemModel item = kv.Value;
+                DrawArrow(arrow, item, GetTargetIndex(item));
+            }
         }
     }
 }
