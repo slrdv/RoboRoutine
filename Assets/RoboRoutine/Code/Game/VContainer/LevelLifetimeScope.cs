@@ -22,6 +22,8 @@ namespace RoboRoutine
         [SerializeField] private StatusIndicatorView _statusIndicatorView;
         [SerializeField] private LevelCompletePanelView _levelCompletePanelView;
         [SerializeField] private LevelMenuView _levelMenuView;
+        [SerializeField] private CommandListMenuView _commandListMenuView;
+
 
         [SerializeField] private Transform _pooledObjectsContainer;
 
@@ -119,6 +121,9 @@ namespace RoboRoutine
 
             builder.RegisterComponent(_levelMenuView);
             builder.RegisterEntryPoint<LevelMenuPresenter>(Lifetime.Singleton);
+
+            builder.RegisterComponent(_commandListMenuView);
+            builder.RegisterEager<CommandListMenuPresenter>(Lifetime.Singleton);
         }
 
         private void RegisterCommandSpecific(IContainerBuilder builder)

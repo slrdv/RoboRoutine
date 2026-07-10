@@ -13,7 +13,6 @@ namespace RoboRoutine
 
         [SerializeField] private RectTransform _itemRoot;
         [SerializeField] private CommandItemView _ghostItem;
-        [SerializeField] private PanelButton _showButton;
 
         private bool _isDragging;
 
@@ -27,6 +26,11 @@ namespace RoboRoutine
             item.BeginDragEvent += OnBeginDrag;
             item.DragEvent += OnDrag;
             item.EndDragEvent += OnEndDrag;
+        }
+
+        public void ToggleActive()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
         }
 
         private void OnBeginDrag(CommandItemView item)
@@ -57,22 +61,14 @@ namespace RoboRoutine
             EndDragEvent?.Invoke(_items.IndexOf(item));
         }
 
-        private void ToggleActive()
-        {
-            gameObject.SetActive(!gameObject.activeSelf);
-        }
-
         private void Awake()
         {
-            _showButton.PressedEvent += ToggleActive;
             _ghostItem.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
         private void OnDestroy()
         {
-            _showButton.PressedEvent -= ToggleActive;
-
             for (int i = 0; i < _items.Count; i++)
             {
                 CommandItemView item = _items[i];

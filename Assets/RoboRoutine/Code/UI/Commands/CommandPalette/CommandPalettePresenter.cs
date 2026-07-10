@@ -30,19 +30,9 @@ namespace RoboRoutine
             _items.Add(presenter);
         }
 
-        private void OnBeginDrag()
+        public void ToggleActive()
         {
-            _crossPanelDrag.BeginDrag();
-        }
-
-        private void OnDrag(PointerEventData eventData)
-        {
-            _crossPanelDrag.Drag(eventData);
-        }
-
-        private void OnEndDrag(int index)
-        {
-            _crossPanelDrag.EndDrag(_items[index].Model.CommandData);
+            _commandPaletteView.ToggleActive();
         }
 
         public void Dispose()
@@ -57,6 +47,21 @@ namespace RoboRoutine
             }
 
             _items.Clear();
+        }
+
+        private void OnBeginDrag()
+        {
+            _crossPanelDrag.BeginDrag();
+        }
+
+        private void OnDrag(PointerEventData eventData)
+        {
+            _crossPanelDrag.Drag(eventData);
+        }
+
+        private void OnEndDrag(int index)
+        {
+            _crossPanelDrag.EndDrag(_items[index].Model.CommandData);
         }
     }
 }
