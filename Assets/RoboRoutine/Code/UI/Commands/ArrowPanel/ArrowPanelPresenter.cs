@@ -16,6 +16,15 @@ namespace RoboRoutine
             _view = view;
             _commandList = commandList;
             _canvasService = canvasService;
+        }
+
+        public void Initialize()
+        {
+            IReadOnlyList<CommandItemModel> items = _commandList.Model.Items;
+            for (int i = 0; i < items.Count; i++)
+            {
+                OnItemAdded(i, items[i]);
+            }
 
             _view.ArrowDropEvent += OnArrowDropped;
 

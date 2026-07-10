@@ -9,6 +9,7 @@ namespace RoboRoutine
         private readonly GridBuilder _gridBuilder;
         private readonly SimulationPanelPresenter _simulationPanelPresenter;
         private readonly CommandPaletteBuilder _commandPaletteBuilder;
+        private readonly ArrowPanelPresenter _arrowPanelPresenter;
         private readonly ILevelManager _levelManager;
 
         public LevelBuilder(
@@ -17,6 +18,7 @@ namespace RoboRoutine
             GridBuilder gridBuilder,
             SimulationPanelPresenter simulationPanelPresenter,
             CommandPaletteBuilder commandPaletteBuilder,
+            ArrowPanelPresenter arrowPanelPresenter,
             ILevelManager levelManager)
         {
             _historyService = historyService;
@@ -24,6 +26,7 @@ namespace RoboRoutine
             _gridBuilder = gridBuilder;
             _simulationPanelPresenter = simulationPanelPresenter;
             _commandPaletteBuilder = commandPaletteBuilder;
+            _arrowPanelPresenter = arrowPanelPresenter;
             _levelManager = levelManager;
         }
 
@@ -36,6 +39,8 @@ namespace RoboRoutine
 
             _commandPaletteBuilder.Build();
             _simulationPanelPresenter.UpdateUI();
+
+            _arrowPanelPresenter.Initialize();
 
             _levelManager.OnLoadLevelComplete();
         }
