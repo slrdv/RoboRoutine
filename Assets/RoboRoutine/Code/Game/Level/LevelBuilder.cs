@@ -11,6 +11,7 @@ namespace RoboRoutine
         private readonly CommandPaletteBuilder _commandPaletteBuilder;
         private readonly ArrowPanelPresenter _arrowPanelPresenter;
         private readonly ILevelManager _levelManager;
+        private readonly GameObjectPool<CommandItemView> _commandItemPool;
 
         public LevelBuilder(
             IHistoryService historyService,
@@ -19,7 +20,8 @@ namespace RoboRoutine
             SimulationPanelPresenter simulationPanelPresenter,
             CommandPaletteBuilder commandPaletteBuilder,
             ArrowPanelPresenter arrowPanelPresenter,
-            ILevelManager levelManager)
+            ILevelManager levelManager,
+            GameObjectPool<CommandItemView> commandItemPool)
         {
             _historyService = historyService;
             _sequenceStorageService = sequenceStorageService;
@@ -28,10 +30,13 @@ namespace RoboRoutine
             _commandPaletteBuilder = commandPaletteBuilder;
             _arrowPanelPresenter = arrowPanelPresenter;
             _levelManager = levelManager;
+            _commandItemPool = commandItemPool;
         }
 
         public void Start()
         {
+            _commandItemPool.Prewarm(20);
+            
             _gridBuilder.Build();
 
             _historyService.Initialize();
