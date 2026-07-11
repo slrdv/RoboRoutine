@@ -33,7 +33,7 @@ namespace RoboRoutine
 
         public void Dispose()
         {
-            _inputHandler.IgmActionEvent += ToggleShow;
+            _inputHandler.IgmActionEvent -= ToggleShow;
 
             _view.NextButtonPressedEvent -= OnNextButtonPressed;
             _view.MenuButtonPressedEvent -= OnMenuButtonPressed;
