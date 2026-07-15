@@ -1,0 +1,96 @@
+name: Build Actions
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            targetPlatform: StandaloneWindows64
+            buildPath: build/Windows
+          - name: Linux
+            targetPlatform: StandaloneLinux64
+            buildPath: build/Linux
+
+    steps:
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v3
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Restore Library cache 
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildsPath: ${{ matrix.buildPath }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        id: upload-artifact-step
+        with:
+          name: ${{ matrix.name }}-build
+          path: ${{ matrix.buildPath }}
+
+      - name: Notify success
+        if: success()
+        uses: slrdv/github-actions/tg-notify@master
+        with:
+          chatId: ${{ secrets.TG_CHAT_ID }}
+          botToken: ${{ secrets.TG_BOT_TOKEN }}
+          message: |
+            ✅ Build succeeded (${{ matrix.name }})
+            Build: #${{ github.run_number }}
+            Branch: ${{ github.ref_name }}
+
+            Download: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.upload-artifact-step.outputs.artifact-id }}
+
+      - name: Notify failure
+        if: failure()
+        uses: slrdv/github-actions/tg-notify@master
+        with:
+          chatId: ${{ secrets.TG_CHAT_ID }}
+          botToken: ${{ secrets.TG_BOT_TOKEN }}
+          message: |
+            ❌ Build failed (${{ matrix.name }})
+            Branch: ${{ github.ref_name }}
+            Build: #${{ github.run_number }}
+
+            Details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
