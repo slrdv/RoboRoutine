@@ -30,15 +30,15 @@ namespace RoboRoutine.Core
         {
             if (_loaded) return _data;
 
-            if (!PlayerPrefs.HasKey(_key))
-            {
-                _loaded = true;
-                return default;
-            }
-
-            string json = PlayerPrefs.GetString(_key);
-            _data = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
             _loaded = true;
+
+            string json = PlayerPrefs.GetString(_key, null);
+
+            if (json == null || !TryDeserialize(json, out _data))
+            {
+                _data = default;
+                return _data;
+            }
 
             return _data;
         }
@@ -48,6 +48,22 @@ namespace RoboRoutine.Core
             PlayerPrefs.DeleteKey(_key);
             _data = default;
             _loaded = false;
+        }
+
+        private bool TryDeserialize(string json, out T data)
+        {
+            try
+            {
+                data = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+                return true;
+            }
+            catch (JsonException ex)
+            {
+                Debug.LogException(ex);
+                data = default;
+
+                return false;
+            }
         }
     }
 }
