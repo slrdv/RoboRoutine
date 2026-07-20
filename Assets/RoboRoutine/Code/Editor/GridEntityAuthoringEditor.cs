@@ -1,10 +1,11 @@
+using RoboRoutine.Features;
 using UnityEditor;
 using UnityEngine;
 
-namespace RoboRoutine.Features
+namespace RoboRoutine.Editor
 {
     [CustomEditor(typeof(GridEntityAuthoring), true)]
-    public class GridEntitySnapperEditor : Editor
+    public class GridEntitySnapperEditor : UnityEditor.Editor
     {
         private GridEntityAuthoring _authoring;
 

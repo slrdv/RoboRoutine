@@ -1,7 +1,8 @@
+using RoboRoutine.Features;
 using UnityEditor;
 using UnityEngine;
 
-namespace RoboRoutine.Features
+namespace RoboRoutine.Editor
 {
     [RequireComponent(typeof(GridEntityAuthoring))]
     public sealed class GridEntityFootprintDrawer
