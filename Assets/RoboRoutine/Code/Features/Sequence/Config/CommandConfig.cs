@@ -1,6 +1,7 @@
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [CreateAssetMenu(fileName = "CommandConfig", menuName = "Configs/Commands/CommandConfig")]
     public class CommandConfig : ScriptableObject, IHasKey<CommandType>

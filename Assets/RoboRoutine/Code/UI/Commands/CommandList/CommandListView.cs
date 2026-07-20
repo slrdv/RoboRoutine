@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using RoboRoutine.Core;
+using RoboRoutine.Features;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandListView : MonoBehaviour
     {

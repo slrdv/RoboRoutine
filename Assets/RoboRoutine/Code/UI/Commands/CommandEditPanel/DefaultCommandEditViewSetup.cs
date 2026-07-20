@@ -1,6 +1,7 @@
+using RoboRoutine.Features;
 using VContainer;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public abstract class DefaultEditViewSetup : ICommandEditViewSetup
     {

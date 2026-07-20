@@ -1,6 +1,8 @@
 using System;
+using RoboRoutine.Features;
+using RoboRoutine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class SequenceBuilder : IDisposable
     {

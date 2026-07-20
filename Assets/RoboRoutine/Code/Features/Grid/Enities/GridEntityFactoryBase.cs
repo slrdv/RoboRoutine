@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public abstract class GridEntityFactoryBase<TModel, TView, TAuthoring> : IGridEntityFactory
         where TModel : GridEntityModel

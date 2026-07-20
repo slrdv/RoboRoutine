@@ -1,8 +1,10 @@
+using RoboRoutine.Core;
+using RoboRoutine.UI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public class MenuLifetimeScope : LifetimeScope
     {

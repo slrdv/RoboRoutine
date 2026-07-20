@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class LabeledNumberInput : LabeledInput<TMP_InputField>
     {

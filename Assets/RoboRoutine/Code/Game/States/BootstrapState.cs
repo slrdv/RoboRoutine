@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
+using RoboRoutine.Core;
+using RoboRoutine.Features;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class BootstrapState : StateEntryBase
     {

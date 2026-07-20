@@ -1,6 +1,7 @@
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class LevelManager : ILevelManager
     {

@@ -1,6 +1,9 @@
+using RoboRoutine.Core;
+using RoboRoutine.Features;
+using RoboRoutine.UI;
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class LevelBuilder : IStartable
     {
@@ -36,7 +39,7 @@ namespace RoboRoutine
         public void Start()
         {
             _commandItemPool.Prewarm(20);
-            
+
             _gridBuilder.Build();
 
             _historyService.Initialize();

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using VContainer;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class StateRegistry : IStateRegistry
     {

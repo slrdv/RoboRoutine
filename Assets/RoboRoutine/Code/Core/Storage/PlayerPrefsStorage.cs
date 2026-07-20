@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class PlayerPrefsStorage<T> : IStorage<string, T>
     {

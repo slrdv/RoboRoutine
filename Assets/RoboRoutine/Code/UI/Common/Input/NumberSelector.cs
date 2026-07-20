@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class NumberSelector : MonoBehaviour
     {

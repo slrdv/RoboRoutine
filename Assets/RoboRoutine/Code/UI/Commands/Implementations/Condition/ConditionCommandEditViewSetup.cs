@@ -1,4 +1,7 @@
-namespace RoboRoutine
+using RoboRoutine.Core;
+using RoboRoutine.Features;
+
+namespace RoboRoutine.UI
 {
     public sealed class ConditionCommandEditViewSetup : ICommandEditViewSetup
     {

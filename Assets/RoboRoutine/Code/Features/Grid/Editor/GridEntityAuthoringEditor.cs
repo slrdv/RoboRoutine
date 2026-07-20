@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [CustomEditor(typeof(GridEntityAuthoring), true)]
     public class GridEntitySnapperEditor : Editor

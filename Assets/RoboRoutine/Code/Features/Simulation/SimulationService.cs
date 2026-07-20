@@ -1,6 +1,6 @@
 using System;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class SimulationService : ISimulationService, ISimulationState, IDisposable
     {

@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
+using RoboRoutine.Core;
+using RoboRoutine.Features;
 using UnityEngine.SceneManagement;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class LoadLevelState : StateEntryBase<LevelConfig>
     {

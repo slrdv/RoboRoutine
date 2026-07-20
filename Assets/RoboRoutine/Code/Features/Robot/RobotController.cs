@@ -1,8 +1,10 @@
 using System;
 using Cysharp.Threading.Tasks;
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+
+namespace RoboRoutine.Features
 {
     public sealed class RobotController : ITickListener, ISnapshotable, IDisposable
     {

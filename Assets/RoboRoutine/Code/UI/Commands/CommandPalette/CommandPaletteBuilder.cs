@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using RoboRoutine.Core;
+using RoboRoutine.Features;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandPaletteBuilder
     {

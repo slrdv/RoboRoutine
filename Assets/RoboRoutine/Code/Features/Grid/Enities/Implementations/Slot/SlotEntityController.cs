@@ -1,6 +1,6 @@
 using System;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class SlotEntityController : GridEntityController<SlotEntityModel, NumericEntityView>, ISnapshotable, IDisposable
     {

@@ -1,6 +1,7 @@
+using RoboRoutine.Features;
 using UnityEngine.EventSystems;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public interface ICommandCrossPanelDrag
     {

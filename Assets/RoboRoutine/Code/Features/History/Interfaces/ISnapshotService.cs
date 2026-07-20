@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public interface ISnapshotService
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [Serializable]
     public sealed class SequenceData

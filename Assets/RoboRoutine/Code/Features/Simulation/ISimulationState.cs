@@ -1,6 +1,6 @@
 using System;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public interface ISimulationState
     {

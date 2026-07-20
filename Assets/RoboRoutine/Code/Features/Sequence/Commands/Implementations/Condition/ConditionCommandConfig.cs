@@ -1,6 +1,7 @@
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [CreateAssetMenu(fileName = "ConditionCommandConfig", menuName = "Configs/ConditionCommandConfig")]
     public sealed class ConditionCommandConfig : CommandConfig

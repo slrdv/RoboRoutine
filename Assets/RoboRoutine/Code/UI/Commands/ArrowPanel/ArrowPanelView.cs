@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using RoboRoutine.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class ArrowPanelView : MonoBehaviour
     {

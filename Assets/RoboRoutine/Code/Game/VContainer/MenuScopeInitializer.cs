@@ -1,6 +1,6 @@
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class MenuScopeInitializer : IStartable
     {

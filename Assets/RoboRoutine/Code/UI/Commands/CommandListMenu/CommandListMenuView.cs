@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandListMenuView : MonoBehaviour
     {

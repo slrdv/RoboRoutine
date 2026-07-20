@@ -1,4 +1,6 @@
-namespace RoboRoutine
+using RoboRoutine.Core;
+
+namespace RoboRoutine.Game
 {
     public sealed class LevelRegistry
     {

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class LoadingScreen : MonoBehaviour, ILoadingScreen
     {

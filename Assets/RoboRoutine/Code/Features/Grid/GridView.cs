@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
     public sealed class GridView : MonoBehaviour

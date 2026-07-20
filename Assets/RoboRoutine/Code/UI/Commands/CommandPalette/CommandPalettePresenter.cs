@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandPalettePresenter : IDisposable
     {

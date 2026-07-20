@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandPaletteView : MonoBehaviour
     {

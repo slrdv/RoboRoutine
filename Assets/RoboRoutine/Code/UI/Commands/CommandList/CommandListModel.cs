@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using RoboRoutine.Features;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandListModel : IDisposable
     {

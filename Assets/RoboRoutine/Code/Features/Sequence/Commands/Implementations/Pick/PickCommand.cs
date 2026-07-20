@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class PickCommand : ICommand
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class LabeledDropdown : LabeledInput<TMP_Dropdown>
     {

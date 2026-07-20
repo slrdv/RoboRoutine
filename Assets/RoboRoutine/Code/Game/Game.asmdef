@@ -1,0 +1,21 @@
+{
+    "name": "Game",
+    "rootNamespace": "RoboRoutine.Game",
+    "references": [
+        "GUID:353f1076b43ae8c428ea8f03c8c5a128",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:84917dfd6cda06d4bae2b5dc4ab91557",
+        "GUID:1d59be22de8426946886f42c704e7358"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

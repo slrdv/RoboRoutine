@@ -1,4 +1,4 @@
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public interface ICommandItemFactory
     {

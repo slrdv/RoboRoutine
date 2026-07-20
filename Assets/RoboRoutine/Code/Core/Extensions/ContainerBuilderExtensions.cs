@@ -1,6 +1,6 @@
 using VContainer;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public static class ContainerBuilderExtensions
     {

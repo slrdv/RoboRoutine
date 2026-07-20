@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class GridHistoryState
     {

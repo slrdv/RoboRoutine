@@ -1,6 +1,6 @@
 using System;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [Flags]
     public enum SnapshotLayer : uint

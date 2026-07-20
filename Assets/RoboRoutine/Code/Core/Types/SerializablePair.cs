@@ -1,6 +1,6 @@
 using System;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     [Serializable]
     public struct SerializablePair<TKey, TValue>

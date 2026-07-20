@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class Arrow : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public abstract class TickOperationBase
     {

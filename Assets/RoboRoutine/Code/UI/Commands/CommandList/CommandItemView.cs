@@ -1,10 +1,11 @@
 using System;
+using RoboRoutine.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
     public sealed class CommandItemView : PooledObjectBase<CommandItemView>, IBeginDragHandler, IDragHandler, IEndDragHandler

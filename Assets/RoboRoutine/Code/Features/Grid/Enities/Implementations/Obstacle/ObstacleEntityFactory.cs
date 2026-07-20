@@ -1,4 +1,4 @@
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class ObstacleEntityFactory : GridEntityFactoryBase<GridEntityModel, GridEntityView, GridEntityAuthoring>
     {

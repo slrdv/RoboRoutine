@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class TickService : ITickService, ITickRegistry, ITickable
     {

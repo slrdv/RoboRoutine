@@ -1,7 +1,10 @@
 using System;
 using R3;
+using RoboRoutine.Core;
+using RoboRoutine.Features;
+using RoboRoutine.UI;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class SequenceStorageService : IDisposable
     {

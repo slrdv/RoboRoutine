@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public abstract class PooledObjectBase<TSelf> : MonoBehaviour where TSelf : PooledObjectBase<TSelf>
     {

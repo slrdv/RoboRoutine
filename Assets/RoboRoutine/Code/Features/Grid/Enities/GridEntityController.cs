@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public class GridEntityController<TModel, TView> : IGridEntityController where TView : GridEntityView where TModel : GridEntityModel
     {

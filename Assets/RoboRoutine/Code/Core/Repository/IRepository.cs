@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public interface IRepository<TKey, TItem>
     {

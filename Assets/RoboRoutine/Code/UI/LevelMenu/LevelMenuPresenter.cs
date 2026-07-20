@@ -1,7 +1,7 @@
 using System;
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class LevelMenuPresenter : IDisposable, IInitializable
     {

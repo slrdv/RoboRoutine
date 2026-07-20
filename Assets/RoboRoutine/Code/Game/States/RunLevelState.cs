@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
+using RoboRoutine.Core;
 
-namespace RoboRoutine
+
+namespace RoboRoutine.Game
 {
     public sealed class RunLevelState : StateEntryBase
     {

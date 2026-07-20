@@ -1,6 +1,7 @@
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     [CreateAssetMenu(fileName = "LevelConfig", menuName = "Configs/Level/LevelConfig")]
     public sealed class LevelConfig : ScriptableObject, IHasKey<int>

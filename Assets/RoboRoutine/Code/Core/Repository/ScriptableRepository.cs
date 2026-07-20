@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class ScriptableRepository<TKey, TItem> : IRepository<TKey, TItem> where TItem : ScriptableObject, IHasKey<TKey>
     {

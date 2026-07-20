@@ -1,4 +1,6 @@
-namespace RoboRoutine
+using RoboRoutine.Features;
+
+namespace RoboRoutine.UI
 {
     public interface ICommandEditViewSetupProvider
     {

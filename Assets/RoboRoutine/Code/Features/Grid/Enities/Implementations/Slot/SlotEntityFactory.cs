@@ -1,4 +1,4 @@
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class SlotEntityFactory : GridEntityFactoryBase<NumericEntityModel, NumericEntityView, NumericEntityAuthoring>
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public sealed class GameObjectPool<T> where T : PooledObjectBase<T>
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using RoboRoutine.Features;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandEditViewSetupProvider : ICommandEditViewSetupProvider
     {

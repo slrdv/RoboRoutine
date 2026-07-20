@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public static class EnumUtils
     {

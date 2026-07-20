@@ -1,7 +1,7 @@
 using System;
 using R3;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandItemPresenter : IDisposable
     {

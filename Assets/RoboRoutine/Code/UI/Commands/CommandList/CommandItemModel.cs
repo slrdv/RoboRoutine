@@ -1,7 +1,8 @@
 using System;
 using R3;
+using RoboRoutine.Features;
 
-namespace RoboRoutine
+namespace RoboRoutine.UI
 {
     public sealed class CommandItemModel
     {

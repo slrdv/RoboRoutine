@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-namespace RoboRoutine
+namespace RoboRoutine.Game
 {
     public sealed class InputHandler : MonoBehaviour, IInputHandler
     {

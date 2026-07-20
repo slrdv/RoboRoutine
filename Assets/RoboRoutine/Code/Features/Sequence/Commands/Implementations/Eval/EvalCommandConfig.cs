@@ -1,7 +1,8 @@
 using System;
+using RoboRoutine.Core;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [CreateAssetMenu(fileName = "EvalCommandConfig", menuName = "Configs/EvalCommandConfig")]
     public sealed class EvalCommandConfig : CommandConfig

@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Core
 {
     public static class RuntimeOnLoadInitializer
     {

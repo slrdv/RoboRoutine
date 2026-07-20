@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     [Serializable]
     public sealed class ConditionCommandData : CommandData, ITargetIndexCommandData

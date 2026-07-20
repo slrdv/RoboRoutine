@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public sealed class CommandSequence : ICommandSequence, ICommandSequenceState, IDisposable
     {

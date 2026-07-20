@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace RoboRoutine
+namespace RoboRoutine.Features
 {
     public class NumericEntityView : GridEntityView
     {
