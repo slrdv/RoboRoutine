@@ -12,13 +12,14 @@ namespace RoboRoutine.Features
         private readonly ITickRegistry _tickRegistry;
         private readonly ISnapshotableRegistry _snapshotableRegistry;
 
+        private readonly RobotMovementOperation _movementOperation;
+
         private TickOperationBase _currentOperation;
         private OperandEntityController _operand;
 
-        private readonly RobotMovementOperation _movementOperation;
-
         public SnapshotLayer SnapshotLayer => SnapshotLayer.Robot;
         public OperandEntityController Operand => _operand;
+        public IRobotView View => _robotView;
 
         public Vector2 GetPositionXZ()
         {

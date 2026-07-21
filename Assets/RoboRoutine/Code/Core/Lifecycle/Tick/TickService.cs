@@ -38,9 +38,12 @@ namespace RoboRoutine.Core
 
         public void Tick()
         {
-            if (_paused) return;
+            Tick(UnityEngine.Time.deltaTime * _timeScale);
+        }
 
-            float dt = UnityEngine.Time.deltaTime * _timeScale;
+        public void Tick(float dt)
+        {
+            if (_paused) return;
 
             for (int i = 0; i < _tickListeners.Count; i++)
             {

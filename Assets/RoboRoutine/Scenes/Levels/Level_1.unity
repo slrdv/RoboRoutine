@@ -5010,7 +5010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoboRoutine.LevelLifetimeScope
   parentReference:
-    TypeName: RoboRoutine.RootLifetimeScope
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
   _canvas: {fileID: 1469313918}

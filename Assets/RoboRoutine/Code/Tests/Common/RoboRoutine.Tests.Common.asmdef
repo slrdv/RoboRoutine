@@ -1,0 +1,19 @@
+{
+    "name": "RoboRoutine.Tests.Common",
+    "rootNamespace": "RoboRoutine.Tests",
+    "references": [
+        "RoboRoutine.Features",
+        "RoboRoutine.Core",
+        "UniTask",
+        "VContainer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
