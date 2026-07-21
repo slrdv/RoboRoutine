@@ -2,7 +2,7 @@ using System;
 
 namespace RoboRoutine.Features
 {
-    public sealed class OperandEntityController : GridEntityController<NumericEntityModel, NumericEntityView>, ISnapshotable, IDisposable
+    public sealed class OperandEntityController : GridEntityController<NumericEntityModel, INumericEntityView>, ISnapshotable, IDisposable
     {
         private readonly ISnapshotableRegistry _snapshotableRegistry;
 
@@ -10,7 +10,7 @@ namespace RoboRoutine.Features
 
         public SnapshotLayer SnapshotLayer => SnapshotLayer.Operand;
 
-        public OperandEntityController(NumericEntityModel model, NumericEntityView view, ISnapshotableRegistry snapshotableRegistry) : base(model, view)
+        public OperandEntityController(NumericEntityModel model, INumericEntityView view, ISnapshotableRegistry snapshotableRegistry) : base(model, view)
         {
             _snapshotableRegistry = snapshotableRegistry;
             _snapshotableRegistry.Register(this);

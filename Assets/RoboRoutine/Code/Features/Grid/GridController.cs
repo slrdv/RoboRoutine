@@ -8,7 +8,7 @@ namespace RoboRoutine.Features
     public sealed class GridController : ISnapshotable, IDisposable
     {
         private readonly GridModel _gridModel;
-        private readonly GridView _gridView;
+        private readonly IGridView _gridView;
         private readonly ISnapshotableRegistry _snapshotableRegistry;
         private readonly Dictionary<Vector2Int, IGridEntityController> _entities = new();
 
@@ -16,7 +16,7 @@ namespace RoboRoutine.Features
 
         public SnapshotLayer SnapshotLayer => SnapshotLayer.Grid;
 
-        public GridController(GridModel gridModel, GridView gridView, ISnapshotableRegistry snapshotableRegistry)
+        public GridController(GridModel gridModel, IGridView gridView, ISnapshotableRegistry snapshotableRegistry)
         {
             _gridModel = gridModel;
             _gridView = gridView;
@@ -79,7 +79,7 @@ namespace RoboRoutine.Features
         {
             _gridModel.AddEntity(entity.Model, origin);
             _entities[origin] = entity;
-            entity.AttachToParent(_gridView.transform, GetFootprintCenterWorldPosition(origin, entity.Model.Size), Vector3.one);
+            entity.AttachToParent(_gridView.ItemRoot, GetFootprintCenterWorldPosition(origin, entity.Model.Size), Vector3.one);
         }
 
         public bool TryAddEntity(IGridEntityController entity, Vector2Int position)
@@ -128,7 +128,6 @@ namespace RoboRoutine.Features
                 Vector2Int key = _cachedKeys[i];
                 if (!gridState.Entities.TryGetValue(key, out var target) || target != _entities[key])
                 {
-                    Debug.Log($"[{GetType().Name}.{nameof(RestoreState)}] Remove {_entities[key].View.name} at {key}");
                     RemoveEntity(key);
                 }
             }
@@ -137,7 +136,6 @@ namespace RoboRoutine.Features
             {
                 if (!_entities.TryGetValue(kv.Key, out var current) || current != kv.Value)
                 {
-                    Debug.Log($"[{GetType().Name}.{nameof(RestoreState)}] Restore {gridState.Entities[kv.Key].View.name} at {kv.Key}");
                     AddEntity(kv.Value, kv.Key);
                 }
             }

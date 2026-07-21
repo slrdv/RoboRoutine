@@ -3,9 +3,11 @@ using UnityEngine;
 namespace RoboRoutine.Features
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-    public sealed class GridView : MonoBehaviour
+    public sealed class GridView : MonoBehaviour, IGridView
     {
         [SerializeField] private MeshFilter _meshFilter;
+
+        public Transform ItemRoot => transform;
 
         public void Build(RectInt rect)
         {

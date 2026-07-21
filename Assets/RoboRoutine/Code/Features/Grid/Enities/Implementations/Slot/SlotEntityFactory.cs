@@ -1,6 +1,6 @@
 namespace RoboRoutine.Features
 {
-    public sealed class SlotEntityFactory : GridEntityFactoryBase<NumericEntityModel, NumericEntityView, NumericEntityAuthoring>
+    public sealed class SlotEntityFactory : GridEntityFactoryBase<NumericEntityModel, INumericEntityView, NumericEntityAuthoring>
     {
         private readonly ISnapshotableRegistry _snapshotableRegistry;
 
@@ -11,7 +11,7 @@ namespace RoboRoutine.Features
             _snapshotableRegistry = snapshotableRegistry;
         }
 
-        public override IGridEntityController CreateController(NumericEntityAuthoring authoring, NumericEntityView view)
+        public override IGridEntityController CreateController(NumericEntityAuthoring authoring, INumericEntityView view)
         {
             SlotEntityModel model = new SlotEntityModel(authoring.GetActualSize(), authoring.EntityType, authoring.Value);
             return new SlotEntityController(model, view, _snapshotableRegistry);

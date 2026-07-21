@@ -50,7 +50,7 @@ namespace RoboRoutine.Game
 
         private void RegisterGrid(IContainerBuilder builder)
         {
-            builder.RegisterComponent(_gridView);
+            builder.RegisterComponent(_gridView).As<IGridView>();
             builder.Register<GridModel>(Lifetime.Singleton);
             builder.Register<GridBuilder>(Lifetime.Singleton);
             builder.Register<GridController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
@@ -64,7 +64,7 @@ namespace RoboRoutine.Game
 
         private void RegisterRobot(IContainerBuilder builder)
         {
-            builder.RegisterComponent(_robotView);
+            builder.RegisterComponent(_robotView).As<IRobotView>();
             builder.Register<RobotController>(Lifetime.Singleton).AsSelf().As<ISnapshotable>();
         }
 

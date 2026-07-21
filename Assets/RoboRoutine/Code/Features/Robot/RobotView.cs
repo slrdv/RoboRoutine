@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RoboRoutine.Features
 {
-    public sealed class RobotView : MonoBehaviour
+    public sealed class RobotView : MonoBehaviour, IRobotView
     {
         [SerializeField] private float _speed = 2f;
         [SerializeField] private Transform _itemRoot;

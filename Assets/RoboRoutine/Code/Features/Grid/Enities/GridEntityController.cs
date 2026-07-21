@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace RoboRoutine.Features
 {
-    public class GridEntityController<TModel, TView> : IGridEntityController where TView : GridEntityView where TModel : GridEntityModel
+    public class GridEntityController<TModel, TView> : IGridEntityController where TView : IGridEntityView where TModel : GridEntityModel
     {
         protected readonly TModel _model;
         protected readonly TView _view;
 
         public GridEntityModel Model => _model;
-        public GridEntityView View => _view;
+        public IGridEntityView View => _view;
         public EntityType EntityType => _model.EntityType;
 
         public GridEntityController(TModel model, TView view)

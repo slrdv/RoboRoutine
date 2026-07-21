@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace RoboRoutine.Features
 {
-    public class GridEntityView : MonoBehaviour
+    public class GridEntityView : MonoBehaviour, IGridEntityView
     {
         private Quaternion _originRotation;
 

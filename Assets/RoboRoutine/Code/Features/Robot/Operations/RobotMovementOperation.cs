@@ -5,11 +5,11 @@ namespace RoboRoutine.Features
 {
     public sealed class RobotMovementOperation : TickOperationBase
     {
-        private readonly RobotView _view;
+        private readonly IRobotView _view;
 
         private Vector2 _targetPosition;
 
-        public RobotMovementOperation(RobotView view)
+        public RobotMovementOperation(IRobotView view)
         {
             _view = view;
         }

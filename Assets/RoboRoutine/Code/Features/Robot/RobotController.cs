@@ -8,7 +8,7 @@ namespace RoboRoutine.Features
 {
     public sealed class RobotController : ITickListener, ISnapshotable, IDisposable
     {
-        private readonly RobotView _robotView;
+        private readonly IRobotView _robotView;
         private readonly ITickRegistry _tickRegistry;
         private readonly ISnapshotableRegistry _snapshotableRegistry;
 
@@ -25,7 +25,7 @@ namespace RoboRoutine.Features
             return _robotView.GetPositionXZ();
         }
 
-        public RobotController(RobotView robotView, ITickRegistry tickRegistry, ISnapshotableRegistry snapshotableRegistry)
+        public RobotController(IRobotView robotView, ITickRegistry tickRegistry, ISnapshotableRegistry snapshotableRegistry)
         {
             _robotView = robotView;
             _tickRegistry = tickRegistry;

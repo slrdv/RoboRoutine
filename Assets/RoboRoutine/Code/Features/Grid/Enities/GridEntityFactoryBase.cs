@@ -4,7 +4,7 @@ namespace RoboRoutine.Features
 {
     public abstract class GridEntityFactoryBase<TModel, TView, TAuthoring> : IGridEntityFactory
         where TModel : GridEntityModel
-        where TView : GridEntityView
+        where TView : IGridEntityView
         where TAuthoring : GridEntityAuthoring
     {
         public abstract EntityType EntityType { get; }
