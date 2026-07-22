@@ -70,7 +70,12 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          artifactName: Test Results (${{ matrix.name }})
           testMode: editmode
+
+      - name: Restore workspace
+        run: |
+          git checkout -- Packages/manifest.json Packages/packages-lock.json
 
       - name: Build project
         uses: game-ci/unity-builder@v4
